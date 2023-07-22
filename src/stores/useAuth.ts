@@ -1,6 +1,6 @@
 import { api } from '@/service/api'
-import { AxiosHeaders } from 'axios'
 import { StatusCodes } from 'http-status-codes'
+import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
@@ -11,7 +11,8 @@ type AuthCredentials = {
 
 type AuthProps = {
   token: string | null
-  signIn: (credentials: AuthCredentials) => Promise<AxiosHeaders>
+  signIn: (credentials: AuthCredentials) => Promise<void>
+  signOut: () => void
 }
 
 const useAuth = create<AuthProps>()(
@@ -26,13 +27,25 @@ const useAuth = create<AuthProps>()(
               password
             })
             .then((res) => res)
-            .catch((err) => err)
+            .catch((err) => err.response)
+
+          if (response.status === StatusCodes.BAD_REQUEST) {
+            toast.error(response.data)
+            return
+          }
 
           if (response.status === StatusCodes.OK) {
             set({ token: response.data })
             api.defaults.headers['Authorization'] = `Bearer ${get().token}`
+            toast.success('Logged in successfully!')
+            history.pushState(null, '', '/home')
           }
-          return response
+        },
+        signOut: () => {
+          set({ token: null })
+          api.defaults.headers['Authorization'] = null
+          toast.success('Logged out successfully!')
+          history.pushState(null, '', '/login')
         }
       }),
       {

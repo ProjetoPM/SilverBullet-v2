@@ -7,12 +7,9 @@ import { Input } from '@/components/ui/Input'
 import { PageTitle, PageTitleProps } from '@/layout'
 import { useAuth } from '@/stores/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { StatusCodes } from 'http-status-codes'
 import { Loader } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -25,23 +22,19 @@ type SignInForm = z.infer<typeof schema>
 const SignIn = ({ title }: PageTitleProps) => {
   const [isLoading, setLoading] = useState(false)
   const signIn = useAuth((state) => state.signIn)
-  const navigate = useNavigate()
 
   const form = useForm<SignInForm>({
     mode: 'all',
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
   const onSubmit = async (data: SignInForm) => {
     setLoading(true)
-    const response = await signIn(data)
-
-    if (response.status === StatusCodes.OK) {
-      toast.success('Logged!')
-      navigate('/home')
-    } else {
-      toast.error('Something went wrong!')
-    }
+    await signIn(data)
     setLoading(false)
   }
 
