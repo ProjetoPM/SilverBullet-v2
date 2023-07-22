@@ -44,7 +44,7 @@ const useAuth = create<AuthProps>()(
         signOut: () => {
           set({ token: null })
           api.defaults.headers['Authorization'] = null
-          toast.success('Logged out successfully!')
+          toast.info('Logged out successfully!')
           history.pushState(null, '', '/login')
         }
       }),

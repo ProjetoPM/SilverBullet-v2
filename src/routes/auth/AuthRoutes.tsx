@@ -2,8 +2,8 @@ import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
 
-import SignIn from '@/pages/auth/sign-in'
-import SignUp from '@/pages/auth/sign-up'
+import LoginPage from '@/pages/auth/login'
+import RegisterPage from '@/pages/auth/register'
 
 import { GuestGuard } from '@/utils/guard'
 
@@ -20,11 +20,11 @@ export const AuthRoutes: RouteObject = {
       children: [
         {
           path: 'login',
-          element: <SignIn title="Sign In" />
+          element: <LoginPage title="Sign In" />
         },
         {
           path: 'register',
-          element: <SignUp title="Sign Up" />
+          element: <RegisterPage title="Sign Up" />
         }
       ]
     }

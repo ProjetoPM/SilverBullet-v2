@@ -17,7 +17,7 @@ export const HomeRoutes: RouteObject = {
       ),
       children: [
         {
-          path: 'home',
+          path: '/home',
           element: <HomePage />
         }
       ]

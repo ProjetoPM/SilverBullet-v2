@@ -1,9 +1,5 @@
 import { AuthWrapper } from '@/components/auth'
-import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card'
-import { Checkbox } from '@/components/ui/Checkbox'
-import { Form } from '@/components/ui/Form'
-import { Input } from '@/components/ui/Input'
+import { Button, Card, Checkbox, Form, Input, Label } from '@/components/ui'
 import { PageTitle, PageTitleProps } from '@/layout'
 import { useAuth } from '@/stores/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,7 +15,7 @@ const schema = z.object({
 
 type SignInForm = z.infer<typeof schema>
 
-const SignIn = ({ title }: PageTitleProps) => {
+const LoginPage = ({ title }: PageTitleProps) => {
   const [isLoading, setLoading] = useState(false)
   const signIn = useAuth((state) => state.signIn)
 
@@ -64,7 +60,11 @@ const SignIn = ({ title }: PageTitleProps) => {
                       <Form.Item>
                         <Form.Label>E-mail</Form.Label>
                         <Form.Control>
-                          <Input placeholder="email@example.com" {...field} />
+                          <Input
+                            placeholder="email@example.com"
+                            autoComplete="email"
+                            {...field}
+                          />
                         </Form.Control>
                         <Form.Message />
                       </Form.Item>
@@ -77,7 +77,12 @@ const SignIn = ({ title }: PageTitleProps) => {
                       <Form.Item>
                         <Form.Label>Password</Form.Label>
                         <Form.Control>
-                          <Input placeholder="password" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="********"
+                            autoComplete="current-password"
+                            {...field}
+                          />
                         </Form.Control>
                         <Form.Message />
                       </Form.Item>
@@ -85,12 +90,7 @@ const SignIn = ({ title }: PageTitleProps) => {
                   />
                   <div className="flex items-center gap-2">
                     <Checkbox id="rememberMe" />
-                    <label
-                      htmlFor="rememberMe"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Keep me signed in
-                    </label>
+                    <Label htmlFor="rememberMe">Keep me signed in</Label>
                   </div>
                   <div>
                     <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
@@ -108,4 +108,4 @@ const SignIn = ({ title }: PageTitleProps) => {
   )
 }
 
-export default SignIn
+export default LoginPage

@@ -4,7 +4,7 @@ const AuthFooter = () => {
       <div className="dark:text-neutral-100 text-neutral-800 text-sm">
         This site is protected by Privacy Policy
       </div>
-      <div className="flex flex-col gap-0 sm:flex-row md:gap-4 mb-12 md:mb-0">
+      <div className="hidden sm:flex gap-0 sm:flex-row sm:gap-4 mb-12 md:mb-0">
         <a href="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
           Terms and Conditions
         </a>
