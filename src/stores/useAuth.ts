@@ -1,4 +1,4 @@
-import { api } from '@/service/api'
+import { api } from '@/services/api'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
 import { create } from 'zustand'
