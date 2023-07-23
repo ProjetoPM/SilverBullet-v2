@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
-type AuthProps = {
-  theme: string
+type ThemeProps = {
+  theme: 'light' | 'dark'
   setTheme: (theme: 'light' | 'dark') => void
 }
 
-const useTheme = create<AuthProps>()(
+const useTheme = create<ThemeProps>()(
   devtools(
     persist(
       (set) => ({

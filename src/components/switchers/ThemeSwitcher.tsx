@@ -1,4 +1,3 @@
-import { Moon, Sun } from 'lucide-react'
 import { Button } from '@/components/ui'
 import {
   DropdownMenu,
@@ -6,19 +5,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/stores/useTheme'
-import { useEffect } from 'react'
+import { Moon, Sun } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const ThemeSwitcher = () => {
-  const theme = useTheme((state) => state.theme)
   const setTheme = useTheme((state) => state.setTheme)
   const { t } = useTranslation()
-
-  useEffect(() => {
-    document.body.removeAttribute('class')
-    document.body.classList.add(theme)
-  }, [theme])
 
   return (
     <DropdownMenu>
