@@ -7,13 +7,18 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@/stores/useTheme'
+import { useEffect } from 'react'
 
 const ThemeSwitcher = () => {
+  const theme = useTheme((state) => state.theme)
+  const setTheme = useTheme((state) => state.setTheme)
   const { t } = useTranslation()
 
-  const setTheme = (theme: string) => {
-    console.log(theme)
-  }
+  useEffect(() => {
+    document.body.removeAttribute('class')
+    document.body.classList.add(theme)
+  }, [theme])
 
   return (
     <DropdownMenu>

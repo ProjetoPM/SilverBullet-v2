@@ -17,7 +17,7 @@ const schema = z.object({
 type SignInForm = z.infer<typeof schema>
 
 const LoginPage = ({ title }: PageTitleProps) => {
-  const { t } = useTranslation('Login')
+  const { t } = useTranslation('login')
 
   const [isLoading, setLoading] = useState(false)
   const signIn = useAuth((state) => state.signIn)
@@ -45,13 +45,13 @@ const LoginPage = ({ title }: PageTitleProps) => {
             <Card.Header>
               <Card.Title>
                 <div className="flex items-center justify-between">
-                  <h1>{t('title')}</h1>
+                  <h1>{t('login:title')}</h1>
                   <a href="/register" className="text-xs">
-                    {t('dont-have-account')}
+                    {t('login:dont-have-account')}
                   </a>
                 </div>
               </Card.Title>
-              <Card.Description>{t('description')}</Card.Description>
+              <Card.Description>{t('login:description')}</Card.Description>
             </Card.Header>
             <Card.Content>
               <Form.Root {...form}>
@@ -61,10 +61,10 @@ const LoginPage = ({ title }: PageTitleProps) => {
                     name="email"
                     render={({ field }) => (
                       <Form.Item>
-                        <Form.Label>{t('email.label')}</Form.Label>
+                        <Form.Label>{t('login:email.label')}</Form.Label>
                         <Form.Control>
                           <Input
-                            placeholder={t('email.placeholder')}
+                            placeholder={t('login:email.placeholder')}
                             autoComplete="email"
                             {...field}
                           />
@@ -78,11 +78,11 @@ const LoginPage = ({ title }: PageTitleProps) => {
                     name="password"
                     render={({ field }) => (
                       <Form.Item>
-                        <Form.Label>{t('password.label')}</Form.Label>
+                        <Form.Label>{t('login:password.label')}</Form.Label>
                         <Form.Control>
                           <Input
                             type="password"
-                            placeholder={t('password.placeholder')}
+                            placeholder={t('login:password.placeholder')}
                             autoComplete="current-password"
                             {...field}
                           />
@@ -93,7 +93,7 @@ const LoginPage = ({ title }: PageTitleProps) => {
                   />
                   <div className="flex items-center gap-2">
                     <Checkbox id="rememberMe" />
-                    <Label htmlFor="rememberMe">{t('keep-signed-in')}</Label>
+                    <Label htmlFor="rememberMe">{t('login:keep-signed-in')}</Label>
                   </div>
                   <div>
                     <Button type="submit" className="mt-3 w-full" disabled={isLoading}>

@@ -11,6 +11,10 @@ import { router } from './routes'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-    <ToastContainer position="top-right" autoClose={3000} theme="light" />
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
+    />
   </React.StrictMode>
 )

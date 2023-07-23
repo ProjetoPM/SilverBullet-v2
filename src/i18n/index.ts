@@ -8,7 +8,7 @@ const API_URL = `https://api.i18nexus.com/project_resources/translations/{{lng}}
 
 export const langs = ['en-US', 'pt-BR']
 
-i18next
+const i18n = i18next
   .use(HttpBackend)
   .use(languageDetector)
   .use(initReactI18next)
@@ -21,3 +21,5 @@ i18next
       loadPath: API_URL
     }
   })
+
+export default i18n
