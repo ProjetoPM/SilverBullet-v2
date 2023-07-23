@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -16,6 +17,8 @@ const schema = z.object({
 type SignInForm = z.infer<typeof schema>
 
 const LoginPage = ({ title }: PageTitleProps) => {
+  const { t } = useTranslation('Login')
+
   const [isLoading, setLoading] = useState(false)
   const signIn = useAuth((state) => state.signIn)
 
@@ -42,13 +45,13 @@ const LoginPage = ({ title }: PageTitleProps) => {
             <Card.Header>
               <Card.Title>
                 <div className="flex items-center justify-between">
-                  <h1>Sign in</h1>
+                  <h1>{t('title')}</h1>
                   <a href="/register" className="text-xs">
-                    Don't have an account?
+                    {t('dont-have-account')}
                   </a>
                 </div>
               </Card.Title>
-              <Card.Description>Sign in to your account</Card.Description>
+              <Card.Description>{t('description')}</Card.Description>
             </Card.Header>
             <Card.Content>
               <Form.Root {...form}>
@@ -58,10 +61,10 @@ const LoginPage = ({ title }: PageTitleProps) => {
                     name="email"
                     render={({ field }) => (
                       <Form.Item>
-                        <Form.Label>E-mail</Form.Label>
+                        <Form.Label>{t('email.label')}</Form.Label>
                         <Form.Control>
                           <Input
-                            placeholder="email@example.com"
+                            placeholder={t('email.placeholder')}
                             autoComplete="email"
                             {...field}
                           />
@@ -75,11 +78,11 @@ const LoginPage = ({ title }: PageTitleProps) => {
                     name="password"
                     render={({ field }) => (
                       <Form.Item>
-                        <Form.Label>Password</Form.Label>
+                        <Form.Label>{t('password.label')}</Form.Label>
                         <Form.Control>
                           <Input
                             type="password"
-                            placeholder="********"
+                            placeholder={t('password.placeholder')}
                             autoComplete="current-password"
                             {...field}
                           />
@@ -90,11 +93,11 @@ const LoginPage = ({ title }: PageTitleProps) => {
                   />
                   <div className="flex items-center gap-2">
                     <Checkbox id="rememberMe" />
-                    <Label htmlFor="rememberMe">Keep me signed in</Label>
+                    <Label htmlFor="rememberMe">{t('keep-signed-in')}</Label>
                   </div>
                   <div>
                     <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
-                      {!isLoading && 'Sign in'}
+                      {!isLoading && t('sign-in')}
                       {isLoading && <Loader className="animate-spin" />}
                     </Button>
                   </div>
