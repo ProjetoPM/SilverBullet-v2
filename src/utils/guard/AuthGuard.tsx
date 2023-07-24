@@ -25,7 +25,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 
   return (
     <>
-      {!mounted && <Loading />}
+      {!mounted && <Loading size={36} />}
       {mounted && children}
     </>
   )
