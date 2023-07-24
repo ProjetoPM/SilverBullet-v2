@@ -22,8 +22,14 @@ type LanguageSwitcherProps = ComponentProps<'div'>
 const LocaleSwitch = ({ className, ...props }: LanguageSwitcherProps) => {
   const { i18n } = useTranslation()
 
+  const resetErrorMessages = () => {
+    const elements = document.querySelectorAll('[id*="form-item-message"]')
+    elements.forEach((element) => (element.innerHTML = ''))
+  }
+
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang)
+    resetErrorMessages()
   }
 
   return (
