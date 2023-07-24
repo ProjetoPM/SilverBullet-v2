@@ -15,7 +15,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
             <Header />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0px,256px),_1fr]">
-            <div className="hidden lg:flex border border-t-0 border-r-1">
+            <div className="hidden xl:flex border border-t-0 border-r-1">
               <Sidebar />
             </div>
             {/* <div className=" bg-blue-900" /> */}

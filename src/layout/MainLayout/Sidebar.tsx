@@ -7,13 +7,13 @@ import { Suspense } from 'react'
 
 const Sidebar = () => {
   return (
-    <ScrollArea className="mt-3 w-full h-full">
+    <ScrollArea className="mt-3 w-full h-full overflow-y-auto">
       <Suspense fallback={<Loading size={32} />}>
         {sidebar.map((item) => {
           return (
             <div className="flex flex-col" key={item.id}>
               {item.label && (
-                <Label className="pl-10 pt-2 mb-1.5 text-xs font-bold uppercase tracking-wider">
+                <Label className="pl-10 mt-1.5 pt-2 mb-1.5 text-xs font-bold uppercase tracking-wider">
                   {item.label}
                 </Label>
               )}

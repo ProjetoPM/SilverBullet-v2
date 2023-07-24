@@ -45,6 +45,7 @@ export const sidebar: SidebarItem[] = [
   },
   {
     id: '_other',
+    label: 'Other',
     children: [
       {
         id: 'other',

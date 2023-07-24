@@ -4,14 +4,14 @@ import { Button, Separator, Sheet } from '@/components/ui'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { PanelLeftOpen } from 'lucide-react'
 import { Sidebar } from './Sidebar'
-import { UserDropdown } from './UserDropdown'
+import { UserDropdown } from '@/components/UserDropdown'
 
 const Header = () => {
   return (
     <Sheet.Root>
       <div className="flex flex-1 items-center justify-between mx-5">
         <div className="flex flex-1 gap-3">
-          <Sheet.Trigger className="flex lg:hidden" asChild>
+          <Sheet.Trigger className="flex xl:hidden" asChild>
             <Button variant="outline" size="icon">
               <PanelLeftOpen size={20} />
             </Button>
