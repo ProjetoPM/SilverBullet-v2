@@ -1,4 +1,4 @@
-import { AuthWrapper } from '@/components/auth'
+import { AuthWrapper } from '@/components/Auth'
 import { Button, Card, Checkbox, Form, Input, Label } from '@/components/ui'
 import { PageTitle, PageTitleProps } from '@/layout'
 import { useAuth } from '@/stores/useAuth'

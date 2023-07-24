@@ -4,13 +4,7 @@ import { cn } from '@/lib/utils'
 import { Languages } from 'lucide-react'
 import { ComponentProps } from 'react'
 import { Button } from '../ui'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '../ui/dropdown-menu'
+import { DropdownMenu } from '../ui/DropdownMenu'
 
 const languages = [
   {
@@ -25,7 +19,7 @@ const languages = [
 
 type LanguageSwitcherProps = ComponentProps<'div'>
 
-const LanguageSwitcher = ({ className, ...props }: LanguageSwitcherProps) => {
+const LocaleSwitch = ({ className, ...props }: LanguageSwitcherProps) => {
   const { i18n } = useTranslation()
 
   const changeLanguage = (lang: string) => {
@@ -35,16 +29,16 @@ const LanguageSwitcher = ({ className, ...props }: LanguageSwitcherProps) => {
   return (
     <>
       <div className={cn('flex', className)} {...props}>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
             <Button variant="outline" size="icon">
               <Languages size={20} />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-11">
-            <DropdownMenuGroup>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content className="w-11">
+            <DropdownMenu.Group>
               {languages.map((lang) => (
-                <DropdownMenuItem
+                <DropdownMenu.Item
                   key={lang.code}
                   onClick={() => changeLanguage(lang.code)}
                 >
@@ -52,14 +46,14 @@ const LanguageSwitcher = ({ className, ...props }: LanguageSwitcherProps) => {
                     {/* <User size={16} /> */}
                     <span>{lang.name}</span>
                   </div>
-                </DropdownMenuItem>
+                </DropdownMenu.Item>
               ))}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </div>
     </>
   )
 }
 
-export default LanguageSwitcher
+export { LocaleSwitch }
