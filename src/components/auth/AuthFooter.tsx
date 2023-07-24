@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 const AuthFooter = () => {
   const { t } = useTranslation('login')
@@ -9,15 +10,15 @@ const AuthFooter = () => {
         {t('privacy-policy')}
       </div>
       <div className="hidden sm:flex gap-0 sm:flex-row sm:gap-4 mb-12 md:mb-0">
-        <a href="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
+        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
           Terms and Conditions
-        </a>
-        <a href="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
+        </Link>
+        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
           Privacy Policy
-        </a>
-        <a href="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
+        </Link>
+        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
           CA Privacy Notice
-        </a>
+        </Link>
       </div>
     </div>
   )

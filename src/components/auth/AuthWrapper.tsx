@@ -1,6 +1,6 @@
 import { Background } from '.'
 import { AuthFooter } from './AuthFooter'
-import { AuthNavbar } from './AuthNavbar'
+import { AuthHeader } from './AuthHeader'
 
 type AuthWrapperProps = {
   children: React.ReactNode
@@ -12,7 +12,7 @@ const AuthWrapper = ({ children }: AuthWrapperProps) => {
       <div className="h-full w-full">
         <Background>
           <div className="grid grid-rows-[64px_1fr_64px] h-screen">
-            <AuthNavbar />
+            <AuthHeader />
             {children}
             <AuthFooter />
           </div>
