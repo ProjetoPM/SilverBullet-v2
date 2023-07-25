@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { zodI18nMap } from 'zod-i18n-map'
 import { zod } from './zod'
 
-const API_KEY = 'ukfs6l_hscV-fNJX02_I0Q'
+const API_KEY = import.meta.env.VITE_NEXUS_LANG_API
 const API_URL = `https://api.i18nexus.com/project_resources/translations/{{lng}}/{{ns}}.json?api_key=${API_KEY}`
 
 export const langs = ['en-US', 'pt-BR']

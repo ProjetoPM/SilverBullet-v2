@@ -1,31 +1,34 @@
+import { Separator } from '@/components/ui'
 import { Outlet } from 'react-router-dom'
 import { Header } from '../MainLayout/Header'
 import { Sidebar } from '../MainLayout/Sidebar'
-import { useTranslation } from 'react-i18next'
 
 type ComponentLayoutProps = {
   layout?: 'blank' | 'simple'
 }
 
 const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
-  const { t } = useTranslation()
-
   return (
     <>
       {layout === 'simple' && (
-        <div className="grid grid-rows-[64px,_1fr] h-screen">
-          <div className="bg-background flex items-center px-5 border border-b-1 py-1">
-            <Header />
-          </div>
-          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0px,256px),_1fr]">
-            <div className="hidden xl:flex border border-t-0 border-r-1">
-              <Sidebar />
-            </div>
-            <div className=" bg-blue-900">
-              <h1>{t('hello-world')}</h1>
+        <>
+          <div className="max-w-[1536px] mx-auto my-2">
+            <div className="flex items-center px-5 py-1">
+              <Header />
             </div>
           </div>
-        </div>
+          <Separator />
+          <div className="max-w-[1536px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0px,256px),_1fr] h-screen">
+              <div className="hidden lg:flex border-r">
+                <Sidebar />
+              </div>
+              <div className="p-6 w-full h-full">
+                <Outlet />
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       {layout === 'blank' && <Outlet />}

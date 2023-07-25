@@ -7,7 +7,7 @@ import { Suspense } from 'react'
 
 const Sidebar = () => {
   return (
-    <ScrollArea className="mt-3 w-full h-full overflow-y-auto">
+    <ScrollArea className="mt-3 w-full">
       <Suspense fallback={<Loading size={32} />}>
         {sidebar.map((item) => {
           return (
