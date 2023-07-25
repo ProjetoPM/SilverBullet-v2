@@ -1,2 +1,2 @@
 export * from './ComponentLayout'
-export * from './PageTitle'
+export * from './PageLayout'

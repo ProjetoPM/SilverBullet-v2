@@ -1,16 +1,16 @@
-import { Breadcrumb } from '@/components/Breadcrumb'
-import { PageTitle } from '@/layout'
+import { PageLayout } from '@/layout'
+import { useTranslation } from 'react-i18next'
 
 const HomePage = () => {
+  const { t } = useTranslation('project-charter')
+
+  const title = t('project-charter.title')
+  const breadcrumb = [['Home', '/home'], [title]]
+
   return (
-    <PageTitle title="Project Charter">
-      <Breadcrumb
-        title="Project Charter"
-        className="mb-5"
-        items={[['Home', '/home'], ['Project Charter']]}
-      />
+    <PageLayout title={title} breadcrumb={breadcrumb}>
       {/* Form here. */}
-    </PageTitle>
+    </PageLayout>
   )
 }
 
