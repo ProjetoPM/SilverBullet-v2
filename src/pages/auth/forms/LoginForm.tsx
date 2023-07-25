@@ -4,7 +4,8 @@ import { Loader } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { LoginSchema, defaultValues } from '../schemas/LoginSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { LoginSchema, schema, defaultValues } from '../schemas/LoginSchema'
 
 const LoginForm = () => {
   const { t } = useTranslation('login')
@@ -13,6 +14,7 @@ const LoginForm = () => {
 
   const form = useForm<LoginSchema>({
     mode: 'all',
+    resolver: zodResolver(schema),
     defaultValues: defaultValues
   })
 
