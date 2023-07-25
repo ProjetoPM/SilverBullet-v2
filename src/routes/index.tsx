@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 
-import { AuthRoutes } from './auth/AuthRoutes'
-import { HomeRoutes } from './HomeRoute'
+import { AuthRoutes } from './auth/auth-routes'
+import { HomeRoutes } from './home-routes'
 
 const routes: RouteObject[] = [
   AuthRoutes,
