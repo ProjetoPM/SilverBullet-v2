@@ -4,6 +4,7 @@ import './index.css'
 
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
+import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { router } from './routes'
@@ -19,7 +20,9 @@ export const App = () => {
 
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>
       {theme && <ToastContainer position="top-right" autoClose={3000} theme={theme} />}
     </React.StrictMode>
   )
