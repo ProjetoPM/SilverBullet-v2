@@ -1,9 +1,10 @@
+import { useAuth } from '@/stores/useAuth'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 
 const setup = () => {
   const api = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: import.meta.env.VITE_BASE_URL_API as string,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -13,8 +14,7 @@ const setup = () => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response?.status === StatusCodes.UNAUTHORIZED) {
-        localStorage.removeItem('token')
-        window.location.href = '/login'
+        useAuth.getState().signOut()
       }
       return Promise.reject(error)
     }

@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
-export const schema = z.object({
+export const LoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(3).max(100)
+  password: z.string().min(3).max(100),
+  rememberMe: z.boolean()
 })
 
 export const defaultValues = {
   email: '',
-  password: ''
+  password: '',
+  rememberMe: true
 }
-
-export type LoginSchema = z.infer<typeof schema>

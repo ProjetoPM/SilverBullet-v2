@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 const HomePage = () => {
   const { t } = useTranslation('project-charter')
 
-  const title = t('project-charter.title')
+  const title = t('title')
   const breadcrumb = [['Home', '/home'], [title]]
 
   return (

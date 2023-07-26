@@ -3,6 +3,7 @@ import { GuestGuard } from '@/utils/guard'
 import { RouteObject } from 'react-router-dom'
 
 import LoginPage from '@/pages/auth/login'
+import { routes } from '../routes'
 
 export const AuthRoutes: RouteObject = {
   path: '/',
@@ -16,11 +17,11 @@ export const AuthRoutes: RouteObject = {
       ),
       children: [
         {
-          path: 'login',
+          path: routes.auth.index,
           element: <LoginPage />
         },
         {
-          path: 'register',
+          path: routes.auth.register,
           element: <h1>Register</h1>
         }
       ]

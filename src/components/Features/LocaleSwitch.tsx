@@ -5,17 +5,7 @@ import { Languages } from 'lucide-react'
 import { ComponentProps } from 'react'
 import { Button } from '../ui'
 import { DropdownMenu } from '../ui/DropdownMenu'
-
-const languages = [
-  {
-    code: 'en-US',
-    name: 'English'
-  },
-  {
-    code: 'pt-BR',
-    name: 'Português'
-  }
-]
+import { languages } from './configs'
 
 type LanguageSwitcherProps = ComponentProps<'div'>
 

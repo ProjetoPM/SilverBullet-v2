@@ -1,27 +1,27 @@
-import { Button, Checkbox, Form, Input, Label } from '@/components/ui'
+import { Button, Checkbox, Form, Input } from '@/components/ui'
 import { useAuth } from '@/stores/useAuth'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { LoginSchema, schema, defaultValues } from '../schemas/LoginSchema'
+import { z } from 'zod'
+import { LoginSchema, defaultValues } from '../schemas/LoginSchema'
+
+type Form = z.infer<typeof LoginSchema>
 
 const LoginForm = () => {
   const { t } = useTranslation('login')
   const signIn = useAuth((state) => state.signIn)
-  const [isLoading, setLoading] = useState(false)
+  const isAuthenticating = useAuth((state) => state.isAuthenticating)
 
-  const form = useForm<LoginSchema>({
+  const form = useForm<Form>({
     mode: 'all',
-    resolver: zodResolver(schema),
+    resolver: zodResolver(LoginSchema),
     defaultValues: defaultValues
   })
 
-  const onSubmit = async (data: LoginSchema) => {
-    setLoading(true)
+  const onSubmit = async (data: Form) => {
     await signIn(data)
-    setLoading(false)
   }
 
   return (
@@ -62,14 +62,32 @@ const LoginForm = () => {
             </Form.Item>
           )}
         />
-        <div className="flex items-center gap-2">
-          <Checkbox id="rememberMe" />
-          <Label htmlFor="rememberMe">{t('keep-signed-in')}</Label>
-        </div>
+        <Form.Field
+          control={form.control}
+          name="rememberMe"
+          render={({ field }) => (
+            <Form.Item>
+              <div className="flex items-center gap-2">
+                <Form.Control>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </Form.Control>
+                <Form.Label>{t('keep-signed-in')}</Form.Label>
+              </div>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
         <div>
-          <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
-            {!isLoading && t('sign-in')}
-            {isLoading && <Loader className="animate-spin" />}
+          <Button
+            type="submit"
+            className="mt-3 w-full"
+            disabled={isAuthenticating}
+          >
+            {!isAuthenticating && t('sign-in')}
+            {isAuthenticating && <Loader className="animate-spin" />}
           </Button>
         </div>
       </form>
