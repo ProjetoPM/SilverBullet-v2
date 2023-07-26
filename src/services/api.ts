@@ -10,6 +10,9 @@ const setup = () => {
     }
   })
 
+  /**
+   * Interceptor to handle the errors
+   */
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
@@ -19,6 +22,22 @@ const setup = () => {
       return Promise.reject(error)
     }
   )
+
+  /**
+   * Interceptor to add the token and the lang
+   * in the request header
+   */
+  api.interceptors.request.use((config) => {
+    const token = useAuth.getState().token
+    const lang = localStorage.getItem('lang') ?? 'en-US'
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    config.headers['Accept-Language'] = lang
+    return config
+  })
+
   return api
 }
 

@@ -2,7 +2,7 @@ import { Loading } from '@/components/Loading'
 import { routes } from '@/routes/routes'
 import { useAuth } from '@/stores/useAuth'
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 type AuthGuardProps = {
   children: React.ReactNode
@@ -12,17 +12,15 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
   const [mounted, setMounted] = useState(false)
   const token = useAuth((state) => state.token)
   const navigate = useNavigate()
-  const location = useLocation()
 
   useEffect(() => {
     if (!token) {
       navigate(routes.auth.index, {
-        state: { from: location.pathname },
         replace: true
       })
     }
     setMounted(true)
-  }, [navigate, location, token])
+  }, [navigate, token])
 
   return (
     <>

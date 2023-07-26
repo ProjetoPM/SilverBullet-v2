@@ -26,7 +26,7 @@ type Actions = {
 const useAuth = create<State & Actions>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         token: null,
         rememberMe: false,
         isAuthenticating: false,
@@ -55,7 +55,6 @@ const useAuth = create<State & Actions>()(
 
           if (response.status === StatusCodes.OK) {
             set({ token: response.data, isAuthenticating: false })
-            api.defaults.headers['Authorization'] = `Bearer ${get().token}`
             toast.success(i18next.t('success.sign_in'), {
               position: 'bottom-right'
             })
@@ -64,7 +63,6 @@ const useAuth = create<State & Actions>()(
         },
         signOut: () => {
           set({ token: null })
-          api.defaults.headers['Authorization'] = null
           toast.info(i18next.t('info.sign_out'))
           history.pushState(null, '', routes.auth.index)
         }

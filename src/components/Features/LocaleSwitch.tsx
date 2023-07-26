@@ -6,7 +6,6 @@ import { ComponentProps } from 'react'
 import { Button } from '../ui'
 import { DropdownMenu } from '../ui/DropdownMenu'
 import { languages } from './configs'
-import { api } from '@/services/api'
 
 type LanguageSwitcherProps = ComponentProps<'div'>
 
@@ -20,7 +19,6 @@ const LocaleSwitch = ({ className, ...props }: LanguageSwitcherProps) => {
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang)
-    api.defaults.headers['Accept-Language'] = lang
     resetErrorMessages()
   }
 
