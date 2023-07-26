@@ -12,17 +12,17 @@ const LoginPage = () => {
     <PageLayout title={title}>
       <AuthWrapper>
         <div className="flex items-center justify-center">
-          <Card.Root className="w-full m-2 xs:w-[400px]">
+          <Card.Root className="w-full mx-2 my-6 xs:w-[400px]">
             <Card.Header>
               <Card.Title>
                 <div className="flex items-center justify-between">
-                  <h1>{t('login:title')}</h1>
+                  <h1>{t('title')}</h1>
                   <a href="/register" className="text-xs">
-                    {t('login:dont-have-account')}
+                    {t('dont_have_an_account')}
                   </a>
                 </div>
               </Card.Title>
-              <Card.Description>{t('login:description')}</Card.Description>
+              <Card.Description>{t('description')}</Card.Description>
             </Card.Header>
             <Card.Content>
               <LoginForm />

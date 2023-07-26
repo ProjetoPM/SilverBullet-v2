@@ -1,1 +1,1 @@
-{"theme":{"dark":"Dark","light":"Light"},"change-theme":"Change theme"}
+{"btn":{"go_back":"Go back","take_me_home":"Take me home"},"error_404":"Error 404","error":{"unknown_error":"Unknown error occurred"},"info":{"sign_out":"Logged out successfully!"},"page_not_found":"We can't find that page","page_not_found_description":"Sorry, the page you are looking for doesn't exist or has been moved.","success":{"sign_in":"Logged in successfully!"},"theme":{"change_theme":"Change theme","dark":"Dark","light":"Light"}}

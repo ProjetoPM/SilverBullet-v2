@@ -1,1 +1,1 @@
-{"theme":{"dark":"Escuro","light":"Claro"},"change-theme":"Mudar tema"}
+{"btn":{"go_back":"Voltar","take_me_home":"Me leve para casa"},"error_404":"Erro 404","error":{"unknown_error":"Ocorreu um erro desconhecido"},"info":{"sign_out":"Desconectado com sucesso!"},"page_not_found":"Não conseguimos encontrar essa página","page_not_found_description":"Desculpe, a página que você está procurando não existe ou foi movida.","success":{"sign_in":"Conectado com sucesso!"},"theme":{"change_theme":"Mudar tema","dark":"Escuro","light":"Claro"}}

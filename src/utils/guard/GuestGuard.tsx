@@ -1,4 +1,5 @@
 import { Loading } from '@/components/Loading'
+import { routes } from '@/routes/routes'
 import { useAuth } from '@/stores/useAuth'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -14,7 +15,7 @@ const GuestGuard = ({ children }: GuestGuardProps) => {
 
   useEffect(() => {
     if (token) {
-      navigate('/home', { replace: true })
+      navigate(routes.workspaces.index, { replace: true })
     }
     setMounted(true)
   }, [navigate, token])

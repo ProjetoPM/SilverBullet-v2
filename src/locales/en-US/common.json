@@ -1,0 +1,5 @@
+{
+  "error": { "unknown_error": "Unknown error occurred" },
+  "info": { "sign_out": "Logged out successfully!" },
+  "success": { "sign_in": "Logged in successfully!" }
+}

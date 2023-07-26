@@ -1,7 +1,7 @@
 import { PageLayout } from '@/layout'
 import { useTranslation } from 'react-i18next'
 
-const HomePage = () => {
+const WorkspacePage = () => {
   const { t } = useTranslation('project-charter')
 
   const title = t('title')
@@ -14,4 +14,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default WorkspacePage

@@ -11,7 +11,7 @@ const AuthWrapper = ({ children }: AuthWrapperProps) => {
     <>
       <div className="h-full w-full">
         <Background>
-          <div className="grid grid-rows-[64px_1fr_64px] h-screen">
+          <div className="grid grid-rows-[68px_1fr_68px] h-screen">
             <AuthHeader />
             {children}
             <AuthFooter />

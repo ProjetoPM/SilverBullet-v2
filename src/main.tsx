@@ -24,7 +24,7 @@ export const App = () => {
         <RouterProvider router={router} />
       </HelmetProvider>
       {theme && (
-        <ToastContainer position="top-right" autoClose={3000} theme={theme} />
+        <ToastContainer position="top-right" autoClose={1500} theme={theme} />
       )}
     </React.StrictMode>
   )

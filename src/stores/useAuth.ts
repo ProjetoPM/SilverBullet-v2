@@ -1,6 +1,7 @@
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { StatusCodes } from 'http-status-codes'
+import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
@@ -42,7 +43,7 @@ const useAuth = create<State & Actions>()(
             .finally(() => set({ isAuthenticating: false }))
 
           if (!response) {
-            toast.error('Unknown error')
+            toast.error(i18next.t('error.unknown_error'))
             return
           }
 
@@ -55,14 +56,16 @@ const useAuth = create<State & Actions>()(
           if (response.status === StatusCodes.OK) {
             set({ token: response.data, isAuthenticating: false })
             api.defaults.headers['Authorization'] = `Bearer ${get().token}`
-            toast.success('Logged in successfully!')
-            history.pushState(null, '', routes.auth.index)
+            toast.success(i18next.t('success.sign_in'), {
+              position: 'bottom-right'
+            })
+            history.pushState(null, '', routes.workspaces.index)
           }
         },
         signOut: () => {
           set({ token: null })
           api.defaults.headers['Authorization'] = null
-          toast.info('Logged out successfully!')
+          toast.info(i18next.t('info.sign_out'))
           history.pushState(null, '', routes.auth.index)
         }
       }),

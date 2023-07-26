@@ -1,4 +1,5 @@
 import { Loading } from '@/components/Loading'
+import { routes } from '@/routes/routes'
 import { useAuth } from '@/stores/useAuth'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -15,7 +16,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/login', {
+      navigate(routes.auth.index, {
         state: { from: location.pathname },
         replace: true
       })

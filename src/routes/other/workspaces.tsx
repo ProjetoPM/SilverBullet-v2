@@ -2,10 +2,11 @@ import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
 
-import HomePage from '@/pages/home'
+import HomePage from '@/pages/workspace'
 import { AuthGuard } from '@/utils/guard'
+import { routes } from '../routes'
 
-export const HomeRoutes: RouteObject = {
+export const WorkspaceRoutes: RouteObject = {
   path: '/',
   children: [
     {
@@ -17,7 +18,7 @@ export const HomeRoutes: RouteObject = {
       ),
       children: [
         {
-          path: '/home',
+          path: routes.workspaces.index,
           element: <HomePage />
         }
       ]

@@ -5,21 +5,15 @@ const AuthFooter = () => {
   const { t } = useTranslation('login')
 
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start justify-between mx-10 mt-2">
-      <div className="dark:text-neutral-100 text-neutral-800 text-sm">
-        {t('privacy-policy')}
-      </div>
-      <div className="hidden sm:flex gap-0 sm:flex-row sm:gap-4 mb-12 md:mb-0">
-        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
-          Terms and Conditions
+    <div className="flex flex-col md:flex-row items-center md:items-start md:justify-between mx-10">
+      <small className="text-center text-xs">{t('privacy_policy')}</small>
+      <small className="text-center text-xs">
+        <span>{t('copyright')} &copy; </span>
+        <Link to="https://lesse.com.br/site/">
+          Silver Bullet, {new Date().getFullYear()}.{' '}
         </Link>
-        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
-          Privacy Policy
-        </Link>
-        <Link to="#" className="dark:text-neutral-100 text-neutral-800 text-sm">
-          CA Privacy Notice
-        </Link>
-      </div>
+        <span>{t('all_rights_reserved')}.</span>
+      </small>
     </div>
   )
 }

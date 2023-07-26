@@ -3,7 +3,7 @@ export const routes = {
     index: '/login',
     register: '/register'
   },
-  home: {
-    index: '/home'
+  workspaces: {
+    index: '/workspaces'
   }
 }

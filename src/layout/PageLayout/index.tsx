@@ -10,14 +10,14 @@ export type PageLayoutProps = {
 
 const PageLayout = ({ title, breadcrumb, children }: PageLayoutProps) => {
   return (
-    <>
+    <div>
       <Helmet>
         <title>Silver Bullet {title && `| ${title}`}</title>
         <meta name="description" content={description} />
       </Helmet>
       {breadcrumb && <Breadcrumb title={title} items={breadcrumb} />}
       {children}
-    </>
+    </div>
   )
 }
 

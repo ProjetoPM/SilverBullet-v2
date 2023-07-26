@@ -74,7 +74,7 @@ const LoginForm = () => {
                     onCheckedChange={field.onChange}
                   />
                 </Form.Control>
-                <Form.Label>{t('keep-signed-in')}</Form.Label>
+                <Form.Label>{t('keep_me_signed_in')}</Form.Label>
               </div>
               <Form.Message />
             </Form.Item>
@@ -86,7 +86,7 @@ const LoginForm = () => {
             className="mt-3 w-full"
             disabled={isAuthenticating}
           >
-            {!isAuthenticating && t('sign-in')}
+            {!isAuthenticating && t('btn.sign_in')}
             {isAuthenticating && <Loader className="animate-spin" />}
           </Button>
         </div>
