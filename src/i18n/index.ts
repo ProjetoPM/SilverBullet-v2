@@ -7,6 +7,7 @@ import { languageDetector } from './language-detector'
 import { zod } from './zod'
 
 export const langs = ['en-US', 'pt-BR']
+const LOAD_PATH = import.meta.env.LOAD_PATH_LOCALES
 
 const i18n = i18next
   .use(HttpBackend)
@@ -19,7 +20,7 @@ const i18n = i18next
     defaultNS: 'default',
     supportedLngs: langs,
     backend: {
-      loadPath: './src/locales/{{lng}}/{{ns}}.json'
+      loadPath: LOAD_PATH
     },
     resources: zod
   })
