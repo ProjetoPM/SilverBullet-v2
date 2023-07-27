@@ -20,7 +20,7 @@ const i18n = i18next
     defaultNS: 'default',
     supportedLngs: langs,
     backend: {
-      loadPath: LOAD_PATH
+      loadPath: './public/static/{{lng}}/{{ns}}.json'
     },
     resources: zod
   })
