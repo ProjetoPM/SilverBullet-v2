@@ -1,9 +1,11 @@
 export const routes = {
   auth: {
-    index: '/login',
+    index: '/',
     register: '/register'
   },
   workspaces: {
-    index: '/workspaces'
+    index: '/workspaces',
+    new: '/workspaces/new',
+    edit: '/workspaces/:id/edit'
   }
 }
