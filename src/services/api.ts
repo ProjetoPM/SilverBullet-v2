@@ -17,7 +17,7 @@ const setup = () => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response?.status === StatusCodes.UNAUTHORIZED) {
-        useAuth.getState().signOut()
+        history.pushState({}, '', '/401')
       }
       return Promise.reject(error)
     }

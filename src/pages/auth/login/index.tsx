@@ -1,15 +1,14 @@
-import { AuthWrapper } from '@/components/Auth'
+import { AuthWrapper } from '@/components/auth'
 import { Card } from '@/components/ui'
 import { PageLayout } from '@/layout'
 import { useTranslation } from 'react-i18next'
-import { LoginForm } from './forms/LoginForm'
+import { LoginForm } from './login.form'
 
 const LoginPage = () => {
   const { t } = useTranslation('login')
-  const title = t('title')
 
   return (
-    <PageLayout title={title}>
+    <PageLayout title={'Sign In'} footer={false}>
       <AuthWrapper>
         <div className="flex items-center justify-center">
           <Card.Root className="w-full mx-2 my-6 xs:w-[400px]">

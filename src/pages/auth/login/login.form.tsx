@@ -5,7 +5,7 @@ import { Loader } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { LoginSchema, defaultValues } from '../schemas/LoginSchema'
+import { LoginSchema, defaultValues } from './login.schema'
 
 type Form = z.infer<typeof LoginSchema>
 

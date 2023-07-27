@@ -1,23 +1,31 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { Helmet } from 'react-helmet-async'
+import { Footer } from '../MainLayout/Footer'
 import { description } from './meta'
 
 export type PageLayoutProps = {
   title: string
   breadcrumb?: string[][]
   children?: React.ReactNode
+  footer?: boolean
 }
 
-const PageLayout = ({ title, breadcrumb, children }: PageLayoutProps) => {
+const PageLayout = ({
+  title,
+  breadcrumb,
+  footer = true,
+  children
+}: PageLayoutProps) => {
   return (
-    <div>
+    <>
       <Helmet>
         <title>Silver Bullet {title && `| ${title}`}</title>
         <meta name="description" content={description} />
       </Helmet>
       {breadcrumb && <Breadcrumb title={title} items={breadcrumb} />}
-      {children}
-    </div>
+      <div className={`min-h-screen ${footer && 'mt-5'}`}>{children}</div>
+      {footer && <Footer />}
+    </>
   )
 }
 

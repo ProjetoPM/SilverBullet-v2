@@ -3,7 +3,6 @@ import {
   LogOut,
   Mail,
   MessageSquare,
-  MoreVertical,
   Plus,
   PlusCircle,
   Settings,
@@ -22,7 +21,7 @@ const UserDropdown = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <Button variant="outline" size="icon">
-          <MoreVertical size={20} />
+          <Settings size={20} />
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="w-56">

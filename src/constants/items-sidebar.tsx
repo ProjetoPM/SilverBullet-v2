@@ -1,5 +1,5 @@
 import TranslateText from '@/components/Utils/TranslateText'
-import { FolderOpen, Folders, LayoutDashboard, PanelTop } from 'lucide-react'
+import { FolderOpen, Folders, PanelTop } from 'lucide-react'
 
 type SidebarItem = {
   id: string
@@ -13,18 +13,6 @@ type SidebarItem = {
 }
 
 export const sidebar: SidebarItem[] = [
-  {
-    id: '_dashboard',
-    label: 'Dashboard',
-    children: [
-      {
-        id: 'dashboard',
-        title: <TranslateText text="dashboard" />,
-        icon: <LayoutDashboard size={22} />,
-        link: '/home'
-      }
-    ]
-  },
   {
     id: '_workspace',
     label: 'Workspace',
