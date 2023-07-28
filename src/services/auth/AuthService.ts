@@ -21,7 +21,7 @@ export default class AuthService {
         toast.info(response.data)
         break
       default:
-        toast.error(i18next.t('auth:error.unknown_error'))
+        toast.error(i18next.t('default:error.unknown_error'))
     }
     return response
   }
