@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
-import { Workspace } from './table/columns'
+import { Workspace } from './types/Workspace'
 import { WorkspaceSchema, defaultValues } from './workspace.schema'
 
 type Form = z.infer<typeof WorkspaceSchema>

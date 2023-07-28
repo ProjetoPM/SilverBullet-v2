@@ -12,7 +12,7 @@ const LinkMenu = ({ to, children, className, ...props }: LinkMenuProps) => {
     <Link
       to={to}
       className={cn(
-        'flex items-center gap-3 py-2.5 px-10 mx-4 hover:bg-neutral-200 dark:hover:bg-neutral-800 data-[active=true]:border-r-4 data-[active=true]:bg-neutral-200 dark:data-[active=true]:bg-neutral-800 rounded-lg',
+        'flex items-center gap-3 py-2 px-10 mx-4 hover:bg-muted data-[active=true]:bg-stone-200/50 dark:data-[active=true]:bg-muted/50 dark:hover:bg-muted/50 rounded-lg',
         className
       )}
       data-active={location.pathname === to}

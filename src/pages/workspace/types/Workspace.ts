@@ -11,3 +11,8 @@ export type Workspace = {
   __v: number
   id: string
 }
+
+export type WorkspaceList = {
+  count: number
+  rows: Workspace[]
+}

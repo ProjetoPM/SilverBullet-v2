@@ -15,7 +15,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
       {layout === 'simple' && (
         <Suspense fallback={<Loading />}>
           <div className="max-w-[1536px] mx-auto my-2">
-            <div className="flex items-center px-0 lg:px-5 py-1">
+            <div className="flex items-center py-1">
               <Header />
             </div>
           </div>

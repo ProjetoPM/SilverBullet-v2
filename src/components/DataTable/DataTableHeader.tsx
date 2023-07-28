@@ -10,14 +10,16 @@ interface DataTableHeaderProps<TData> {
 export function DataTableHeader<TData>({ table }: DataTableHeaderProps<TData>) {
   return (
     <div className="flex items-center pb-4 gap-2">
-      <Input
-        placeholder={'Filter...'}
-        value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-        onChange={(event) =>
-          table.getColumn('name')?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      />
+      <div className="flex-1">
+        <Input
+          placeholder={'Filter...'}
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn('name')?.setFilterValue(event.target.value)
+          }
+          className="max-w-xs"
+        />
+      </div>
       <DataTableViewOptions table={table} />
     </div>
   )

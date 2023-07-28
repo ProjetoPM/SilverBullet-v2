@@ -6,7 +6,8 @@ import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { Workspace, columns } from './table/columns'
+import { columns } from './table/columns'
+import { Workspace } from './types/Workspace'
 import { WorkspaceToolbar } from './workspace.toolbar'
 
 interface WorkspaceList {

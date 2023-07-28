@@ -1,15 +1,15 @@
 import { LocaleSwitch, ThemeSwitch } from '@/components/Features'
 import { Logo } from '@/components/Logo'
-import { UserDropdown } from '@/components/UserDropdown'
 import { Button, Separator, Sheet } from '@/components/ui'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { Dropdown as ConfigDropdown } from '@/layout/MainLayout/Dropdown'
 import { Menu } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 
 const Header = () => {
   return (
     <Sheet.Root>
-      <div className="flex flex-1 items-center justify-between mx-5">
+      <div className="flex flex-1 items-center justify-between mx-5 px-0 lg:px-5">
         <div className="flex gap-3">
           <Sheet.Trigger className="flex lg:hidden" asChild>
             <Button variant="outline" size="icon">
@@ -23,7 +23,7 @@ const Header = () => {
         <div className="flex gap-2">
           <LocaleSwitch />
           <ThemeSwitch />
-          <UserDropdown />
+          <ConfigDropdown />
         </div>
       </div>
       <Sheet.Content side="left" className="p-0 w-[300px]">

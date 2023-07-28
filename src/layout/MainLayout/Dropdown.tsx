@@ -14,7 +14,7 @@ import {
 import { Button, DropdownMenu } from '@/components/ui'
 import { useAuth } from '@/stores/useAuth'
 
-const UserDropdown = () => {
+const Dropdown = () => {
   const signOut = useAuth((state) => state.signOut)
 
   return (
@@ -90,4 +90,4 @@ const UserDropdown = () => {
   )
 }
 
-export { UserDropdown }
+export { Dropdown }

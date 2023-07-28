@@ -1,11 +1,13 @@
-import { Workspace } from '@/pages/workspace/table/columns'
+import { Workspace } from '@/pages/workspace/types/Workspace'
 import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { api } from '../api'
+import { queryClient } from '../react-query'
 
 type CreateWorkspace = Pick<Workspace, 'name'>
 type EditWorkspace = Pick<Workspace, 'name'>
+type DeleteWorkspace = Workspace
 
 export default class WorkspaceService {
   static async create(data: CreateWorkspace) {
@@ -30,13 +32,31 @@ export default class WorkspaceService {
       })
       .catch((err) => err.response)
 
-    if (!response) {
-      toast.error(i18next.t('workspace:error_editing_workspace'))
-      return
+    switch (response?.status) {
+      case StatusCodes.OK:
+        toast.success(i18next.t('workspace:edited_successfully'))
+        break
+      default:
+        toast.error(i18next.t('workspace:error_editing_workspace'))
     }
+    return response
+  }
 
-    if (response.status === StatusCodes.OK) {
-      toast.success(i18next.t('workspace:edited_successfully'))
+  static async delete(data: DeleteWorkspace) {
+    const response = await api
+      .delete('/tenant', { params: { ids: [data._id] } })
+      .catch((err) => err.response)
+
+    switch (response?.status) {
+      case StatusCodes.OK:
+        toast.success(i18next.t('workspace:deleted_successfully'))
+        queryClient.invalidateQueries('workspaces')
+        break
+      case StatusCodes.UNAUTHORIZED:
+        toast.error(i18next.t('workspace:no_permission_to_delete'))
+        break
+      default:
+        toast.error(i18next.t('workspace:error_deleting_workspace'))
     }
     return response
   }
