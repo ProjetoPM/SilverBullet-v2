@@ -1,9 +1,10 @@
 import { ComponentLayout } from '@/layout/ComponentLayout'
 import { GuestGuard } from '@/utils/guard'
 import { RouteObject } from 'react-router-dom'
+import { routes } from '../routes'
 
 import LoginPage from '@/pages/auth/login'
-import { routes } from '../routes'
+import RegisterPage from '@/pages/auth/register'
 
 export const AuthRoutes: RouteObject = {
   path: '/',
@@ -22,7 +23,7 @@ export const AuthRoutes: RouteObject = {
         },
         {
           path: routes.auth.register,
-          element: <h1>Register</h1>
+          element: <RegisterPage />
         }
       ]
     }

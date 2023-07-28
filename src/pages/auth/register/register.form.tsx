@@ -1,27 +1,38 @@
-import { Button, Checkbox, Form, Input } from '@/components/ui'
-import { useAuth } from '@/stores/useAuth'
+import { Button, Form, Input } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { LoginSchema, defaultValues } from './login.schema'
+import { RegisterSchema, defaultValues } from './register.schema'
+import { PasswordChecker } from '@/components/PasswordChecker'
+import AuthService from '@/services/auth/AuthService'
+import { useNavigate } from 'react-router-dom'
+import { routes } from '@/routes/routes'
+import { StatusCodes } from 'http-status-codes'
 
-type Form = z.infer<typeof LoginSchema>
+type Form = z.infer<typeof RegisterSchema>
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const { t } = useTranslation('auth')
-  const signIn = useAuth((state) => state.signIn)
-  const isAuthenticating = useAuth((state) => state.isAuthenticating)
+  const navigate = useNavigate()
+  const [isLoading, setLoading] = useState(false)
 
   const form = useForm<Form>({
     mode: 'all',
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(RegisterSchema),
     defaultValues: defaultValues
   })
 
   const onSubmit = async (data: Form) => {
-    await signIn(data)
+    setLoading(true)
+    const response = await AuthService.create(data)
+
+    if (response?.status === StatusCodes.OK) {
+      navigate(routes.auth.index)
+    }
+    setLoading(false)
   }
 
   return (
@@ -62,32 +73,11 @@ const LoginForm = () => {
             </Form.Item>
           )}
         />
-        <Form.Field
-          control={form.control}
-          name="rememberMe"
-          render={({ field }) => (
-            <Form.Item>
-              <div className="flex items-center gap-2">
-                <Form.Control>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </Form.Control>
-                <Form.Label>{t('keep_me_signed_in')}</Form.Label>
-              </div>
-              <Form.Message />
-            </Form.Item>
-          )}
-        />
+        <PasswordChecker password={form.watch('password')} />
         <div>
-          <Button
-            type="submit"
-            className="mt-3 w-full"
-            disabled={isAuthenticating}
-          >
-            {!isAuthenticating && t('btn.sign_in')}
-            {isAuthenticating && <Loader className="animate-spin" />}
+          <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
+            {!isLoading && t('btn.sign_up')}
+            {isLoading && <Loader className="animate-spin" />}
           </Button>
         </div>
       </form>
@@ -95,4 +85,4 @@ const LoginForm = () => {
   )
 }
 
-export { LoginForm }
+export { RegisterForm }

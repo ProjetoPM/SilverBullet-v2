@@ -20,7 +20,7 @@ interface WorkspaceFormProps {
 
 const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   const { t } = useTranslation('workspace')
-  const navigator = useNavigate()
+  const navigate = useNavigate()
 
   const form = useForm<Form>({
     mode: 'all',
@@ -29,7 +29,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   })
 
   const onSubmit = async (form: Form) => {
-    let response: AxiosResponse
+    let response: AxiosResponse | undefined
 
     if (data) {
       response = await WorkspaceService.edit(data._id, form)
@@ -37,8 +37,8 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
       response = await WorkspaceService.create(form)
     }
 
-    if (response.status === StatusCodes.OK) {
-      navigator(routes.workspaces.index)
+    if (response?.status === StatusCodes.OK) {
+      navigate(routes.workspaces.index)
     }
   }
 

@@ -9,25 +9,34 @@ type EditWorkspace = Pick<Workspace, 'name'>
 
 export default class WorkspaceService {
   static async create(data: CreateWorkspace) {
-    const response = await api.post('/tenant', { data: { ...data, url: '' } })
+    const response = await api
+      .post('/tenant', { data: { ...data } })
+      .catch((err) => err.response)
 
-    if (response.status === StatusCodes.OK) {
-      toast.success(i18next.t('workspace:created_successfully'))
-    } else {
-      toast.error(i18next.t('workspace:error_creating_workspace'))
+    switch (response?.status) {
+      case StatusCodes.OK:
+        toast.success(i18next.t('workspace:created_successfully'))
+        break
+      default:
+        toast.error(i18next.t('workspace:error_creating_workspace'))
     }
     return response
   }
 
   static async edit(id: string, data: EditWorkspace) {
-    const response = await api.put(`/tenant/${id}`, {
-      data: { ...data, url: '' }
-    })
+    const response = await api
+      .put(`/tenant/${id}`, {
+        data: { ...data }
+      })
+      .catch((err) => err.response)
+
+    if (!response) {
+      toast.error(i18next.t('workspace:error_editing_workspace'))
+      return
+    }
 
     if (response.status === StatusCodes.OK) {
       toast.success(i18next.t('workspace:edited_successfully'))
-    } else {
-      toast.error(i18next.t('workspace:error_editing_workspace'))
     }
     return response
   }

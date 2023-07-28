@@ -23,7 +23,9 @@ const PageLayout = ({
         <meta name="description" content={description} />
       </Helmet>
       {breadcrumb && <Breadcrumb title={title} items={breadcrumb} />}
-      <div className={`min-h-screen mb-5 ${footer && 'mt-5'}`}>{children}</div>
+      <div className={`min-h-screen ${footer ? 'mb-5 mt-5' : ''}`}>
+        {children}
+      </div>
       {footer && <Footer />}
     </>
   )
