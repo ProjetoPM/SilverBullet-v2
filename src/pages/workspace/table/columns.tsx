@@ -47,9 +47,14 @@ export const columns: ColumnDef<Workspace>[] = [
         header={i18next.t('workspace:label.plan_status')}
       />
     ),
-    cell: ({ row }) => (
-      <div id={`plan-status-${row.index}`}>{row.getValue('planStatus')}</div>
-    ),
+    cell: ({ row }) => {
+      const planStatus =
+        row.getValue('planStatus') === 'active'
+          ? i18next.t('workspace:label.active')
+          : i18next.t('workspace:label.inactive')
+
+      return <div id={`plan-status-${row.index}`}>{planStatus}</div>
+    },
     enableSorting: false,
     enableHiding: true
   },
