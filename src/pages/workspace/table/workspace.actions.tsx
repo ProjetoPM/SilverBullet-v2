@@ -1,17 +1,20 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import WorkspaceService from '@/services/workspace/WorkspaceService'
-import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { useWorkspace } from '@/stores/useWorkspace'
+import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Workspace } from '../types/Workspace'
 
 type WorkspaceActionsProps = {
+  id: string
   data: Workspace
 }
 
-const WorkspaceActions = ({ data }: WorkspaceActionsProps) => {
+const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspace'])
+  const open = useWorkspace((state) => state.open)
   const [isLoading, setLoading] = useState(false)
 
   const handleDelete = async () => {
@@ -24,7 +27,7 @@ const WorkspaceActions = ({ data }: WorkspaceActionsProps) => {
     <Dialog.Root>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button id={id} variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">{t('open_menu')}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -32,24 +35,36 @@ const WorkspaceActions = ({ data }: WorkspaceActionsProps) => {
         <DropdownMenu.Content align="end">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
             className="flex gap-3"
+            id={`open-${id}`}
+            onClick={() => open(data)}
           >
-            <Copy size={18} />
-            {t('default:btn.copy_id')}
+            <FolderOpen size={18} />
+            {t('default:btn.open')}
           </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <Link to={`/workspaces/${data._id}/edit`}>
+          <Link to={`/workspaces/${data._id}/edit`} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
             </DropdownMenu.Item>
           </Link>
           <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
-            <Dialog.Trigger className="flex w-full gap-3 px-2 py-1.5">
+            <Dialog.Trigger
+              className="flex w-full gap-3 px-2 py-1.5"
+              id={`delete-${id}`}
+            >
               <Trash2 size={18} />
               {t('default:btn.delete')}
             </Dialog.Trigger>
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item
+            onClick={() => navigator.clipboard.writeText(data._id)}
+            className="flex gap-3"
+            id={`copy-${id}`}
+          >
+            <Copy size={18} />
+            {t('default:btn.copy_id')}
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>

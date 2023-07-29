@@ -28,28 +28,42 @@ export const columns: ColumnDef<Workspace>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader
+        column={column}
+        header={i18next.t('workspace:label.name')}
+      />
     ),
-    cell: ({ row }) => <div>{row.getValue('name')}</div>,
+    cell: ({ row }) => (
+      <div id={`name-${row.index}`}>{row.getValue('name')}</div>
+    ),
     enableSorting: true,
     enableHiding: true
   },
   {
     accessorKey: 'planStatus',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Plan Status" />
+      <DataTableColumnHeader
+        column={column}
+        header={i18next.t('workspace:label.plan_status')}
+      />
     ),
-    cell: ({ row }) => <div>{row.getValue('planStatus')}</div>,
-    enableSorting: true,
+    cell: ({ row }) => (
+      <div id={`plan-status-${row.index}`}>{row.getValue('planStatus')}</div>
+    ),
+    enableSorting: false,
     enableHiding: true
   },
   {
     accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created At" />
+      <DataTableColumnHeader
+        column={column}
+        header={i18next.t('workspace:label.created_at')}
+      />
     ),
     cell: ({ row }) => {
-      const data = parseFloat(row.getValue('createdAt'))
+      const data = new Date(row.getValue('createdAt'))
+
       const formatted = new Intl.DateTimeFormat(i18next.language, {
         dateStyle: 'medium'
       }).format(data)
@@ -61,8 +75,9 @@ export const columns: ColumnDef<Workspace>[] = [
   },
   {
     id: 'actions',
+    header: 'Actions',
     cell: ({ row }) => {
-      return <WorkspaceActions data={row.original} />
+      return <WorkspaceActions id={row.index.toString()} data={row.original} />
     }
   }
 ]

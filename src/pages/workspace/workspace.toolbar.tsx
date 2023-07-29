@@ -12,7 +12,7 @@ const WorkspaceToolbar = () => {
       <Link to={routes.workspaces.new}>
         <Button className="w-28 gap-1">
           <Plus size={20} />
-          <span className="text-md">{t('btn.new')}</span>
+          <span className="text-base">{t('btn.new')}</span>
         </Button>
       </Link>
     </div>

@@ -14,6 +14,7 @@ const TranslateText = ({
   ...props
 }: TranslateTextProps) => {
   const { t } = useTranslation(ns)
+
   return (
     <p className={cn('text-md', className)} {...props}>
       {t(text)}

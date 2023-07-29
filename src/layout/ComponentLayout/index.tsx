@@ -1,6 +1,4 @@
-import { Loading } from '@/components/Loading'
 import { Separator } from '@/components/ui'
-import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Header } from '../MainLayout/Header'
 import { Sidebar } from '../MainLayout/Sidebar'
@@ -13,7 +11,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
   return (
     <>
       {layout === 'simple' && (
-        <Suspense fallback={<Loading />}>
+        <>
           <div className="max-w-[1536px] mx-auto my-2">
             <div className="flex items-center py-1">
               <Header />
@@ -30,7 +28,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
               </div>
             </div>
           </div>
-        </Suspense>
+        </>
       )}
 
       {layout === 'blank' && <Outlet />}

@@ -2,12 +2,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import './i18n'
 import './index.css'
 
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider } from 'react-query'
 import { RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { Loading } from './components/Loading'
 import { router } from './routes'
 import { queryClient } from './services/react-query'
 import { useTheme } from './stores/useTheme'
@@ -24,7 +25,9 @@ export const App = () => {
     <React.StrictMode>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <Suspense fallback={<Loading size={32} />}>
+            <RouterProvider router={router} />
+          </Suspense>
         </QueryClientProvider>
       </HelmetProvider>
       {theme && (

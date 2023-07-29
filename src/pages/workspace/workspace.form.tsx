@@ -62,23 +62,23 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           )}
         />
         <div className="space-y-2 space-x-2.5">
-          <Button type="submit" className="w-28 gap-1">
+          <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (
               <>
                 <Edit size={20} />
-                <span>{t('btn.edit')}</span>
+                {t('btn.edit')}
               </>
             )}
             {!data && (
               <>
                 <Save size={20} />
-                <span>{t('btn.save')}</span>
+                {t('btn.save')}
               </>
             )}
           </Button>
           <Button
             type="button"
-            className="w-28 gap-1"
+            className="w-30 gap-1"
             variant={'secondary'}
             onClick={() => form.reset()}
           >

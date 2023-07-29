@@ -14,17 +14,25 @@ import {
 import { Table } from '@/components/ui'
 import i18next from 'i18next'
 import { useState } from 'react'
+import { Loading } from '../Loading'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
 
-interface DataTableProps<TData, TValue> {
+interface FetchingProps {
+  isLoading?: boolean
+  isError: boolean
+}
+
+interface DataTableProps<TData, TValue> extends FetchingProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  isError = false,
+  isLoading = false
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -50,8 +58,17 @@ export function DataTable<TData, TValue>({
     }
   })
 
+  if (isError) {
+    return (
+      <div className="text-lg font-extrabold">
+        Oops! Something went{' '}
+        <span className="text-red-600 dark:text-red-500">wrong</span>.
+      </div>
+    )
+  }
+
   return (
-    <div>
+    <>
       <DataTableHeader table={table} />
       <div className="rounded-md border">
         <Table.Root>
@@ -74,23 +91,29 @@ export function DataTable<TData, TValue>({
             ))}
           </Table.Header>
           <Table.Body>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Table.Row
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+            {isLoading && (
+              <Table.Row>
+                <Table.Cell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Cell>
-                  ))}
-                </Table.Row>
-              ))
-            ) : (
+                  <Loading className="h-24" />
+                </Table.Cell>
+              </Table.Row>
+            )}
+            {table.getRowModel().rows?.map((row) => (
+              <Table.Row
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Cell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))}
+            {table.getRowModel().rows?.length === 0 && (
               <Table.Row>
                 <Table.Cell
                   colSpan={columns.length}
@@ -104,6 +127,6 @@ export function DataTable<TData, TValue>({
         </Table.Root>
       </div>
       <DataTablePagination table={table} />
-    </div>
+    </>
   )
 }
