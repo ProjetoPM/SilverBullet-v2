@@ -1,5 +1,9 @@
 import pt from './pt.json'
+import en from './en.json'
+import custom_pt from './custom/pt.json'
+import custom_en from './custom/en.json'
 
 export const zod = {
-  'pt-BR': { zod: pt }
+  'en-US': { zod: en, custom: custom_en },
+  'pt-BR': { zod: pt, custom: custom_pt }
 }
