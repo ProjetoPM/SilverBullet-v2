@@ -27,21 +27,32 @@ export const Editor = forwardRef<PureEditorContent, EditorProps>(
     const editor = useEditor({
       ...configs,
       extensions: [
-        StarterKit,
+        StarterKit.configure({
+          listItem: false,
+          bulletList: false,
+          orderedList: false,
+          heading: false
+        }),
         Placeholder.configure({
           placeholder: props.placeholder ?? '...',
           emptyEditorClass: placeholderStyles
         })
       ],
       content: content,
-      editable: readOnly,
+      editable: !readOnly,
       onUpdate: ({ editor }) => {
         onChange?.(editor.getHTML())
       }
     })
 
     useEffect(() => {
-      if (editor) {
+      const oldValue = value.toString().replace(/<[^>]+>/g, '')
+      const newValue = editor
+        ?.getHTML()
+        .toString()
+        .replace(/<[^>]+>/g, '')
+
+      if (oldValue !== newValue && editor) {
         const timer = setTimeout(() => {
           editor.commands.setContent(value.toString())
         }, 150)
