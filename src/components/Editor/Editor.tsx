@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import {
   EditorContent,
@@ -9,7 +10,7 @@ import {
 import StarterKit from '@tiptap/starter-kit'
 import { ComponentPropsWithoutRef, forwardRef, useEffect } from 'react'
 import { BaseBubbleMenu } from './Buttons/BaseBubbleMenu'
-import { configs } from './configs'
+import { configs, starterKitConfigs } from './configs'
 import { placeholderStyles } from './configs.style'
 
 type InputProps = Omit<
@@ -19,23 +20,22 @@ type InputProps = Omit<
 type ContentProps = Omit<EditorContentProps, 'editor' | 'ref'>
 type EditorProps = InputProps &
   ContentProps & {
+    limit?: number
     onChange?: (content: string) => void
   }
 
 export const Editor = forwardRef<PureEditorContent, EditorProps>(
-  ({ content, readOnly, value = '', onChange, ...props }, ref) => {
+  ({ content, readOnly, value = '', onChange, limit = 50, ...props }, ref) => {
     const editor = useEditor({
       ...configs,
       extensions: [
-        StarterKit.configure({
-          listItem: false,
-          bulletList: false,
-          orderedList: false,
-          heading: false
-        }),
+        StarterKit.configure(starterKitConfigs),
         Placeholder.configure({
           placeholder: props.placeholder ?? '...',
           emptyEditorClass: placeholderStyles
+        }),
+        CharacterCount.configure({
+          limit: limit
         })
       ],
       content: content,
@@ -64,12 +64,14 @@ export const Editor = forwardRef<PureEditorContent, EditorProps>(
     return (
       <>
         {editor && <BaseBubbleMenu editor={editor} />}
-        <EditorContent
-          className={cn('w-full', props.className)}
-          ref={ref}
-          editor={editor}
-          {...props}
-        />
+        <div className={cn('relative w-full', props.className)}>
+          <EditorContent ref={ref} editor={editor} {...props} />
+          {editor && (
+            <span className="absolute text-xs -top-6 right-0">
+              {editor.storage.characterCount.characters()}/{limit}
+            </span>
+          )}
+        </div>
       </>
     )
   }
