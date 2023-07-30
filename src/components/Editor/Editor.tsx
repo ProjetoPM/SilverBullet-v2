@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils'
+import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
+import Typography from '@tiptap/extension-typography'
 import {
   EditorContent,
   EditorContentProps,
@@ -30,6 +32,7 @@ export const Editor = forwardRef<PureEditorContent, EditorProps>(
       ...configs,
       extensions: [
         StarterKit.configure(starterKitConfigs),
+        Typography,
         Placeholder.configure({
           placeholder: props.placeholder ?? '...',
           emptyEditorClass: placeholderStyles
@@ -46,11 +49,8 @@ export const Editor = forwardRef<PureEditorContent, EditorProps>(
     })
 
     useEffect(() => {
-      const oldValue = value.toString().replace(/<[^>]+>/g, '')
-      const newValue = editor
-        ?.getHTML()
-        .toString()
-        .replace(/<[^>]+>/g, '')
+      const oldValue = replaceHtmlTags(value.toString())
+      const newValue = replaceHtmlTags(editor?.getHTML().toString() ?? '')
 
       if (oldValue !== newValue && editor) {
         const timer = setTimeout(() => {
