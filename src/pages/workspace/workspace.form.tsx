@@ -52,7 +52,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
         <Form.Field
           control={form.control}
           name="name"
-          render={({ field: { value, onChange, onBlur } }) => (
+          render={({ field }) => (
             <Form.Item>
               <Form.Label>{t('edit.name')}</Form.Label>
               <Form.Control>
@@ -60,7 +60,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
                   limit={max_length.name}
                   content={data?.name}
                   placeholder={t('name.placeholder')}
-                  {...{ value, onChange, onBlur }}
+                  {...field}
                 />
               </Form.Control>
               <Form.Message />
