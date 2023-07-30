@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { Workspace } from '../types/Workspace'
 import { WorkspaceActions } from './workspace.actions'
+import { replaceHtmlTags } from '@/utils/replace-html-tags'
 
 export const columns: ColumnDef<Workspace>[] = [
   {
@@ -34,7 +35,9 @@ export const columns: ColumnDef<Workspace>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div id={`name-${row.index}`}>{row.getValue('name')}</div>
+      <div id={`name-${row.index}`}>
+        {replaceHtmlTags(row.getValue('name'))}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true

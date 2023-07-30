@@ -1,4 +1,5 @@
-import { Button, Form, Input } from '@/components/ui'
+import { Editor } from '@/components/Editor/RichEditor'
+import { Button, Form } from '@/components/ui'
 import { routes } from '@/routes/routes'
 import WorkspaceService from '@/services/workspace/WorkspaceService'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -51,11 +52,15 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
         <Form.Field
           control={form.control}
           name="name"
-          render={({ field }) => (
+          render={({ field: { value, onChange, onBlur } }) => (
             <Form.Item>
               <Form.Label>{t('edit.name')}</Form.Label>
               <Form.Control>
-                <Input placeholder={'Name'} {...field} />
+                <Editor
+                  content={data?.name}
+                  placeholder={t('name.placeholder')}
+                  {...{ value, onChange, onBlur }}
+                />
               </Form.Control>
               <Form.Message />
             </Form.Item>

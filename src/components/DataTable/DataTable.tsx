@@ -20,7 +20,7 @@ import { DataTablePagination } from './DataTablePagination'
 
 interface FetchingProps {
   isLoading?: boolean
-  isError: boolean
+  isError?: boolean
 }
 
 interface DataTableProps<TData, TValue> extends FetchingProps {
@@ -113,7 +113,7 @@ export function DataTable<TData, TValue>({
                 ))}
               </Table.Row>
             ))}
-            {table.getRowModel().rows?.length === 0 && (
+            {!isLoading && table.getRowModel().rows?.length === 0 && (
               <Table.Row>
                 <Table.Cell
                   colSpan={columns.length}

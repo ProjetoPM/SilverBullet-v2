@@ -22,10 +22,7 @@ const WorkspaceListPage = () => {
   const { t } = useTranslation('workspace')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
 
-  const { data, isLoading, isError } = useQuery<WorkspaceList>(
-    'workspaces',
-    getData
-  )
+  const { data, isLoading } = useQuery<WorkspaceList>('workspaces', getData)
 
   return (
     <PageLayout title={t('title')} breadcrumb={breadcrumb}>
@@ -33,7 +30,6 @@ const WorkspaceListPage = () => {
         <WorkspaceToolbar />
         <Separator className="my-5" />
         <DataTable
-          isError={isError}
           isLoading={isLoading}
           columns={columns}
           data={data?.rows ?? []}
