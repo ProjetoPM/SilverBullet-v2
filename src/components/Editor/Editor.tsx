@@ -1,11 +1,10 @@
 import { cn } from '@/lib/utils'
-import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { ComponentPropsWithoutRef, forwardRef, useEffect } from 'react'
+import { ComponentPropsWithoutRef, forwardRef, useEffect, useMemo } from 'react'
 import { BaseBubbleMenu } from './Buttons/BaseBubbleMenu'
 import { starterKitConfigs } from './configs'
 import { editorStyles, placeholderStyles } from './configs.style'
@@ -16,7 +15,6 @@ type EditorProps = InputProps &
   ContentProps & {
     limit?: number
     onChange?: (content: string) => void
-    hasError?: boolean
   }
 
 export const Editor = forwardRef<HTMLInputElement, EditorProps>(
@@ -45,16 +43,17 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       }
     })
 
+    const memoEditor = useMemo(
+      () => <EditorContent editor={editor} />,
+      [editor]
+    )
+
     useEffect(() => {
-      const oldValue = replaceHtmlTags(value.toString())
-      const newValue = replaceHtmlTags(editor?.getHTML().toString() ?? '')
+      const newValue = value.toString()
+      const oldValue = editor?.getHTML()
 
-      if (oldValue !== newValue && editor) {
-        const timer = setTimeout(() => {
-          editor.commands.setContent(value.toString())
-        }, 150)
-
-        return () => clearTimeout(timer)
+      if (newValue !== oldValue && editor) {
+        editor.commands.setContent(value.toString())
       }
     }, [editor, value])
 
@@ -62,18 +61,20 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       <>
         {editor && <BaseBubbleMenu editor={editor} />}
         <div className={cn('relative w-full', props.className)}>
-          <EditorContent editor={editor} {...props} />
+          {memoEditor}
           {editor && (
             <span className="absolute text-xs -top-6 right-0">
               {editor.storage.characterCount.characters()}/{limit}
             </span>
           )}
-          <input
-            className="absolute top-0 left-0 w-0 h-0 opacity-0"
-            tabIndex={-1}
-            onFocus={() => editor?.commands.focus()}
-            ref={ref}
-          />
+          {editor && (
+            <input
+              className="absolute top-0 left-0 w-0 h-0 opacity-0"
+              tabIndex={-1}
+              onFocus={() => editor.commands.focus()}
+              ref={ref}
+            />
+          )}
         </div>
       </>
     )
