@@ -1,4 +1,4 @@
 {
-  "at_least": "String must contain at least {{minimum}} character(s)",
-  "at_most": "String must contain at most {{maximum}} character(s)"
+  "at_least": "String must contain at least {{value}} character(s)",
+  "at_most": "String must contain at most {{value}} character(s)"
 }

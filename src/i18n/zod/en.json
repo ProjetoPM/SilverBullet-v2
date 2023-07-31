@@ -10,7 +10,7 @@
     "invalid_arguments": "Invalid function arguments",
     "invalid_return_type": "Invalid function return type",
     "invalid_date": "Invalid date",
-    "custom": "Invalid input2",
+    "custom": "Invalid input",
     "invalid_intersection_types": "Intersection results could not be merged",
     "not_multiple_of": "Number must be a multiple of {{multipleOf}}",
     "not_finite": "Number must be finite",

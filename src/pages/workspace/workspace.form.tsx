@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { Workspace } from './types/Workspace'
-import { WorkspaceSchema, defaultValues, max_length } from './workspace.schema'
+import { WorkspaceSchema, defaultValues, max } from './workspace.schema'
 
 type Form = z.infer<typeof WorkspaceSchema>
 
@@ -57,7 +57,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
               <Form.Label>{t('edit.name')}</Form.Label>
               <Form.Control>
                 <Editor
-                  limit={max_length.name}
+                  limit={max.name}
                   content={data?.name}
                   placeholder={t('name.placeholder')}
                   {...field}
