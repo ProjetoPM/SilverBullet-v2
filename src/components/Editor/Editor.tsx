@@ -69,12 +69,7 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
     return (
       <>
         <div className={cn('relative w-full', props.className)}>
-          {editor && (
-            <BaseBubbleMenu
-              editor={editor}
-              className="absolute -top-10 -right-10"
-            />
-          )}
+          {editor && <BaseBubbleMenu editor={editor} />}
           <EditorContent editor={editor} spellCheck="false" {...props} />
           {editor && (
             <span className="absolute text-xs font-bold -top-6 right-0">

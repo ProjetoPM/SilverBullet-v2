@@ -1,4 +1,5 @@
 import { Workspace } from '@/pages/workspace/types/Workspace'
+import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
@@ -18,7 +19,7 @@ const useWorkspace = create<State & Actions>()(
         workspace: null,
         open: (workspace: Workspace) => {
           set({ workspace })
-          toast.success(workspace.name)
+          toast.success(replaceHtmlTags(workspace.name))
         }
       }),
       {

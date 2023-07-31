@@ -4,6 +4,7 @@ import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { api } from '../api'
 import { queryClient } from '../react-query'
+import { useWorkspace } from '@/stores/useWorkspace'
 
 type CreateWorkspace = Pick<Workspace, 'name'>
 type EditWorkspace = Pick<Workspace, 'name'>
@@ -46,6 +47,12 @@ export default class WorkspaceService {
     const response = await api
       .delete('/tenant', { params: { ids: [data._id] } })
       .catch((err) => err.response)
+
+    const remove = useWorkspace.getState().workspace?._id === data._id
+
+    if (remove) {
+      useWorkspace.setState({ workspace: null })
+    }
 
     switch (response?.status) {
       case StatusCodes.OK:
