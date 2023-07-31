@@ -11,7 +11,7 @@ export const BubbleButton = ({
   return (
     <button
       type={type}
-      className="p-2 flex items-center text-sm font-medium leading-none text-neutral-500 hover:text-neutral-800 hover:bg-neutral-300 dark:text-neutral-300 dark:hover:text-neutral-200 dark:hover:bg-neutral-900 rounded-lg data-[active=true]:text-blue-700 dark:data-[active=true]:text-blue-600 focus-visible:outline-none focus-visible:bg-background focus-visible:ring-ring"
+      className="p-2 flex items-center text-sm font-medium leading-none text-neutral-500 hover:text-neutral-800 hover:bg-neutral-300 dark:text-neutral-300 dark:hover:text-neutral-200 dark:hover:bg-neutral-900 data-[active=true]:text-blue-700 dark:data-[active=true]:text-blue-600 focus-visible:outline-none focus-visible:bg-neutral-900 focus-visible:ring-ring data-[first=true]:rounded-l-lg data-[last=true]:rounded-r-lg"
       {...props}
     />
   )

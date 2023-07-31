@@ -2,9 +2,10 @@ import { cn } from '@/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
+import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { ComponentPropsWithoutRef, forwardRef, useEffect, useMemo } from 'react'
+import { ComponentPropsWithoutRef, forwardRef, useEffect } from 'react'
 import { BaseBubbleMenu } from './Buttons/BaseBubbleMenu'
 import { starterKitConfigs } from './configs'
 import { editorStyles, placeholderStyles } from './configs.style'
@@ -26,7 +27,19 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         }
       },
       extensions: [
-        StarterKit.configure(starterKitConfigs),
+        StarterKit.configure({
+          ...starterKitConfigs,
+          bulletList: {
+            HTMLAttributes: {
+              class: 'list-disc ml-4 my-2'
+            }
+          },
+          orderedList: {
+            HTMLAttributes: {
+              class: 'list-decimal ml-4 my-2'
+            }
+          }
+        }),
         Typography,
         Placeholder.configure({
           placeholder: props.placeholder ?? '...',
@@ -34,7 +47,8 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         }),
         CharacterCount.configure({
           limit: limit
-        })
+        }),
+        Underline
       ],
       content: content,
       editable: !readOnly,
@@ -42,11 +56,6 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         onChange?.(editor.getHTML())
       }
     })
-
-    const memoEditor = useMemo(
-      () => <EditorContent editor={editor} />,
-      [editor]
-    )
 
     useEffect(() => {
       const newValue = value.toString()
@@ -59,11 +68,16 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
 
     return (
       <>
-        {editor && <BaseBubbleMenu editor={editor} />}
         <div className={cn('relative w-full', props.className)}>
-          {memoEditor}
           {editor && (
-            <span className="absolute text-xs -top-6 right-0">
+            <BaseBubbleMenu
+              editor={editor}
+              className="absolute -top-10 -right-10"
+            />
+          )}
+          <EditorContent editor={editor} spellCheck="false" {...props} />
+          {editor && (
+            <span className="absolute text-xs font-bold -top-6 right-0">
               {editor.storage.characterCount.characters()}/{limit}
             </span>
           )}
