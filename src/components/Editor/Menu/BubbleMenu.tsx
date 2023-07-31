@@ -1,35 +1,38 @@
-import { BubbleMenu, Editor } from '@tiptap/react'
+import { cn } from '@/lib/utils'
+import { BubbleMenu as _BubbleMenu, Editor } from '@tiptap/react'
 import {
   Bold,
   Italic,
   List,
   ListOrdered,
+  Redo2,
   Strikethrough,
-  Underline
+  Underline,
+  Undo2
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { BubbleButton } from './BubbleButton'
+import { BubbleButton } from './Button'
 import { hideOnEsc } from './hideOnEsc'
-import { cn } from '@/lib/utils'
 
 interface BaseButtonProps {
   editor: Editor
   className?: string
-  children?: React.ReactNode
+  enabled: boolean
 }
 
-export const BaseBubbleMenu = ({
+const BubbleMenu = ({
+  enabled = false,
   editor,
-  className,
-  children
+  className
 }: BaseButtonProps) => {
   const { t } = useTranslation('editor')
 
   return (
-    <BubbleMenu
+    <_BubbleMenu
       className={cn(
-        'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-zinc-600',
-        className
+        'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-neutral-600',
+        className,
+        enabled ? '' : 'hidden'
       )}
       tippyOptions={{
         duration: 100,
@@ -105,12 +108,29 @@ export const BaseBubbleMenu = ({
               ? t('editor:remove.bullet_list')
               : t('editor:add.bullet_list')
           }
-          data-last
         >
           <List className="w-4 h-4" />
         </BubbleButton>
       </div>
-      {children}
-    </BubbleMenu>
+      <div className="flex items-center">
+        <BubbleButton
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editor.can().redo()}
+          aria-label={'redo'}
+        >
+          <Undo2 className="w-4 h-4" />
+        </BubbleButton>
+        <BubbleButton
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editor.can().undo()}
+          aria-label={'undo'}
+          data-last
+        >
+          <Redo2 className="w-4 h-4" />
+        </BubbleButton>
+      </div>
+    </_BubbleMenu>
   )
 }
+
+export { BubbleMenu }
