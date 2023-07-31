@@ -117,14 +117,14 @@ const BubbleMenu = ({
       </div>
       <div className="flex items-center">
         <BubbleButton
-          onClick={() => editor.chain().focus().redo().run()}
+          onClick={() => editor.chain().redo().run()}
           disabled={!editor.can().redo()}
           aria-label={'redo'}
         >
           <Undo2 className="w-4 h-4" />
         </BubbleButton>
         <BubbleButton
-          onClick={() => editor.chain().focus().undo().run()}
+          onClick={() => editor.chain().undo().run()}
           disabled={!editor.can().undo()}
           aria-label={'undo'}
         >

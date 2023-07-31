@@ -26,7 +26,7 @@ type EditorProps = InputProps &
   }
 
 export const Editor = forwardRef<HTMLInputElement, EditorProps>(
-  ({ content, readOnly, value = '', isFixed = true, ...props }, ref) => {
+  ({ content, readOnly, value = '', isFixed = false, ...props }, ref) => {
     const [fixed, setFixed] = useState(isFixed)
 
     const editor = useEditor(
