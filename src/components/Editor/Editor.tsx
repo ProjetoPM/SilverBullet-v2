@@ -33,21 +33,14 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       {
         editorProps: {
           attributes: {
-            class: cn(editorStyles, fixed ? 'border-t-none rounded-t-none' : '')
+            class: cn(editorStyles, fixed ? 'rounded-t-none' : '')
           }
         },
         extensions: [
           StarterKit.configure({
             ...starterKitConfigs,
-            bulletList: {
-              HTMLAttributes: {
-                class: 'list-disc ml-5 my-2'
-              }
-            },
-            orderedList: {
-              HTMLAttributes: {
-                class: 'list-decimal ml-5 my-2'
-              }
+            heading: {
+              levels: [1, 2]
             },
             history: {
               depth: 10

@@ -3,6 +3,8 @@ import { Editor } from '@tiptap/react'
 import { t } from 'i18next'
 import {
   Bold,
+  Heading1,
+  Heading2,
   Italic,
   List,
   ListOrdered,
@@ -24,11 +26,30 @@ const FixedMenu = ({ editor, enabled, setEnabled }: FixedMenuProps) => {
   return (
     <div
       className={cn(
-        'flex items-center bg-accent rounded-lg rounded-b-none mb-0 divide-x divide-neutral-300 dark:divide-neutral-600',
+        'flex items-center bg-accent rounded-lg rounded-b-none mb-0 divide-x divide-neutral-300 dark:divide-neutral-600 overflow-x-auto',
         editor.isFocused ? 'mb-0' : '',
         enabled ? '' : 'hidden'
       )}
     >
+      <div className="flex items-center">
+        <BubbleButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
+          data-active={editor.isActive('heading', { level: 1 })}
+          data-first-fixed
+        >
+          <Heading1 className="w-5 h-5" />
+        </BubbleButton>
+        <BubbleButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          data-active={editor.isActive('heading', { level: 2 })}
+        >
+          <Heading2 className="w-5 h-5" />
+        </BubbleButton>
+      </div>
       <div className="flex items-center">
         <BubbleButton
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -38,7 +59,6 @@ const FixedMenu = ({ editor, enabled, setEnabled }: FixedMenuProps) => {
               ? t('editor:remove.bold')
               : t('editor:add.bold')
           }
-          data-first-fixed
         >
           <Bold className="w-4 h-4" />
         </BubbleButton>

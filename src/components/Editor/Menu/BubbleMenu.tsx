@@ -2,6 +2,8 @@ import { cn } from '@/lib/utils'
 import { BubbleMenu as _BubbleMenu, Editor } from '@tiptap/react'
 import {
   Bold,
+  Heading1,
+  Heading2,
   Italic,
   List,
   ListOrdered,
@@ -33,17 +35,37 @@ const BubbleMenu = ({
   return (
     <_BubbleMenu
       className={cn(
-        'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-neutral-600',
+        'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-neutral-600 max-w-[400px]',
         className,
         enabled ? '' : 'hidden'
       )}
       tippyOptions={{
         duration: 100,
         appendTo: 'parent',
-        plugins: [hideOnEsc]
+        plugins: [hideOnEsc],
+        maxWidth: 400
       }}
       editor={editor}
     >
+      <div className="flex items-center">
+        <BubbleButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
+          data-active={editor.isActive('heading', { level: 1 })}
+          data-first
+        >
+          <Heading1 className="w-5 h-5" />
+        </BubbleButton>
+        <BubbleButton
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          data-active={editor.isActive('heading', { level: 2 })}
+        >
+          <Heading2 className="w-5 h-5" />
+        </BubbleButton>
+      </div>
       <div className="flex items-center">
         <BubbleButton
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -53,7 +75,6 @@ const BubbleMenu = ({
               ? t('editor:remove.bold')
               : t('editor:add.bold')
           }
-          data-first
         >
           <Bold className="w-4 h-4" />
         </BubbleButton>
@@ -117,16 +138,16 @@ const BubbleMenu = ({
       </div>
       <div className="flex items-center">
         <BubbleButton
-          onClick={() => editor.chain().redo().run()}
-          disabled={!editor.can().redo()}
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editor.can().undo()}
           aria-label={'redo'}
         >
           <Undo2 className="w-4 h-4" />
         </BubbleButton>
         <BubbleButton
-          onClick={() => editor.chain().undo().run()}
-          disabled={!editor.can().undo()}
-          aria-label={'undo'}
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editor.can().redo()}
+          aria-label={'redo'}
         >
           <Redo2 className="w-4 h-4" />
         </BubbleButton>
