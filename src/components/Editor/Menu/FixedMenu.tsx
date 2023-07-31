@@ -6,6 +6,7 @@ import {
   Italic,
   List,
   ListOrdered,
+  PanelBottomClose,
   Redo2,
   Strikethrough,
   Underline,
@@ -14,15 +15,16 @@ import {
 import { BubbleButton } from './Button'
 
 type FixedMenuProps = {
-  enabled: boolean
   editor: Editor
+  enabled: boolean
+  setEnabled: () => void
 }
 
-const FixedMenu = ({ enabled = true, editor }: FixedMenuProps) => {
+const FixedMenu = ({ editor, enabled, setEnabled }: FixedMenuProps) => {
   return (
     <div
       className={cn(
-        'flex items-center bg-accent rounded-lg rounded-b-none mb-0 divide-x divide-neutral-600',
+        'flex items-center bg-accent rounded-lg rounded-b-none mb-0 divide-x divide-neutral-300 dark:divide-neutral-600',
         editor.isFocused ? 'mb-0' : '',
         enabled ? '' : 'hidden'
       )}
@@ -112,6 +114,11 @@ const FixedMenu = ({ enabled = true, editor }: FixedMenuProps) => {
           aria-label={'redo'}
         >
           <Redo2 className="w-4 h-4" />
+        </BubbleButton>
+      </div>
+      <div className="flex items-center">
+        <BubbleButton onClick={setEnabled}>
+          <PanelBottomClose className="w-4 h-4" />
         </BubbleButton>
       </div>
     </div>

@@ -21,18 +21,19 @@ type ContentProps = Omit<EditorContentProps, 'editor' | 'ref'>
 type EditorProps = InputProps &
   ContentProps & {
     limit?: number
+    isFixed?: boolean
     onChange?: (content: string) => void
   }
 
 export const Editor = forwardRef<HTMLInputElement, EditorProps>(
-  ({ content, readOnly, value = '', limit = 50, onChange, ...props }, ref) => {
-    const [bubbleMenu, setBubbleMenu] = useState(false)
+  ({ content, readOnly, value = '', isFixed = true, ...props }, ref) => {
+    const [fixed, setFixed] = useState(isFixed)
 
     const editor = useEditor(
       {
         editorProps: {
           attributes: {
-            class: cn(editorStyles, bubbleMenu ? '' : 'rounded-t-none')
+            class: cn(editorStyles, fixed ? 'border-t-none rounded-t-none' : '')
           }
         },
         extensions: [
@@ -58,17 +59,17 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
             emptyEditorClass: placeholderStyles
           }),
           CharacterCount.configure({
-            limit: limit
+            limit: props.limit
           }),
           Underline
         ],
         content: content,
         editable: !readOnly,
         onUpdate: ({ editor }) => {
-          onChange?.(editor.getHTML())
+          props.onChange?.(editor.getHTML())
         }
       },
-      [bubbleMenu]
+      [fixed]
     )
 
     useEffect(() => {
@@ -80,9 +81,8 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       }
     }, [editor, value])
 
-    const handleMenu = () => {
-      console.log(bubbleMenu)
-      setBubbleMenu((value) => !value)
+    const handleFixed = () => {
+      setFixed((previous) => !previous)
     }
 
     return (
@@ -90,25 +90,24 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         <div className={cn('relative w-full', props.className)}>
           {editor && (
             <>
-              <FixedMenu enabled={!bubbleMenu} editor={editor} />
-              <BubbleMenu enabled={bubbleMenu} editor={editor} />
+              <FixedMenu
+                enabled={fixed}
+                setEnabled={handleFixed}
+                editor={editor}
+              />
+              <BubbleMenu
+                enabled={!fixed}
+                setEnabled={handleFixed}
+                editor={editor}
+              />
             </>
           )}
           <EditorContent editor={editor} spellCheck="false" {...props} />
           {editor && (
             <>
-              <div className="flex items-center gap-2">
-                <span className="absolute text-xs font-bold -top-6 right-0">
-                  {editor.storage.characterCount.characters()}/{limit}
-                </span>
-                <button
-                  type="button"
-                  className="absolute -bottom-5 right-0 text-xs"
-                  onClick={handleMenu}
-                >
-                  Ativar menu fixado
-                </button>
-              </div>
+              <span className="absolute text-xs font-bold -top-6 right-0">
+                {editor.storage.characterCount.characters()}/{props.limit}
+              </span>
               <input
                 className="absolute top-0 left-0 w-0 h-0 opacity-0"
                 tabIndex={-1}

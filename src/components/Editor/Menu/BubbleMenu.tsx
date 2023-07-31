@@ -5,6 +5,7 @@ import {
   Italic,
   List,
   ListOrdered,
+  PanelTopClose,
   Redo2,
   Strikethrough,
   Underline,
@@ -18,12 +19,14 @@ interface BaseButtonProps {
   editor: Editor
   className?: string
   enabled: boolean
+  setEnabled: () => void
 }
 
 const BubbleMenu = ({
   enabled = false,
   editor,
-  className
+  className,
+  setEnabled
 }: BaseButtonProps) => {
   const { t } = useTranslation('editor')
 
@@ -124,9 +127,13 @@ const BubbleMenu = ({
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
           aria-label={'undo'}
-          data-last
         >
           <Redo2 className="w-4 h-4" />
+        </BubbleButton>
+      </div>
+      <div className="flex items-center">
+        <BubbleButton onClick={setEnabled} data-last>
+          <PanelTopClose className="w-4 h-4" />
         </BubbleButton>
       </div>
     </_BubbleMenu>
