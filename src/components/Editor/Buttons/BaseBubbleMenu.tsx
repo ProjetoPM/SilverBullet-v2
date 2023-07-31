@@ -2,6 +2,7 @@ import { BubbleMenu, Editor } from '@tiptap/react'
 import { Bold, Italic, Strikethrough } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { BubbleButton } from './BubbleButton'
+import { hideOnEsc } from './hideOnEsc'
 
 interface BaseButtonProps {
   editor: Editor
@@ -14,6 +15,11 @@ export const BaseBubbleMenu = ({ editor, children }: BaseButtonProps) => {
   return (
     <BubbleMenu
       className="flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg border"
+      tippyOptions={{
+        duration: 100,
+        appendTo: 'parent',
+        plugins: [hideOnEsc]
+      }}
       editor={editor}
     >
       <BubbleButton
