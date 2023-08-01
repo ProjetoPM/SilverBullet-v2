@@ -11,6 +11,7 @@ import {
   useEffect,
   useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BubbleMenu } from './Menu/BubbleMenu'
 import { FixedMenu } from './Menu/FixedMenu'
 import { starterKitConfigs } from './configs'
@@ -27,13 +28,15 @@ type EditorProps = InputProps &
 
 export const Editor = forwardRef<HTMLInputElement, EditorProps>(
   ({ content, readOnly, value = '', isFixed = false, ...props }, ref) => {
+    const { t } = useTranslation('editor')
     const [fixed, setFixed] = useState(isFixed)
 
     const editor = useEditor(
       {
         editorProps: {
           attributes: {
-            class: cn(editorStyles, fixed ? 'rounded-t-none' : '')
+            class: cn(editorStyles, fixed ? 'rounded-t-none' : ''),
+            spellcheck: 'false'
           }
         },
         extensions: [
@@ -78,6 +81,9 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       setFixed((previous) => !previous)
     }
 
+    const chars = editor?.storage.characterCount.characters() ?? 0
+    const words = editor?.storage.characterCount.words() ?? 0
+
     return (
       <>
         <div className={cn('relative w-full', props.className)}>
@@ -95,11 +101,14 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
               />
             </>
           )}
-          <EditorContent editor={editor} spellCheck="false" {...props} />
+          <EditorContent editor={editor} {...props} />
           {editor && (
             <>
-              <span className="absolute text-xs font-bold -top-6 right-0">
-                {editor.storage.characterCount.characters()}/{props.limit}
+              <span className="absolute text-[11.25px] text-neutral-500 -top-5 right-0">
+                <span>
+                  {chars}/{props.limit} {t('characters')} | {words}{' '}
+                  {words > 1 ? t('words') : t('word')}
+                </span>
               </span>
               <input
                 className="absolute top-0 left-0 w-0 h-0 opacity-0"
