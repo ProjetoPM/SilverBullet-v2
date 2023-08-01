@@ -90,13 +90,13 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
           {editor && (
             <>
               <FixedMenu
-                enabled={fixed}
-                setEnabled={handleFixed}
+                isFixed={fixed}
+                setFixed={handleFixed}
                 editor={editor}
               />
               <BubbleMenu
-                enabled={!fixed}
-                setEnabled={handleFixed}
+                isFixed={!fixed}
+                setFixed={handleFixed}
                 editor={editor}
               />
             </>
