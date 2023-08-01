@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
 import { BubbleMenu as _BubbleMenu, Editor } from '@tiptap/react'
-import { Buttons } from './Buttons'
+import ButtonGroup from './ButtonGroup'
 import { hideOnEsc } from './hideOnEsc'
 
-interface BaseButtonProps {
+interface BubbleMenuProps {
   editor: Editor
   className?: string
   isFixed: boolean
@@ -15,13 +15,13 @@ const BubbleMenu = ({
   editor,
   className,
   setFixed
-}: BaseButtonProps) => {
+}: BubbleMenuProps) => {
   return (
     <_BubbleMenu
       className={cn(
         'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-neutral-600 max-w-[400px]',
         className,
-        isFixed ? '' : 'hidden'
+        isFixed ? 'hidden' : ''
       )}
       tippyOptions={{
         duration: 100,
@@ -31,7 +31,7 @@ const BubbleMenu = ({
       }}
       editor={editor}
     >
-      <Buttons editor={editor} isFixed={isFixed} setFixed={setFixed} />
+      <ButtonGroup editor={editor} isFixed={isFixed} setFixed={setFixed} />
     </_BubbleMenu>
   )
 }

@@ -16,13 +16,13 @@ import {
 import { useTranslation } from 'react-i18next'
 import { BubbleButton } from './Button'
 
-type ButtonsProps = {
+type ButtonGroupProps = {
   editor: Editor
   isFixed?: boolean
   setFixed?: () => void
 }
 
-const Buttons = ({ editor, isFixed = false, setFixed }: ButtonsProps) => {
+const ButtonGroup = ({ editor, isFixed, setFixed }: ButtonGroupProps) => {
   const { t } = useTranslation('editor')
 
   return (
@@ -34,7 +34,7 @@ const Buttons = ({ editor, isFixed = false, setFixed }: ButtonsProps) => {
           }
           data-active={editor.isActive('heading', { level: 1 })}
           data-first={!isFixed}
-          data-first-isFixed={isFixed}
+          data-first-fixed={isFixed}
         >
           <Heading1 className="w-5 h-5" />
         </BubbleButton>
@@ -121,7 +121,7 @@ const Buttons = ({ editor, isFixed = false, setFixed }: ButtonsProps) => {
         <BubbleButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
-          aria-label={'redo'}
+          aria-label={'undo'}
         >
           <Undo2 className="w-4 h-4" />
         </BubbleButton>
@@ -143,4 +143,4 @@ const Buttons = ({ editor, isFixed = false, setFixed }: ButtonsProps) => {
   )
 }
 
-export { Buttons }
+export default ButtonGroup
