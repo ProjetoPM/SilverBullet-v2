@@ -1,13 +1,18 @@
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
-import { ColumnDef } from '@tanstack/react-table'
+import { replaceHtmlTags } from '@/utils/replace-html-tags'
+import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { Workspace } from '../types/Workspace'
 import { WorkspaceActions } from './workspace.actions'
-import { replaceHtmlTags } from '@/utils/replace-html-tags'
 
-export const columns: ColumnDef<Workspace>[] = [
-  {
+const helper = createColumnHelper<Workspace>()
+
+export const columns = [
+  /**
+   * Select
+   */
+  helper.display({
     id: 'select',
     header: ({ table }) => (
       <Checkbox
@@ -25,13 +30,16 @@ export const columns: ColumnDef<Workspace>[] = [
     ),
     enableSorting: false,
     enableHiding: false
-  },
-  {
-    accessorKey: 'name',
+  }),
+  /**
+   * Name
+   */
+  helper.accessor((row) => row.name, {
+    id: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('workspace:label.name')}
+        header={i18next.t('data-table:name')}
       />
     ),
     cell: ({ row }) => (
@@ -41,13 +49,16 @@ export const columns: ColumnDef<Workspace>[] = [
     ),
     enableSorting: true,
     enableHiding: true
-  },
-  {
-    accessorKey: 'planStatus',
+  }),
+  /**
+   * Plan Status
+   */
+  helper.accessor((row) => row.planStatus, {
+    id: 'planStatus',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('workspace:label.plan_status')}
+        header={i18next.t('data-table:plan_status')}
       />
     ),
     cell: ({ row }) => {
@@ -60,13 +71,16 @@ export const columns: ColumnDef<Workspace>[] = [
     },
     enableSorting: false,
     enableHiding: true
-  },
-  {
-    accessorKey: 'createdAt',
+  }),
+  /**
+   * Created At
+   */
+  helper.accessor((row) => row.createdAt, {
+    id: 'createdAt',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('workspace:label.created_at')}
+        header={i18next.t('data-table:created_at')}
       />
     ),
     cell: ({ row }) => {
@@ -80,12 +94,15 @@ export const columns: ColumnDef<Workspace>[] = [
     },
     enableSorting: true,
     enableHiding: true
-  },
-  {
+  }),
+  /**
+   * Actions
+   */
+  helper.display({
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
       return <WorkspaceActions id={row.index.toString()} data={row.original} />
     }
-  }
+  })
 ]
