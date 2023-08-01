@@ -1,10 +1,11 @@
 import { Workspace } from '@/pages/workspace/types/Workspace'
+import { useWorkspace } from '@/stores/useWorkspace'
+import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { api } from '../api'
 import { queryClient } from '../react-query'
-import { useWorkspace } from '@/stores/useWorkspace'
 
 type CreateWorkspace = Pick<Workspace, 'name'>
 type EditWorkspace = Pick<Workspace, 'name'>
@@ -52,6 +53,10 @@ export default class WorkspaceService {
 
     if (remove) {
       useWorkspace.setState({ workspace: null })
+
+      if (useWorkspace.getState().workspace === null) {
+        setDataHiddenProjects(true)
+      }
     }
 
     switch (response?.status) {

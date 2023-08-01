@@ -16,7 +16,12 @@ const Sidebar = () => {
             )}
             {item.children?.map((item) => {
               return (
-                <LinkMenu key={item.id} to={item.link}>
+                <LinkMenu
+                  id={item.id}
+                  key={item.id}
+                  to={item.link}
+                  data-hidden={item.isHidden}
+                >
                   {item.icon}
                   {item.title}
                 </LinkMenu>

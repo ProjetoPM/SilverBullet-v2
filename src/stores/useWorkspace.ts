@@ -1,5 +1,6 @@
 import { Workspace } from '@/pages/workspace/types/Workspace'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
+import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
@@ -19,6 +20,7 @@ const useWorkspace = create<State & Actions>()(
         workspace: null,
         open: (workspace: Workspace) => {
           set({ workspace })
+          setDataHiddenProjects(false)
           toast.success(replaceHtmlTags(workspace.name))
         }
       }),
