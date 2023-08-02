@@ -31,7 +31,7 @@ export const App = () => {
         </QueryClientProvider>
       </HelmetProvider>
       {theme && (
-        <ToastContainer position="top-right" autoClose={1500} theme={theme} />
+        <ToastContainer position="top-right" autoClose={2250} theme={theme} />
       )}
     </React.StrictMode>
   )

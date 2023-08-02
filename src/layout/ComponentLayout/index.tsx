@@ -19,11 +19,11 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
           </div>
           <Separator />
           <div className="max-w-[1536px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0px,256px),_1fr] h-screen">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0px,256px),minmax(0px,1fr)] h-screen">
               <div className="hidden lg:flex border-r">
                 <Sidebar />
               </div>
-              <div className="p-5 lg:px-10 w-full h-full">
+              <div className="p-5 lg:px-10">
                 <Outlet />
               </div>
             </div>
