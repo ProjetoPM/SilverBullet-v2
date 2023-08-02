@@ -6,10 +6,15 @@ import { api } from '@/services/api'
 import { useQuery } from 'react-query'
 import { Loading } from '@/components/Loading'
 import { routes } from '@/routes/routes'
+import { Workspace } from '@/@types/Workspace'
 
 const getData = async (id?: string) => {
-  const url = id ? `/tenant/${id}` : '/tenant'
-  return api.get(url).then((res) => res.data)
+  const url = `/tenant/${id}`
+
+  if (id) {
+    return api.get(url).then((res) => res.data)
+  }
+  return null
 }
 
 const WorkspacePage = () => {
@@ -17,7 +22,7 @@ const WorkspacePage = () => {
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
   const { id } = useParams()
 
-  const { data, isLoading, isError } = useQuery([`workspace-${id}`, id], () =>
+  const { data, isLoading, isError } = useQuery<Workspace>([`workspace-${id}`, id], () =>
     getData(id)
   )
 

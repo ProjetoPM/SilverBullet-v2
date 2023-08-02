@@ -25,6 +25,10 @@ export const ProjectsRoutes: RouteObject = {
         {
           path: routes.projects.new,
           element: <ProjectsPage />
+        },
+        {
+          path: routes.projects.edit,
+          element: <ProjectsPage />
         }
       ]
     }

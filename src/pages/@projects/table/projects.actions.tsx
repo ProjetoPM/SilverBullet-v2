@@ -1,5 +1,6 @@
 import { Project } from '@/@types/Project'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
+import ProjectService from '@/services/modules/ProjectService'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,12 +13,11 @@ type ProjectActionsProps = {
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  // const open = useWorkspace((state) => state.open)
   const [isLoading, setLoading] = useState(false)
 
   const handleDelete = async () => {
     setLoading(true)
-    // await WorkspaceService.delete(data)
+    await ProjectService.delete(data)
     setLoading(false)
   }
 
@@ -49,7 +49,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             {t('default:btn.open')}
           </DropdownMenu.Item>
           <Link
-            to={`/workspaces/${data._id}/edit`}
+            to={`/projects/${data._id}/edit`}
             id={`edit-${id}`}
           >
             <DropdownMenu.Item className="flex gap-3">

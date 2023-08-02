@@ -33,7 +33,7 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
     let response: AxiosResponse | undefined
 
     if (data) {
-      // TODO - ProjectService.edit
+      response = await ProjectService.edit(data._id, form)
     } else {
       response = await ProjectService.create(form)
     }
