@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { api } from '../api'
+import { queryClient } from '../react-query'
 
 type CreateProject = Pick<Project, 'name' | 'description'>
 type EditProject = Pick<Project, 'name' | 'description'>
@@ -60,10 +61,11 @@ export default class ProjectService {
 
     switch (response?.status) {
       case StatusCodes.OK:
-        toast.success(i18next.t('projects:edited_successfully'))
+        toast.success(i18next.t('projects:deleted_successfully'))
+        queryClient.invalidateQueries('projects')
         break
       default:
-        toast.error(i18next.t('projects:error_editing_project'))
+        toast.error(i18next.t('projects:error_deleting_workspace'))
     }
     return response
   }
