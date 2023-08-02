@@ -2,12 +2,11 @@ import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
 
+import WeeklyReportPage from '@/pages/weekly-report/weekly-report'
 import { AuthGuard } from '@/utils/guard'
 import { routes } from '../routes'
-import WorkspaceListPage from '@/pages/@workspace/workspace.list'
-import WorkspacePage from '@/pages/@workspace/workspace'
 
-export const WorkspaceRoutes: RouteObject = {
+export const WeeklyReportRoutes: RouteObject = {
   path: '/',
   children: [
     {
@@ -19,16 +18,12 @@ export const WorkspaceRoutes: RouteObject = {
       ),
       children: [
         {
-          path: routes.workspaces.index,
-          element: <WorkspaceListPage />
+          path: routes.weekly_report.index,
+          element: <WeeklyReportPage />
         },
         {
-          path: routes.workspaces.new,
-          element: <WorkspacePage />
-        },
-        {
-          path: routes.workspaces.edit,
-          element: <WorkspacePage />
+          path: routes.weekly_report.new,
+          element: <WeeklyReportPage />
         }
       ]
     }

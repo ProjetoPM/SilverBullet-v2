@@ -89,6 +89,18 @@ input::-ms-clear {
   @apply list-decimal ml-5 my-2;
 }
 
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-accent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-500  hover:bg-neutral-600 rounded-full;
+}
+
 @layer base {
   * {
     @apply border-border;

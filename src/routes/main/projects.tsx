@@ -2,12 +2,12 @@ import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
 
+import ProjectsListPage from '@/pages/@projects/projects.list'
 import { AuthGuard } from '@/utils/guard'
 import { routes } from '../routes'
-import WorkspaceListPage from '@/pages/@workspace/workspace.list'
-import WorkspacePage from '@/pages/@workspace/workspace'
+import ProjectsPage from '@/pages/@projects/projects'
 
-export const WorkspaceRoutes: RouteObject = {
+export const ProjectsRoutes: RouteObject = {
   path: '/',
   children: [
     {
@@ -19,16 +19,12 @@ export const WorkspaceRoutes: RouteObject = {
       ),
       children: [
         {
-          path: routes.workspaces.index,
-          element: <WorkspaceListPage />
+          path: routes.projects.index,
+          element: <ProjectsListPage />
         },
         {
-          path: routes.workspaces.new,
-          element: <WorkspacePage />
-        },
-        {
-          path: routes.workspaces.edit,
-          element: <WorkspacePage />
+          path: routes.projects.new,
+          element: <ProjectsPage />
         }
       ]
     }

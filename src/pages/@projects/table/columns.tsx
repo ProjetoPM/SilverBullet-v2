@@ -1,12 +1,12 @@
+import { Project } from '@/@types/Project'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
-import { Workspace } from '../types/Workspace'
-import { WorkspaceActions } from './workspace.actions'
+import { ProjectActions } from './projects.actions'
 
-const helper = createColumnHelper<Workspace>()
+const helper = createColumnHelper<Project>()
 
 export const columns = [
   /**
@@ -43,31 +43,28 @@ export const columns = [
       />
     ),
     cell: ({ row }) => (
-      <div id={`name-${row.index}`}>
-        {replaceHtmlTags(row.getValue('name'))}
-      </div>
+      <div id={`name-${row.index}`}>{replaceHtmlTags(row.getValue('name'))}</div>
     ),
     enableSorting: true,
     enableHiding: true
   }),
   /**
-   * Plan Status
+   * Description
    */
-  helper.accessor((row) => row.planStatus, {
-    id: 'planStatus',
+  helper.accessor((row) => row.description, {
+    id: 'description',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:plan_status')}
+        header={i18next.t('data-table:description')}
       />
     ),
     cell: ({ row }) => {
-      const planStatus =
-        row.getValue('planStatus') === 'active'
-          ? i18next.t('workspace:label.active')
-          : i18next.t('workspace:label.inactive')
-
-      return <div id={`plan-status-${row.index}`}>{planStatus}</div>
+      return (
+        <div id={`description-${row.index}`}>
+          {replaceHtmlTags(row.getValue('description'))}
+        </div>
+      )
     },
     enableSorting: false,
     enableHiding: true
@@ -100,9 +97,14 @@ export const columns = [
    */
   helper.display({
     id: 'actions',
-    header: 'Actions',
+    header: () => i18next.t('data-table:actions'),
     cell: ({ row }) => {
-      return <WorkspaceActions id={row.index.toString()} data={row.original} />
+      return (
+        <ProjectActions
+          id={row.index.toString()}
+          data={row.original}
+        />
+      )
     }
   })
 ]

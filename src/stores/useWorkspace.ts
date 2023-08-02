@@ -1,4 +1,4 @@
-import { Workspace } from '@/pages/workspace/types/Workspace'
+import { Workspace } from '@/@types/Workspace'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { toast } from 'react-toastify'
@@ -31,5 +31,9 @@ const useWorkspace = create<State & Actions>()(
     )
   )
 )
+
+export const getWorkspaceId = () => {
+  return useWorkspace.getState().workspace?._id ?? 'null'
+}
 
 export { useWorkspace }

@@ -8,7 +8,10 @@ const Sidebar = () => {
     <ScrollArea className="mt-4 w-full">
       {sidebar.map((item) => {
         return (
-          <div className="flex flex-col" key={item.id}>
+          <div
+            className="flex flex-col"
+            key={item.id}
+          >
             {item.label && (
               <Label className="pl-10 pt-2 mb-1.5 text-xs font-bold uppercase tracking-wider">
                 {item.label}

@@ -17,10 +17,8 @@ const WorkspacePage = () => {
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
   const { id } = useParams()
 
-  const { data, isLoading, isError } = useQuery(
-    [`workspace-${id}`, id],
-    () => getData(id),
-    { enabled: !!id, cacheTime: 0 }
+  const { data, isLoading, isError } = useQuery([`workspace-${id}`, id], () =>
+    getData(id)
   )
 
   if (isLoading) {

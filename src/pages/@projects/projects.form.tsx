@@ -1,7 +1,8 @@
+import { Project } from '@/@types/Project'
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import WorkspaceService from '@/services/workspace/WorkspaceService'
+import ProjectService from '@/services/modules/ProjectService'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse } from 'axios'
 import { StatusCodes } from 'http-status-codes'
@@ -10,22 +11,21 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
-import { Workspace } from './types/Workspace'
-import { WorkspaceSchema, defaultValues, max } from './workspace.schema'
+import { ProjectSchema, defaultValues, max } from './projects.schema'
 
-type Form = z.infer<typeof WorkspaceSchema>
+type Form = z.infer<typeof ProjectSchema>
 
-interface WorkspaceFormProps {
-  data?: Pick<Workspace, '_id' | 'name'>
+interface ProjectFormProps {
+  data?: Pick<Project, '_id' | 'name' | 'description'>
 }
 
-const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
-  const { t } = useTranslation('workspace')
+const ProjectForm = ({ data }: ProjectFormProps) => {
+  const { t } = useTranslation(['default', 'projects'])
   const navigate = useNavigate()
 
   const form = useForm<Form>({
     mode: 'all',
-    resolver: zodResolver(WorkspaceSchema),
+    resolver: zodResolver(ProjectSchema),
     defaultValues: data ?? defaultValues
   })
 
@@ -33,13 +33,13 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
     let response: AxiosResponse | undefined
 
     if (data) {
-      response = await WorkspaceService.edit(data._id, form)
+      // TODO - ProjectService.edit
     } else {
-      response = await WorkspaceService.create(form)
+      response = await ProjectService.create(form)
     }
 
     if (response?.status === StatusCodes.OK) {
-      navigate(routes.workspaces.index)
+      navigate(routes.projects.index)
     }
   }
 
@@ -54,12 +54,31 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           name="name"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('edit.name')}</Form.Label>
+              <Form.Label>{t('projects:edit.name')}</Form.Label>
               <Form.Control>
                 <Editor
                   limit={max.name}
                   content={data?.name}
-                  placeholder={t('name.placeholder')}
+                  placeholder={t('projects:name.placeholder')}
+                  {...field}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
+        <Form.Field
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>{t('projects:edit.description')}</Form.Label>
+              <Form.Control>
+                <Editor
+                  limit={max.description}
+                  content={data?.description}
+                  placeholder={t('projects:description.placeholder')}
+                  as="textarea-3"
                   {...field}
                 />
               </Form.Control>
@@ -68,7 +87,10 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           )}
         />
         <div className="space-y-2 space-x-2.5">
-          <Button type="submit" className="w-30 gap-1 font-medium">
+          <Button
+            type="submit"
+            className="w-30 gap-1 font-medium"
+          >
             {data && (
               <>
                 <Edit size={20} />
@@ -88,7 +110,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
             variant={'secondary'}
             onClick={() => form.reset()}
           >
-            <RotateCcw size={20} /> {t('btn.reset')}
+            <RotateCcw size={20} /> {t('default:btn.reset')}
           </Button>
         </div>
       </form>
@@ -96,4 +118,4 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
   )
 }
 
-export default WorkspaceForm
+export default ProjectForm

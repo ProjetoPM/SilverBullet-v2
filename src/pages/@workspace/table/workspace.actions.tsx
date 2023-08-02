@@ -1,11 +1,12 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import WorkspaceService from '@/services/workspace/WorkspaceService'
+import { routes } from '@/routes/routes'
+import WorkspaceService from '@/services/modules/WorkspaceService'
 import { useWorkspace } from '@/stores/useWorkspace'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { Workspace } from '../types/Workspace'
+import { Link, useNavigate } from 'react-router-dom'
+import { Workspace } from '../../../@types/Workspace'
 
 type WorkspaceActionsProps = {
   id: string
@@ -14,6 +15,7 @@ type WorkspaceActionsProps = {
 
 const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspace'])
+  const navigate = useNavigate()
   const open = useWorkspace((state) => state.open)
   const [isLoading, setLoading] = useState(false)
 
@@ -21,6 +23,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
     setLoading(true)
     await WorkspaceService.delete(data)
     setLoading(false)
+  }
+
+  const handleOpen = () => {
+    open(data)
+    navigate(routes.projects.index)
   }
 
   return (
@@ -37,7 +44,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
           <DropdownMenu.Item
             className="flex gap-3"
             id={`open-${id}`}
-            onClick={() => open(data)}
+            onClick={handleOpen}
           >
             <FolderOpen size={18} />
             {t('default:btn.open')}

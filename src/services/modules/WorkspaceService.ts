@@ -1,4 +1,4 @@
-import { Workspace } from '@/pages/workspace/types/Workspace'
+import { Workspace } from '@/@types/Workspace'
 import { useWorkspace } from '@/stores/useWorkspace'
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
@@ -12,6 +12,10 @@ type EditWorkspace = Pick<Workspace, 'name'>
 type DeleteWorkspace = Workspace
 
 export default class WorkspaceService {
+  static async list() {
+    return await api.get('/tenant').then((res) => res.data)
+  }
+
   static async create(data: CreateWorkspace) {
     const response = await api
       .post('/tenant', { data: { ...data } })

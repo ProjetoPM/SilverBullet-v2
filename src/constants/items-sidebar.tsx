@@ -1,5 +1,4 @@
 import TranslateText from '@/components/Utils/TranslateText'
-import { useWorkspace } from '@/stores/useWorkspace'
 import { FolderOpen, Folders, PanelTop } from 'lucide-react'
 
 type SidebarItem = {
@@ -12,6 +11,10 @@ type SidebarItem = {
     link: string
     isHidden?: boolean
   }[]
+}
+
+const getWorkspace = () => {
+  return localStorage.getItem('workspace')
 }
 
 export const sidebar: SidebarItem[] = [
@@ -30,7 +33,7 @@ export const sidebar: SidebarItem[] = [
         title: <TranslateText text="projects" />,
         icon: <FolderOpen size={22} />,
         link: '/projects',
-        isHidden: useWorkspace.getState().workspace === null
+        isHidden: getWorkspace() === null
       }
     ]
   },
