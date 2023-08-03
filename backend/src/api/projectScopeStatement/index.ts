@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/project-scope-statement`,
+    require('./projectScopeStatementCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/project-scope-statement/:id`,
+    require('./projectScopeStatementUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/project-scope-statement/import`,
+    require('./projectScopeStatementImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/project-scope-statement`,
+    require('./projectScopeStatementDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-scope-statement/autocomplete`,
+    require('./projectScopeStatementAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-scope-statement`,
+    require('./projectScopeStatementList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-scope-statement/:id`,
+    require('./projectScopeStatementFind').default,
+  );
+};

@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/project-charter`,
+    require('./projectCharterCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/project-charter/:id`,
+    require('./projectCharterUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/project-charter/import`,
+    require('./projectCharterImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/project-charter`,
+    require('./projectCharterDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-charter/autocomplete`,
+    require('./projectCharterAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-charter`,
+    require('./projectCharterList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-charter/:id`,
+    require('./projectCharterFind').default,
+  );
+};

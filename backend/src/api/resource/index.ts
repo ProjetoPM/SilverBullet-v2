@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/resource`,
+    require('./resourceCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/resource/:id`,
+    require('./resourceUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/resource/import`,
+    require('./resourceImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/resource`,
+    require('./resourceDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource/autocomplete`,
+    require('./resourceAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource`,
+    require('./resourceList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource/:id`,
+    require('./resourceFind').default,
+  );
+};

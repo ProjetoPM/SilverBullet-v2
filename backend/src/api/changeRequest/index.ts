@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/change-request`,
+    require('./changeRequestCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/change-request/:id`,
+    require('./changeRequestUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/change-request/import`,
+    require('./changeRequestImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/change-request`,
+    require('./changeRequestDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/change-request/autocomplete`,
+    require('./changeRequestAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/change-request`,
+    require('./changeRequestList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/change-request/:id`,
+    require('./changeRequestFind').default,
+  );
+};

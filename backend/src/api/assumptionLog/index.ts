@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/assumption-log`,
+    require('./assumptionLogCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/assumption-log/:id`,
+    require('./assumptionLogUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/assumption-log/import`,
+    require('./assumptionLogImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/assumption-log`,
+    require('./assumptionLogDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/assumption-log/autocomplete`,
+    require('./assumptionLogAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/assumption-log`,
+    require('./assumptionLogList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/assumption-log/:id`,
+    require('./assumptionLogFind').default,
+  );
+};

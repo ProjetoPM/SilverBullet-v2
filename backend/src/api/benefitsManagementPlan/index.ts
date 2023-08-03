@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/benefits-management-plan`,
+    require('./benefitsManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/benefits-management-plan/:id`,
+    require('./benefitsManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/benefits-management-plan/import`,
+    require('./benefitsManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/benefits-management-plan`,
+    require('./benefitsManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/benefits-management-plan/autocomplete`,
+    require('./benefitsManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/benefits-management-plan`,
+    require('./benefitsManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/benefits-management-plan/:id`,
+    require('./benefitsManagementPlanFind').default,
+  );
+};

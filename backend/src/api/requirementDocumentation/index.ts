@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/requirement-documentation`,
+    require('./requirementDocumentationCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/requirement-documentation/:id`,
+    require('./requirementDocumentationUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/requirement-documentation/import`,
+    require('./requirementDocumentationImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/requirement-documentation`,
+    require('./requirementDocumentationDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirement-documentation/autocomplete`,
+    require('./requirementDocumentationAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirement-documentation`,
+    require('./requirementDocumentationList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirement-documentation/:id`,
+    require('./requirementDocumentationFind').default,
+  );
+};

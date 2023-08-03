@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/schedule-network-diagram`,
+    require('./scheduleNetworkDiagramCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/schedule-network-diagram/:id`,
+    require('./scheduleNetworkDiagramUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/schedule-network-diagram/import`,
+    require('./scheduleNetworkDiagramImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/schedule-network-diagram`,
+    require('./scheduleNetworkDiagramDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/schedule-network-diagram/autocomplete`,
+    require('./scheduleNetworkDiagramAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/schedule-network-diagram`,
+    require('./scheduleNetworkDiagramList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/schedule-network-diagram/:id`,
+    require('./scheduleNetworkDiagramFind').default,
+  );
+};

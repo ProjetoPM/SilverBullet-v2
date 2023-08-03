@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/stakeholder-calendars`,
+    require('./stakeholderCalendarsCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/stakeholder-calendars/:id`,
+    require('./stakeholderCalendarsUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/stakeholder-calendars/import`,
+    require('./stakeholderCalendarsImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/stakeholder-calendars`,
+    require('./stakeholderCalendarsDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/stakeholder-calendars/autocomplete`,
+    require('./stakeholderCalendarsAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/stakeholder-calendars`,
+    require('./stakeholderCalendarsList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/stakeholder-calendars/:id`,
+    require('./stakeholderCalendarsFind').default,
+  );
+};

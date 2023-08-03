@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/procurement-statement-work-register`,
+    require('./procurementStatementWorkRegisterCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/procurement-statement-work-register/:id`,
+    require('./procurementStatementWorkRegisterUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/procurement-statement-work-register/import`,
+    require('./procurementStatementWorkRegisterImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/procurement-statement-work-register`,
+    require('./procurementStatementWorkRegisterDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-statement-work-register/autocomplete`,
+    require('./procurementStatementWorkRegisterAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-statement-work-register`,
+    require('./procurementStatementWorkRegisterList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-statement-work-register/:id`,
+    require('./procurementStatementWorkRegisterFind').default,
+  );
+};

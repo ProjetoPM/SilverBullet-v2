@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/project-management-plan`,
+    require('./projectManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/project-management-plan/:id`,
+    require('./projectManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/project-management-plan/import`,
+    require('./projectManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/project-management-plan`,
+    require('./projectManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-management-plan/autocomplete`,
+    require('./projectManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-management-plan`,
+    require('./projectManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/project-management-plan/:id`,
+    require('./projectManagementPlanFind').default,
+  );
+};

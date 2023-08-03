@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/resource-management-plan`,
+    require('./resourceManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/resource-management-plan/:id`,
+    require('./resourceManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/resource-management-plan/import`,
+    require('./resourceManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/resource-management-plan`,
+    require('./resourceManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource-management-plan/autocomplete`,
+    require('./resourceManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource-management-plan`,
+    require('./resourceManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/resource-management-plan/:id`,
+    require('./resourceManagementPlanFind').default,
+  );
+};

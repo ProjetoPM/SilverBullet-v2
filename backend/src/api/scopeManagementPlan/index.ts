@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/scope-management-plan`,
+    require('./scopeManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/scope-management-plan/:id`,
+    require('./scopeManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/scope-management-plan/import`,
+    require('./scopeManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/scope-management-plan`,
+    require('./scopeManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/scope-management-plan/autocomplete`,
+    require('./scopeManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/scope-management-plan`,
+    require('./scopeManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/scope-management-plan/:id`,
+    require('./scopeManagementPlanFind').default,
+  );
+};

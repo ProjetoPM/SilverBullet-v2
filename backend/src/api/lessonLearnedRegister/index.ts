@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/lesson-learned-register`,
+    require('./lessonLearnedRegisterCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/lesson-learned-register/:id`,
+    require('./lessonLearnedRegisterUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/lesson-learned-register/import`,
+    require('./lessonLearnedRegisterImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/lesson-learned-register`,
+    require('./lessonLearnedRegisterDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/lesson-learned-register/autocomplete`,
+    require('./lessonLearnedRegisterAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/lesson-learned-register`,
+    require('./lessonLearnedRegisterList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/lesson-learned-register/:id`,
+    require('./lessonLearnedRegisterFind').default,
+  );
+};

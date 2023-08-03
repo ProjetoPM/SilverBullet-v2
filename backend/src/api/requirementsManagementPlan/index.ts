@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/requirements-management-plan`,
+    require('./requirementsManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/requirements-management-plan/:id`,
+    require('./requirementsManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/requirements-management-plan/import`,
+    require('./requirementsManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/requirements-management-plan`,
+    require('./requirementsManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirements-management-plan/autocomplete`,
+    require('./requirementsManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirements-management-plan`,
+    require('./requirementsManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/requirements-management-plan/:id`,
+    require('./requirementsManagementPlanFind').default,
+  );
+};
