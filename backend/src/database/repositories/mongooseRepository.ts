@@ -36,6 +36,14 @@ export default class MongooseRepository {
       (options && options.currentTenant) || { id: null }
     );
   }
+  /**
+   * Returns the project if it exists on the options.
+   */
+  static getCurrentProject(options: IRepositoryOptions) {
+    return (
+      (options && options.currentProject) || { id: null }
+    );
+  }
 
   /**
    * Returns the session if it exists on the options.

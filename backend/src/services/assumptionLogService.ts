@@ -72,13 +72,16 @@ export default class AssumptionLogService {
     }
   }
 
-  async destroyAll(ids) {
+  async destroyAll(ids) {    
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
     try {
       for (const id of ids) {
+        console.log('id');
+        console.log(id);
+        
         await AssumptionLogRepository.destroy(id, {
           ...this.options,
           session,

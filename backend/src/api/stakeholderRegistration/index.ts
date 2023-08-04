@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/stakeholder-registration`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration`,
     require('./stakeholderRegistrationCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/stakeholder-registration/:id`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration/:id`,
     require('./stakeholderRegistrationUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/stakeholder-registration/import`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration/import`,
     require('./stakeholderRegistrationImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/stakeholder-registration`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration`,
     require('./stakeholderRegistrationDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-registration/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration/autocomplete`,
     require('./stakeholderRegistrationAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-registration`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration`,
     require('./stakeholderRegistrationList').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-registration/:id`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-registration/:id`,
     require('./stakeholderRegistrationFind').default,
   );
 };

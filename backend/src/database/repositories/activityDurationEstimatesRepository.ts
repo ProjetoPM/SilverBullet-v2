@@ -7,15 +7,15 @@ import lodash from 'lodash';
 import ActivityDurationEstimates from '../models/activityDurationEstimates';
 
 class ActivityDurationEstimatesRepository {
-  
   static async create(data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentUser = MongooseRepository.getCurrentUser(
-      options,
-    );
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
+
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     const [record] = await ActivityDurationEstimates(
       options.database,
@@ -23,10 +23,11 @@ class ActivityDurationEstimatesRepository {
       [
         {
           ...data,
+          project: currentProject.id,
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
-        }
+        },
       ],
       options,
     );
@@ -38,32 +39,44 @@ class ActivityDurationEstimatesRepository {
       options,
     );
 
-    
-
     return this.findById(record.id, options);
   }
 
-  static async update(id, data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async update(
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ActivityDurationEstimates(options.database).findOne({_id: id, tenant: currentTenant.id}),
-      options,
-    );
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ActivityDurationEstimates(options.database).findOne(
+          {
+            _id: id,
+            tenant: currentTenant.id,
+            project: currentProject.id,
+          },
+        ),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
     }
 
-    await ActivityDurationEstimates(options.database).updateOne(
+    await ActivityDurationEstimates(
+      options.database,
+    ).updateOne(
       { _id: id },
       {
         ...data,
-        updatedBy: MongooseRepository.getCurrentUser(
-          options,
-        ).id,
+        updatedBy:
+          MongooseRepository.getCurrentUser(options).id,
       },
       options,
     );
@@ -77,26 +90,35 @@ class ActivityDurationEstimatesRepository {
 
     record = await this.findById(id, options);
 
-
-
     return record;
   }
 
   static async destroy(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ActivityDurationEstimates(options.database).findOne({_id: id, tenant: currentTenant.id}),
-      options,
-    );
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ActivityDurationEstimates(options.database).findOne(
+          {
+            _id: id,
+            tenant: currentTenant.id,
+            project: currentProject.id,
+          },
+        ),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
     }
 
-    await ActivityDurationEstimates(options.database).deleteOne({ _id: id }, options);
+    await ActivityDurationEstimates(
+      options.database,
+    ).deleteOne({ _id: id }, options);
 
     await this._createAuditLog(
       AuditLogRepository.DELETE,
@@ -104,8 +126,6 @@ class ActivityDurationEstimatesRepository {
       record,
       options,
     );
-
-
   }
 
   static async filterIdInTenant(
@@ -130,10 +150,16 @@ class ActivityDurationEstimatesRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    const records = await ActivityDurationEstimates(options.database)
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    const records = await ActivityDurationEstimates(
+      options.database,
+    )
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id,
       })
       .select(['_id']);
 
@@ -141,30 +167,39 @@ class ActivityDurationEstimatesRepository {
   }
 
   static async count(filter, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     return MongooseRepository.wrapWithSessionIfExists(
-      ActivityDurationEstimates(options.database).countDocuments({
+      ActivityDurationEstimates(
+        options.database,
+      ).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id,
       }),
       options,
     );
   }
 
   static async findById(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ActivityDurationEstimates(options.database)
-        .findOne({_id: id, tenant: currentTenant.id})
-      .populate('activityName'),
-      options,
-    );
+      const currentProject = MongooseRepository.getCurrentProject(
+        options,
+      );
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ActivityDurationEstimates(options.database)
+          .findOne({ _id: id, tenant: currentTenant.id, project: currentProject.id })
+          .populate('activityName'),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
@@ -177,14 +212,21 @@ class ActivityDurationEstimatesRepository {
     { filter, limit = 0, offset = 0, orderBy = '' },
     options: IRepositoryOptions,
   ) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+      const currentProject = MongooseRepository.getCurrentProject(
+        options,
+      );
 
     let criteriaAnd: any = [];
-    
+
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id,
     });
 
     if (filter) {
@@ -205,7 +247,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.estimatedDurationRange) {
         const [start, end] = filter.estimatedDurationRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             estimatedDuration: {
               $gte: start,
@@ -213,7 +259,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             estimatedDuration: {
               $lte: end,
@@ -225,7 +275,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.estimatedStartDateRange) {
         const [start, end] = filter.estimatedStartDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             estimatedStartDate: {
               $gte: start,
@@ -233,7 +287,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             estimatedStartDate: {
               $lte: end,
@@ -245,7 +303,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.estimatedEndDateRange) {
         const [start, end] = filter.estimatedEndDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             estimatedEndDate: {
               $gte: start,
@@ -253,7 +315,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             estimatedEndDate: {
               $lte: end,
@@ -265,7 +331,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.performedDurationRange) {
         const [start, end] = filter.performedDurationRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             performedDuration: {
               $gte: start,
@@ -273,7 +343,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             performedDuration: {
               $lte: end,
@@ -285,7 +359,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.performedStartDateRange) {
         const [start, end] = filter.performedStartDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             performedStartDate: {
               $gte: start,
@@ -293,7 +371,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             performedStartDate: {
               $lte: end,
@@ -305,7 +387,11 @@ class ActivityDurationEstimatesRepository {
       if (filter.performedEndDateRange) {
         const [start, end] = filter.performedEndDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
             performedEndDate: {
               $gte: start,
@@ -313,7 +399,11 @@ class ActivityDurationEstimatesRepository {
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
             performedEndDate: {
               $lte: end,
@@ -361,7 +451,9 @@ class ActivityDurationEstimatesRepository {
       ? { $and: criteriaAnd }
       : null;
 
-    let rows = await ActivityDurationEstimates(options.database)
+    let rows = await ActivityDurationEstimates(
+      options.database,
+    )
       .find(criteria)
       .skip(skip)
       .limit(limitEscaped)
@@ -379,14 +471,28 @@ class ActivityDurationEstimatesRepository {
     return { rows, count };
   }
 
-  static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async findAllAutocomplete(
+    search,
+    limit,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let criteriaAnd: Array<any> = [{
-      tenant: currentTenant.id,
-    }];
+    const currentProject = MongooseRepository.getCurrentProject(
+        options,
+      );
+
+    let criteriaAnd: Array<any> = [
+      {
+        tenant: currentTenant.id,
+      },
+    ];
+
+    criteriaAnd.push({
+      project: currentProject.id
+    });
+
 
     if (search) {
       criteriaAnd.push({
@@ -394,7 +500,6 @@ class ActivityDurationEstimatesRepository {
           {
             _id: MongooseQueryUtils.uuid(search),
           },
-          
         ],
       });
     }
@@ -404,7 +509,9 @@ class ActivityDurationEstimatesRepository {
 
     const criteria = { $and: criteriaAnd };
 
-    const records = await ActivityDurationEstimates(options.database)
+    const records = await ActivityDurationEstimates(
+      options.database,
+    )
       .find(criteria)
       .limit(limitEscaped)
       .sort(sort);
@@ -415,10 +522,17 @@ class ActivityDurationEstimatesRepository {
     }));
   }
 
-  static async _createAuditLog(action, id, data, options: IRepositoryOptions) {
+  static async _createAuditLog(
+    action,
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
     await AuditLogRepository.log(
       {
-        entityName: ActivityDurationEstimates(options.database).modelName,
+        entityName: ActivityDurationEstimates(
+          options.database,
+        ).modelName,
         entityId: id,
         action,
         values: data,
@@ -435,10 +549,6 @@ class ActivityDurationEstimatesRepository {
     const output = record.toObject
       ? record.toObject()
       : record;
-
-
-
-
 
     return output;
   }

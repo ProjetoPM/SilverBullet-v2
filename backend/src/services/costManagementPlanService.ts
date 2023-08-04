@@ -17,7 +17,6 @@ export default class CostManagementPlanService {
 
     try {
 
-
       const record = await CostManagementPlanRepository.create(data, {
         ...this.options,
         session,

@@ -71,6 +71,12 @@ export default (database) => {
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
+        required: true,
+        unique: true
+      },
+      project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project',
         required: true
       },
       createdBy: {

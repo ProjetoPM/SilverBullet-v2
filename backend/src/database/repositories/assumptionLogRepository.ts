@@ -17,6 +17,10 @@ class AssumptionLogRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await AssumptionLog(
       options.database,
     ).create(
@@ -24,6 +28,7 @@ class AssumptionLogRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -43,13 +48,18 @@ class AssumptionLogRepository {
     return this.findById(record.id, options);
   }
 
-  static async update(id, data, options: IRepositoryOptions) {
+  static async update(id: string, data:any, options: IRepositoryOptions) {
     const currentTenant = MongooseRepository.getCurrentTenant(
+      options,
+    );
+    
+    const currentProject = MongooseRepository.getCurrentProject(
       options,
     );
 
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      AssumptionLog(options.database).findOne({_id: id, tenant: currentTenant.id}),
+          
+          AssumptionLog(options.database).findOne({_id: id,tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -82,13 +92,19 @@ class AssumptionLogRepository {
     return record;
   }
 
-  static async destroy(id, options: IRepositoryOptions) {
+  static async destroy(id:string, options: IRepositoryOptions) {
+    console.log('repository');
+    
     const currentTenant = MongooseRepository.getCurrentTenant(
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      AssumptionLog(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      AssumptionLog(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -130,10 +146,14 @@ class AssumptionLogRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
     const records = await AssumptionLog(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id,
       })
       .select(['_id']);
 
@@ -145,10 +165,14 @@ class AssumptionLogRepository {
       options,
     );
 
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
     return MongooseRepository.wrapWithSessionIfExists(
       AssumptionLog(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id,
       }),
       options,
     );
@@ -180,10 +204,18 @@ class AssumptionLogRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id,
     });
 
     if (filter) {
@@ -264,9 +296,14 @@ class AssumptionLogRepository {
     const currentTenant = MongooseRepository.getCurrentTenant(
       options,
     );
+    
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id,
+
     }];
 
     if (search) {

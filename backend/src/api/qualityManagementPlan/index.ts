@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/quality-management-plan`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan`,
     require('./qualityManagementPlanCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/quality-management-plan/:id`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan/:id`,
     require('./qualityManagementPlanUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/quality-management-plan/import`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan/import`,
     require('./qualityManagementPlanImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/quality-management-plan`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan`,
     require('./qualityManagementPlanDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/quality-management-plan/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan/autocomplete`,
     require('./qualityManagementPlanAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/quality-management-plan`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan`,
     require('./qualityManagementPlanList').default,
   );
   app.get(
-    `/tenant/:tenantId/quality-management-plan/:id`,
+    `/tenant/:tenantId/project/:projectId/quality-management-plan/:id`,
     require('./qualityManagementPlanFind').default,
   );
 };

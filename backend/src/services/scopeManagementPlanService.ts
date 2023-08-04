@@ -17,7 +17,6 @@ export default class ScopeManagementPlanService {
 
     try {
 
-
       const record = await ScopeManagementPlanRepository.create(data, {
         ...this.options,
         session,

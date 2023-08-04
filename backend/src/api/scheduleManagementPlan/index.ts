@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/schedule-management-plan`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan`,
     require('./scheduleManagementPlanCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/schedule-management-plan/:id`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan/:id`,
     require('./scheduleManagementPlanUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/schedule-management-plan/import`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan/import`,
     require('./scheduleManagementPlanImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/schedule-management-plan`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan`,
     require('./scheduleManagementPlanDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/schedule-management-plan/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan/autocomplete`,
     require('./scheduleManagementPlanAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/schedule-management-plan`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan`,
     require('./scheduleManagementPlanList').default,
   );
   app.get(
-    `/tenant/:tenantId/schedule-management-plan/:id`,
+    `/tenant/:tenantId/project/:projectId/schedule-management-plan/:id`,
     require('./scheduleManagementPlanFind').default,
   );
 };

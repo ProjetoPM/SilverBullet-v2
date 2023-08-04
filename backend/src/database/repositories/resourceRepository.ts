@@ -18,6 +18,10 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await Resource(
       options.database,
     ).create(
@@ -25,6 +29,7 @@ class ResourceRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -49,8 +54,11 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      Resource(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      Resource(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -88,8 +96,11 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      Resource(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      Resource(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -136,10 +147,14 @@ class ResourceRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await Resource(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -151,10 +166,14 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       Resource(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -165,9 +184,12 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       Resource(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -186,10 +208,14 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+      project: currentProject.id
     });
 
     if (filter) {
@@ -313,8 +339,12 @@ class ResourceRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {

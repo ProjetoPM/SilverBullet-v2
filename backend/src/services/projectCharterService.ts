@@ -17,7 +17,6 @@ export default class ProjectCharterService {
 
     try {
 
-
       const record = await ProjectCharterRepository.create(data, {
         ...this.options,
         session,

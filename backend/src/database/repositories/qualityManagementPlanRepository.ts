@@ -17,6 +17,10 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await QualityManagementPlan(
       options.database,
     ).create(
@@ -24,6 +28,7 @@ class QualityManagementPlanRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -48,8 +53,11 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      QualityManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      QualityManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -87,8 +95,11 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      QualityManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      QualityManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -130,10 +141,14 @@ class QualityManagementPlanRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await QualityManagementPlan(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -145,10 +160,14 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       QualityManagementPlan(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -159,9 +178,11 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       QualityManagementPlan(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -180,10 +201,14 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+      project: currentProject.id
     });
 
     if (filter) {
@@ -331,8 +356,12 @@ class QualityManagementPlanRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {

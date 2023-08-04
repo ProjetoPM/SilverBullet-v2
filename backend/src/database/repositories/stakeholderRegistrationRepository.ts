@@ -18,6 +18,10 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await StakeholderRegistration(
       options.database,
     ).create(
@@ -25,6 +29,7 @@ class StakeholderRegistrationRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -49,8 +54,11 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      StakeholderRegistration(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      StakeholderRegistration(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -88,8 +96,10 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      StakeholderRegistration(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      StakeholderRegistration(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -136,10 +146,14 @@ class StakeholderRegistrationRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await StakeholderRegistration(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -151,10 +165,14 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       StakeholderRegistration(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -165,9 +183,12 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       StakeholderRegistration(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -186,10 +207,17 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id
     });
 
     if (filter) {
@@ -393,8 +421,12 @@ class StakeholderRegistrationRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {

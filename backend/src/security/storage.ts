@@ -83,36 +83,6 @@ export default class Storage {
         folder: 'tenant/:tenantId/resourceBreakdownStructure/name',
         maxSizeInBytes: 100 * 1024 * 1024,
       },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     };
   }
 }

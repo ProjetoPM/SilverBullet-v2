@@ -17,6 +17,10 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await CostEstimates(
       options.database,
     ).create(
@@ -24,6 +28,7 @@ class CostEstimatesRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -48,8 +53,11 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      CostEstimates(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      CostEstimates(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -87,8 +95,10 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      CostEstimates(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      CostEstimates(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -130,10 +140,14 @@ class CostEstimatesRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await CostEstimates(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -145,10 +159,14 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       CostEstimates(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -159,9 +177,12 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       CostEstimates(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -180,10 +201,17 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id
     });
 
     if (filter) {
@@ -476,8 +504,12 @@ class CostEstimatesRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {

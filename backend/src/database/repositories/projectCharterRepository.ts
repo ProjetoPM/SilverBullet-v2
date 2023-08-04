@@ -17,12 +17,17 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await ProjectCharter(
       options.database,
     ).create(
       [
         {
           ...data,
+          project: currentProject.id,
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
@@ -48,8 +53,11 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject}),
       options,
     );
 
@@ -75,11 +83,7 @@ class ProjectCharterRepository {
       options,
     );
 
-    record = await this.findById(id, options);
-
-
-
-    return record;
+    return await this.findById(id, options);
   }
 
   static async destroy(id, options: IRepositoryOptions) {
@@ -87,8 +91,10 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -130,10 +136,14 @@ class ProjectCharterRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await ProjectCharter(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -145,10 +155,14 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       ProjectCharter(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -159,9 +173,11 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       ProjectCharter(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -180,10 +196,17 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id
     });
 
     if (filter) {
@@ -437,8 +460,12 @@ class ProjectCharterRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {
