@@ -16,8 +16,6 @@ export default class ResourceManagementPlanService {
     );
 
     try {
-
-
       const record = await ResourceManagementPlanRepository.create(data, {
         ...this.options,
         session,

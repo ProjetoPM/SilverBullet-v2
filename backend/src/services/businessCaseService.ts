@@ -16,8 +16,6 @@ export default class BusinessCaseService {
     );
 
     try {
-
-
       const record = await BusinessCaseRepository.create(data, {
         ...this.options,
         session,

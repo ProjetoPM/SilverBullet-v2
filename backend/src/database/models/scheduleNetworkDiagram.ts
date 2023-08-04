@@ -28,6 +28,11 @@ export default (database) => {
         ref: 'tenant',
         required: true
       },
+      project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project',
+        required: true
+      },
       createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'user',

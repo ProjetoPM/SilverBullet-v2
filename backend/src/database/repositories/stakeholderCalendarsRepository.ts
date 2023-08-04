@@ -17,6 +17,10 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
     const [record] = await StakeholderCalendars(
       options.database,
     ).create(
@@ -24,6 +28,7 @@ class StakeholderCalendarsRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          project: currentProject.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
@@ -48,8 +53,11 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      StakeholderCalendars(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      StakeholderCalendars(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -87,8 +95,11 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      StakeholderCalendars(options.database).findOne({_id: id, tenant: currentTenant.id}),
+      StakeholderCalendars(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
       options,
     );
 
@@ -130,10 +141,14 @@ class StakeholderCalendarsRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     const records = await StakeholderCalendars(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -145,10 +160,14 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     return MongooseRepository.wrapWithSessionIfExists(
       StakeholderCalendars(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
@@ -159,9 +178,12 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let record = await MongooseRepository.wrapWithSessionIfExists(
       StakeholderCalendars(options.database)
-        .findOne({_id: id, tenant: currentTenant.id})
+        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id})
       .populate('activity')
       .populate('stakeholder'),
       options,
@@ -182,10 +204,14 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: any = [];
     
     criteriaAnd.push({
       tenant: currentTenant.id,
+      project: currentProject.id
     });
 
     if (filter) {
@@ -314,8 +340,12 @@ class StakeholderCalendarsRepository {
       options,
     );
 
+    const currentProject = MongooseRepository.getCurrentProject(options);
+
+
     let criteriaAnd: Array<any> = [{
       tenant: currentTenant.id,
+      project: currentProject.id
     }];
 
     if (search) {

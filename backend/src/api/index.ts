@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { tenantMiddleware } from '../middlewares/tenantMiddleware';
+import { projectMiddleware } from '../middlewares/projectMiddleware';
 import { databaseMiddleware } from '../middlewares/databaseMiddleware';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
@@ -65,6 +66,7 @@ require('./auditLog').default(routes);
 require('./auth').default(routes);
 require('./plan').default(routes);
 require('./tenant').default(routes);
+require('./project').default(routes);
 require('./file').default(routes);
 require('./user').default(routes);
 require('./settings').default(routes);
@@ -91,24 +93,12 @@ require('./costEstimates').default(routes);
 require('./qualityManagementPlan').default(routes);
 require('./resourceManagementPlan').default(routes);
 require('./resourceBreakdownStructure').default(routes);
-require('./communicationsManagementPlan').default(routes);
-require('./riskManagementPlan').default(routes);
-require('./riskRegistration').default(routes);
-require('./procurementManagementPlan').default(routes);
-require('./procurementStatementWorkRegister').default(routes);
-require('./projectPerformanceMonitoringReport').default(routes);
-require('./workPerformanceReports').default(routes);
-require('./issueLog').default(routes);
-require('./lessonLearnedRegister').default(routes);
-require('./qualityChecklist').default(routes);
-require('./teamPerformanceEvaluation').default(routes);
-require('./changeRequest').default(routes);
-require('./projectClosure').default(routes);
-require('./closedProcurementDocumentation').default(routes);
-require('./finalReport').default(routes);
 
 // Loads the Tenant if the :tenantId param is passed
 routes.param('tenantId', tenantMiddleware);
+
+// Loads the Project if the :projectId param is passed
+routes.param('projectId', projectMiddleware);
 
 // Add the routes to the /api endpoint
 app.use('/api', routes);

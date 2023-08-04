@@ -1,26 +1,26 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/business-case`,
+    `/tenant/:tenantId/project/:projectId/business-case`,
     require('./businessCaseCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/business-case/:id`,
+    `/tenant/:tenantId/project/:projectId/business-case/:id`,
     require('./businessCaseUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/business-case/import`,
+    `/tenant/:tenantId/project/:projectId/business-case/import`,
     require('./businessCaseImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/business-case`,
+    `/tenant/:tenantId/project/:projectId/business-case`,
     require('./businessCaseDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/business-case/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/business-case/autocomplete`,
     require('./businessCaseAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/business-case`,
+    `/tenant/:tenantId/project/:projectId/business-case`,
     require('./businessCaseList').default,
   );
   app.get(

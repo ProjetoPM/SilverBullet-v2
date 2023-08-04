@@ -1,26 +1,26 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/assumption-log`,
+    `/tenant/:tenantId/project/:projectId/assumption-log`,
     require('./assumptionLogCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/assumption-log/:id`,
+    `/tenant/:tenantId/project/:projectId/assumption-log/:id`,
     require('./assumptionLogUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/assumption-log/import`,
+    `/tenant/:tenantId/project/:projectId/assumption-log/import`,
     require('./assumptionLogImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/assumption-log`,
+    `/tenant/:tenantId/project/:projectId/assumption-log`,
     require('./assumptionLogDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/assumption-log/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/assumption-log/autocomplete`,
     require('./assumptionLogAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/assumption-log`,
+    `/tenant/:tenantId/project/:projectId/assumption-log`,
     require('./assumptionLogList').default,
   );
   app.get(

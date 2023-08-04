@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import FileSchema from './schemas/fileSchema';
 import TenantUserSchema from './schemas/tenantUserSchema';
+import ProjectUserSchema from './schemas/projectUserSchema';
 const Schema = mongoose.Schema;
 
 export default (database) => {
@@ -44,6 +45,7 @@ export default (database) => {
       passwordResetTokenExpiresAt: { type: Date },
       avatars: [FileSchema],
       tenants: [TenantUserSchema],
+      projects: [ProjectUserSchema],
       jwtTokenInvalidBefore: { type: Date },
       createdBy: {
         type: Schema.Types.ObjectId,

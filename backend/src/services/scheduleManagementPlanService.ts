@@ -17,7 +17,6 @@ export default class ScheduleManagementPlanService {
 
     try {
 
-
       const record = await ScheduleManagementPlanRepository.create(data, {
         ...this.options,
         session,

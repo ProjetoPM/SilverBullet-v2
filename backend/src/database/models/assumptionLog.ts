@@ -10,12 +10,26 @@ export default (database) => {
 
   const AssumptionLogSchema = new Schema(
     {
-      assumptionLog: {
+      description: {
         type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: true,
+        enum: [
+          'Assumption',
+          'Constraint'
+        ]
       },
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
+        required: true
+      },
+      project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project',
         required: true
       },
       createdBy: {

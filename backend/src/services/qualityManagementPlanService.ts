@@ -17,7 +17,6 @@ export default class QualityManagementPlanService {
 
     try {
 
-
       const record = await QualityManagementPlanRepository.create(data, {
         ...this.options,
         session,

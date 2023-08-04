@@ -17,11 +17,11 @@ export default class ProjectManagementPlanService {
 
     try {
 
-
-      const record = await ProjectManagementPlanRepository.create(data, {
-        ...this.options,
-        session,
-      });
+      const record =
+        await ProjectManagementPlanRepository.create(data, {
+          ...this.options,
+          session,
+        });
 
       await MongooseRepository.commitTransaction(session);
 
@@ -45,16 +45,15 @@ export default class ProjectManagementPlanService {
     );
 
     try {
-
-
-      const record = await ProjectManagementPlanRepository.update(
-        id,
-        data,
-        {
-          ...this.options,
-          session,
-        },
-      );
+      const record =
+        await ProjectManagementPlanRepository.update(
+          id,
+          data,
+          {
+            ...this.options,
+            session,
+          },
+        );
 
       await MongooseRepository.commitTransaction(session);
 
@@ -93,7 +92,10 @@ export default class ProjectManagementPlanService {
   }
 
   async findById(id) {
-    return ProjectManagementPlanRepository.findById(id, this.options);
+    return ProjectManagementPlanRepository.findById(
+      id,
+      this.options,
+    );
   }
 
   async findAllAutocomplete(search, limit) {
@@ -135,12 +137,13 @@ export default class ProjectManagementPlanService {
   }
 
   async _isImportHashExistent(importHash) {
-    const count = await ProjectManagementPlanRepository.count(
-      {
-        importHash,
-      },
-      this.options,
-    );
+    const count =
+      await ProjectManagementPlanRepository.count(
+        {
+          importHash,
+        },
+        this.options,
+      );
 
     return count > 0;
   }

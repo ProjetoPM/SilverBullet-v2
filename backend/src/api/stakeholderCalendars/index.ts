@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/stakeholder-calendars`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars`,
     require('./stakeholderCalendarsCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/stakeholder-calendars/:id`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars/:id`,
     require('./stakeholderCalendarsUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/stakeholder-calendars/import`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars/import`,
     require('./stakeholderCalendarsImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/stakeholder-calendars`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars`,
     require('./stakeholderCalendarsDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-calendars/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars/autocomplete`,
     require('./stakeholderCalendarsAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-calendars`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars`,
     require('./stakeholderCalendarsList').default,
   );
   app.get(
-    `/tenant/:tenantId/stakeholder-calendars/:id`,
+    `/tenant/:tenantId/project/:projectId/stakeholder-calendars/:id`,
     require('./stakeholderCalendarsFind').default,
   );
 };
