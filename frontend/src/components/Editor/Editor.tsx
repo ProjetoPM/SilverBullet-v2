@@ -38,46 +38,39 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
     const { t } = useTranslation('editor')
     const [fixed, setFixed] = useState(isFixed)
 
-    const editor = useEditor(
-      {
-        editorProps: {
-          attributes: {
-            class: cn(
-              editorStyles,
-              fixed ? 'rounded-t-none' : '',
-              getSizeTextarea({ as: props.as }) ?? ''
-            ),
-            spellcheck: 'false'
-          }
-        },
-        extensions: [
-          StarterKit.configure({
-            ...starterKitConfigs,
-            heading: {
-              levels: [1, 2]
-            },
-            history: {
-              depth: 10
-            }
-          }),
-          Typography,
-          Placeholder.configure({
-            placeholder: props.placeholder ?? '...',
-            emptyEditorClass: placeholderStyles
-          }),
-          CharacterCount.configure({
-            limit: props.limit
-          }),
-          Underline
-        ],
-        content: content,
-        editable: !readOnly,
-        onUpdate: ({ editor }) => {
-          props.onChange?.(editor.getHTML())
+    const editor = useEditor({
+      editorProps: {
+        attributes: {
+          class: cn(editorStyles, getSizeTextarea({ as: props.as }) ?? ''),
+          spellcheck: 'false'
         }
       },
-      [fixed]
-    )
+      extensions: [
+        StarterKit.configure({
+          ...starterKitConfigs,
+          heading: {
+            levels: [1, 2]
+          },
+          history: {
+            depth: 10
+          }
+        }),
+        Typography,
+        Placeholder.configure({
+          placeholder: props.placeholder ?? '...',
+          emptyEditorClass: placeholderStyles
+        }),
+        CharacterCount.configure({
+          limit: props.limit
+        }),
+        Underline
+      ],
+      content: content,
+      editable: !readOnly,
+      onUpdate: ({ editor }) => {
+        props.onChange?.(editor.getHTML())
+      }
+    })
 
     /**
      * Update the placeholder after changing the language.
@@ -128,12 +121,13 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
           </>
         )}
         <EditorContent
+          className="[&>*]:data-[is-fixed=true]:rounded-t-none"
+          data-is-fixed={fixed}
           editor={editor}
-          {...props}
         />
         {editor && (
           <>
-            <span className="absolute text-[11.25px] text-neutral-500 -top-5 right-0">
+            <span className="absolute text-[11.25px] text-neutral-500 -top-[22.75px] right-0">
               <span>
                 {chars}/{props.limit} {t('characters')} | {words}{' '}
                 {words > 1 ? t('words') : t('word')}
@@ -144,6 +138,7 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
               tabIndex={-1}
               onFocus={() => editor.commands.focus()}
               ref={ref}
+              {...props}
             />
           </>
         )}

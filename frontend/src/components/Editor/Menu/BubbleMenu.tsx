@@ -10,12 +10,7 @@ interface BubbleMenuProps {
   setFixed: () => void
 }
 
-const BubbleMenu = ({
-  isFixed,
-  editor,
-  className,
-  setFixed
-}: BubbleMenuProps) => {
+const BubbleMenu = ({ isFixed, editor, className, setFixed }: BubbleMenuProps) => {
   return (
     <_BubbleMenu
       className={cn(
@@ -31,7 +26,11 @@ const BubbleMenu = ({
       }}
       editor={editor}
     >
-      <ButtonGroup editor={editor} isFixed={isFixed} setFixed={setFixed} />
+      <ButtonGroup
+        editor={editor}
+        isFixed={isFixed}
+        setFixed={setFixed}
+      />
     </_BubbleMenu>
   )
 }
