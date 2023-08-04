@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
-  const { t } = useTranslation('login')
+  const { t } = useTranslation('auth')
 
   return (
     <>

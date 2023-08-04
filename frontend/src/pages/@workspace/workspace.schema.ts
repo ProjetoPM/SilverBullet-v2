@@ -8,7 +8,7 @@ export const max = {
 export const WorkspaceSchema = z.object({
   name: string()
     .refine((value) => html(value, 3, '>='), params('at_least', 3))
-    .refine((value) => html(value, 50, '<='), params('at_most', 50))
+    .refine((value) => html(value, max.name, '<='), params('at_most', max.name))
 })
 
 export const defaultValues = {

@@ -90,6 +90,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
             <Button
+              variant="delete"
               onClick={() => handleDelete()}
               disabled={isLoading}
             >

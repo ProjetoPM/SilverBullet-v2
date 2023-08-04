@@ -23,7 +23,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
               <div className="hidden lg:flex border-r">
                 <Sidebar />
               </div>
-              <div className="p-5 lg:px-10">
+              <div className="p-5 lg:px-10 bg-accent/5">
                 <Outlet />
               </div>
             </div>

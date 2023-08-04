@@ -34,7 +34,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
     <Dialog.Root>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <Button id={id} variant="ghost" className="h-8 w-8 p-0">
+          <Button
+            id={id}
+            variant="ghost"
+            className="h-8 w-8 p-0"
+          >
             <span className="sr-only">{t('open_menu')}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -49,7 +53,10 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/workspaces/${data._id}/edit`} id={`edit-${id}`}>
+          <Link
+            to={`/workspaces/${data._id}/edit`}
+            id={`edit-${id}`}
+          >
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -87,7 +94,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <Button variant="ghost">{t('default:btn.cancel')}</Button>
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
-            <Button onClick={() => handleDelete()} disabled={isLoading}>
+            <Button
+              variant="delete"
+              onClick={() => handleDelete()}
+              disabled={isLoading}
+            >
               {t('default:btn.confirm')}
             </Button>
           </Dialog.Trigger>

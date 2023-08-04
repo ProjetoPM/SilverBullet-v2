@@ -128,9 +128,9 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         {editor && (
           <>
             <span className="absolute text-[11.25px] text-neutral-500 -top-[22.75px] right-0">
-              <span>
-                {chars}/{props.limit} {t('characters')} | {words}{' '}
-                {words > 1 ? t('words') : t('word')}
+              {chars}/{props.limit} {t('characters')}{' '}
+              <span className="hidden sm:inline-flex">
+                | {words} {words > 1 ? t('words') : t('word')}
               </span>
             </span>
             <input
