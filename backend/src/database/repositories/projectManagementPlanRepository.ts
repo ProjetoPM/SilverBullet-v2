@@ -7,15 +7,15 @@ import lodash from 'lodash';
 import ProjectManagementPlan from '../models/projectManagementPlan';
 
 class ProjectManagementPlanRepository {
-  
   static async create(data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentUser = MongooseRepository.getCurrentUser(
-      options,
-    );
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
+
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     const [record] = await ProjectManagementPlan(
       options.database,
@@ -23,10 +23,11 @@ class ProjectManagementPlanRepository {
       [
         {
           ...data,
+          project: currentProject.id,
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
-        }
+        },
       ],
       options,
     );
@@ -38,20 +39,29 @@ class ProjectManagementPlanRepository {
       options,
     );
 
-    
-
     return this.findById(record.id, options);
   }
 
-  static async update(id, data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async update(
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id}),
-      options,
-    );
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectManagementPlan(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject.id,
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
@@ -61,9 +71,8 @@ class ProjectManagementPlanRepository {
       { _id: id },
       {
         ...data,
-        updatedBy: MongooseRepository.getCurrentUser(
-          options,
-        ).id,
+        updatedBy:
+          MongooseRepository.getCurrentUser(options).id,
       },
       options,
     );
@@ -77,26 +86,34 @@ class ProjectManagementPlanRepository {
 
     record = await this.findById(id, options);
 
-
-
     return record;
   }
 
   static async destroy(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectManagementPlan(options.database).findOne({_id: id, tenant: currentTenant.id}),
-      options,
-    );
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectManagementPlan(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject.id,
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
     }
 
-    await ProjectManagementPlan(options.database).deleteOne({ _id: id }, options);
+    await ProjectManagementPlan(options.database).deleteOne(
+      { _id: id },
+      options,
+    );
 
     await this._createAuditLog(
       AuditLogRepository.DELETE,
@@ -104,8 +121,6 @@ class ProjectManagementPlanRepository {
       record,
       options,
     );
-
-
   }
 
   static async filterIdInTenant(
@@ -130,10 +145,16 @@ class ProjectManagementPlanRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    const records = await ProjectManagementPlan(options.database)
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    const records = await ProjectManagementPlan(
+      options.database,
+    )
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
+        project: currentProject.id
       })
       .select(['_id']);
 
@@ -141,29 +162,40 @@ class ProjectManagementPlanRepository {
   }
 
   static async count(filter, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
 
     return MongooseRepository.wrapWithSessionIfExists(
-      ProjectManagementPlan(options.database).countDocuments({
+      ProjectManagementPlan(
+        options.database,
+      ).countDocuments({
         ...filter,
         tenant: currentTenant.id,
+        project: currentProject.id
       }),
       options,
     );
   }
 
   static async findById(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectManagementPlan(options.database)
-        .findOne({_id: id, tenant: currentTenant.id}),
-      options,
-    );
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
+
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectManagementPlan(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject.id
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
@@ -176,14 +208,20 @@ class ProjectManagementPlanRepository {
     { filter, limit = 0, offset = 0, orderBy = '' },
     options: IRepositoryOptions,
   ) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
 
     let criteriaAnd: any = [];
-    
+
     criteriaAnd.push({
       tenant: currentTenant.id,
+    });
+
+    criteriaAnd.push({
+      project: currentProject.id
     });
 
     if (filter) {
@@ -458,14 +496,23 @@ class ProjectManagementPlanRepository {
     return { rows, count };
   }
 
-  static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async findAllAutocomplete(
+    search,
+    limit,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    let criteriaAnd: Array<any> = [{
-      tenant: currentTenant.id,
-    }];
+      const currentProject = MongooseRepository.getCurrentProject(options);
+
+
+    let criteriaAnd: Array<any> = [
+      {
+        tenant: currentTenant.id,
+        project: currentProject.id
+      },
+    ];
 
     if (search) {
       criteriaAnd.push({
@@ -475,20 +522,25 @@ class ProjectManagementPlanRepository {
           },
           {
             scopeManagementPlan: {
-              $regex: MongooseQueryUtils.escapeRegExp(search),
+              $regex:
+                MongooseQueryUtils.escapeRegExp(search),
               $options: 'i',
-            }
-          },          
+            },
+          },
         ],
       });
     }
 
-    const sort = MongooseQueryUtils.sort('scopeManagementPlan_ASC');
+    const sort = MongooseQueryUtils.sort(
+      'scopeManagementPlan_ASC',
+    );
     const limitEscaped = Number(limit || 0) || undefined;
 
     const criteria = { $and: criteriaAnd };
 
-    const records = await ProjectManagementPlan(options.database)
+    const records = await ProjectManagementPlan(
+      options.database,
+    )
       .find(criteria)
       .limit(limitEscaped)
       .sort(sort);
@@ -499,10 +551,16 @@ class ProjectManagementPlanRepository {
     }));
   }
 
-  static async _createAuditLog(action, id, data, options: IRepositoryOptions) {
+  static async _createAuditLog(
+    action,
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
     await AuditLogRepository.log(
       {
-        entityName: ProjectManagementPlan(options.database).modelName,
+        entityName: ProjectManagementPlan(options.database)
+          .modelName,
         entityId: id,
         action,
         values: data,
@@ -519,10 +577,6 @@ class ProjectManagementPlanRepository {
     const output = record.toObject
       ? record.toObject()
       : record;
-
-
-
-
 
     return output;
   }

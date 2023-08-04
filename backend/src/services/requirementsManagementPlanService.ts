@@ -17,7 +17,6 @@ export default class RequirementsManagementPlanService {
 
     try {
 
-
       const record = await RequirementsManagementPlanRepository.create(data, {
         ...this.options,
         session,

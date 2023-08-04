@@ -17,7 +17,6 @@ export default class BenefitsManagementPlanService {
 
     try {
 
-
       const record = await BenefitsManagementPlanRepository.create(data, {
         ...this.options,
         session,

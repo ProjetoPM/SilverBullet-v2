@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Plans from '../../security/plans';
+import ProjectTenantSchema from './schemas/projectTenantSchema';
 
 const plans = Plans.values;
 const Schema = mongoose.Schema;
@@ -37,6 +38,7 @@ export default (database) => {
       planUserId: {
         type: String,
       },
+      projects: [ProjectTenantSchema],
       createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'user',

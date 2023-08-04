@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/resource-breakdown-structure`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure`,
     require('./resourceBreakdownStructureCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/resource-breakdown-structure/:id`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure/:id`,
     require('./resourceBreakdownStructureUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/resource-breakdown-structure/import`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure/import`,
     require('./resourceBreakdownStructureImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/resource-breakdown-structure`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure`,
     require('./resourceBreakdownStructureDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/resource-breakdown-structure/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure/autocomplete`,
     require('./resourceBreakdownStructureAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/resource-breakdown-structure`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure`,
     require('./resourceBreakdownStructureList').default,
   );
   app.get(
-    `/tenant/:tenantId/resource-breakdown-structure/:id`,
+    `/tenant/:tenantId/project/:projectId/resource-breakdown-structure/:id`,
     require('./resourceBreakdownStructureFind').default,
   );
 };

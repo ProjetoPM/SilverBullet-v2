@@ -17,7 +17,6 @@ export default class ProjectScopeStatementService {
 
     try {
 
-
       const record = await ProjectScopeStatementRepository.create(data, {
         ...this.options,
         session,

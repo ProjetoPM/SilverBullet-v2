@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/activity-duration-estimates`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates`,
     require('./activityDurationEstimatesCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/activity-duration-estimates/:id`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates/:id`,
     require('./activityDurationEstimatesUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/activity-duration-estimates/import`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates/import`,
     require('./activityDurationEstimatesImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/activity-duration-estimates`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates`,
     require('./activityDurationEstimatesDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/activity-duration-estimates/autocomplete`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates/autocomplete`,
     require('./activityDurationEstimatesAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/activity-duration-estimates`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates`,
     require('./activityDurationEstimatesList').default,
   );
   app.get(
-    `/tenant/:tenantId/activity-duration-estimates/:id`,
+    `/tenant/:tenantId/project/:projectId/activity-duration-estimates/:id`,
     require('./activityDurationEstimatesFind').default,
   );
 };

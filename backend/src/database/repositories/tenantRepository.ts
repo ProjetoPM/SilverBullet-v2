@@ -5,44 +5,7 @@ import User from '../models/user';
 import Tenant from '../models/tenant';
 import Settings from '../models/settings';
 import Error404 from '../../errors/Error404';
-import ProjectCharter from '../models/projectCharter';
-import BusinessCase from '../models/businessCase';
-import BenefitsManagementPlan from '../models/benefitsManagementPlan';
-import AssumptionLog from '../models/assumptionLog';
-import StakeholderRegistration from '../models/stakeholderRegistration';
-import ProjectManagementPlan from '../models/projectManagementPlan';
-import RequirementsManagementPlan from '../models/requirementsManagementPlan';
-import RequirementDocumentation from '../models/requirementDocumentation';
-import ScopeManagementPlan from '../models/scopeManagementPlan';
-import ScheduleManagementPlan from '../models/scheduleManagementPlan';
-import ProjectScopeStatement from '../models/projectScopeStatement';
-import WorkbreakdownStructure from '../models/workbreakdownStructure';
-import ScheduleNetworkDiagram from '../models/scheduleNetworkDiagram';
-import ActivityList from '../models/activityList';
-import Resource from '../models/resource';
-import ResourceRequirements from '../models/resourceRequirements';
-import ActivityDurationEstimates from '../models/activityDurationEstimates';
-import StakeholderCalendars from '../models/stakeholderCalendars';
-import CostManagementPlan from '../models/costManagementPlan';
-import CostEstimates from '../models/costEstimates';
-import QualityManagementPlan from '../models/qualityManagementPlan';
-import ResourceManagementPlan from '../models/resourceManagementPlan';
-import ResourceBreakdownStructure from '../models/resourceBreakdownStructure';
-import CommunicationsManagementPlan from '../models/communicationsManagementPlan';
-import RiskManagementPlan from '../models/riskManagementPlan';
-import RiskRegistration from '../models/riskRegistration';
-import ProcurementManagementPlan from '../models/procurementManagementPlan';
-import ProcurementStatementWorkRegister from '../models/procurementStatementWorkRegister';
-import ProjectPerformanceMonitoringReport from '../models/projectPerformanceMonitoringReport';
-import WorkPerformanceReports from '../models/workPerformanceReports';
-import IssueLog from '../models/issueLog';
-import LessonLearnedRegister from '../models/lessonLearnedRegister';
-import QualityChecklist from '../models/qualityChecklist';
-import TeamPerformanceEvaluation from '../models/teamPerformanceEvaluation';
-import ChangeRequest from '../models/changeRequest';
-import ProjectClosure from '../models/projectClosure';
-import ClosedProcurementDocumentation from '../models/closedProcurementDocumentation';
-import FinalReport from '../models/finalReport';
+import ProjectRepository from './projectRepository';
 import Error400 from '../../errors/Error400';
 import { v4 as uuid } from 'uuid';
 import { isUserInTenant } from '../utils/userTenantUtils';
@@ -243,6 +206,8 @@ class TenantRepository {
       options,
     );
 
+    const tenant = await this.findById(id, options);
+
     if (!isUserInTenant(currentUser, id)) {
       throw new Error404();
     }
@@ -264,81 +229,7 @@ class TenantRepository {
       options,
     );
 
-    await ProjectCharter(options.database).deleteMany({ tenant: id }, options);
-
-    await BusinessCase(options.database).deleteMany({ tenant: id }, options);
-
-    await BenefitsManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await AssumptionLog(options.database).deleteMany({ tenant: id }, options);
-
-    await StakeholderRegistration(options.database).deleteMany({ tenant: id }, options);
-
-    await ProjectManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await RequirementsManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await RequirementDocumentation(options.database).deleteMany({ tenant: id }, options);
-
-    await ScopeManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await ScheduleManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await ProjectScopeStatement(options.database).deleteMany({ tenant: id }, options);
-
-    await WorkbreakdownStructure(options.database).deleteMany({ tenant: id }, options);
-
-    await ScheduleNetworkDiagram(options.database).deleteMany({ tenant: id }, options);
-
-    await ActivityList(options.database).deleteMany({ tenant: id }, options);
-
-    await Resource(options.database).deleteMany({ tenant: id }, options);
-
-    await ResourceRequirements(options.database).deleteMany({ tenant: id }, options);
-
-    await ActivityDurationEstimates(options.database).deleteMany({ tenant: id }, options);
-
-    await StakeholderCalendars(options.database).deleteMany({ tenant: id }, options);
-
-    await CostManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await CostEstimates(options.database).deleteMany({ tenant: id }, options);
-
-    await QualityManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await ResourceManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await ResourceBreakdownStructure(options.database).deleteMany({ tenant: id }, options);
-
-    await CommunicationsManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await RiskManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await RiskRegistration(options.database).deleteMany({ tenant: id }, options);
-
-    await ProcurementManagementPlan(options.database).deleteMany({ tenant: id }, options);
-
-    await ProcurementStatementWorkRegister(options.database).deleteMany({ tenant: id }, options);
-
-    await ProjectPerformanceMonitoringReport(options.database).deleteMany({ tenant: id }, options);
-
-    await WorkPerformanceReports(options.database).deleteMany({ tenant: id }, options);
-
-    await IssueLog(options.database).deleteMany({ tenant: id }, options);
-
-    await LessonLearnedRegister(options.database).deleteMany({ tenant: id }, options);
-
-    await QualityChecklist(options.database).deleteMany({ tenant: id }, options);
-
-    await TeamPerformanceEvaluation(options.database).deleteMany({ tenant: id }, options);
-
-    await ChangeRequest(options.database).deleteMany({ tenant: id }, options);
-
-    await ProjectClosure(options.database).deleteMany({ tenant: id }, options);
-
-    await ClosedProcurementDocumentation(options.database).deleteMany({ tenant: id }, options);
-
-    await FinalReport(options.database).deleteMany({ tenant: id }, options);
+    await ProjectRepository.destroyAll(tenant.projects, options);
 
     await Settings(options.database).deleteMany(
       { tenant: id },
