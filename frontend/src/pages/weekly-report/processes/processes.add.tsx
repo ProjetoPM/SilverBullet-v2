@@ -15,7 +15,7 @@ const AddProcess = ({ title, append }: AddProcessProps) => {
   }
 
   return (
-    <div className="flex items-center gap-2 bg-accent/60 dark:bg-accent/50 border rounded-md px-5 py-2">
+    <div className="flex items-center gap-2">
       <Label className="text-xl font-normal">{title}</Label>
       <Button
         type="button"
