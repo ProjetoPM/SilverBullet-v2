@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
+    "framer-motion": "^10.15.0",
     "http-status-codes": "^2.2.0",
     "i18next": "^23.4.1",
     "i18next-browser-languagedetector": "^7.1.0",
