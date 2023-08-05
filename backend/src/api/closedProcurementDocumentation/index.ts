@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/closed-procurement-documentation`,
+    require('./closedProcurementDocumentationCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/closed-procurement-documentation/:id`,
+    require('./closedProcurementDocumentationUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/closed-procurement-documentation/import`,
+    require('./closedProcurementDocumentationImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/closed-procurement-documentation`,
+    require('./closedProcurementDocumentationDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/closed-procurement-documentation/autocomplete`,
+    require('./closedProcurementDocumentationAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/closed-procurement-documentation`,
+    require('./closedProcurementDocumentationList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/closed-procurement-documentation/:id`,
+    require('./closedProcurementDocumentationFind').default,
+  );
+};

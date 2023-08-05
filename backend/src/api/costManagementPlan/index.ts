@@ -1,30 +1,30 @@
 export default (app) => {
   app.post(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan`,
+    `/tenant/:tenantId/cost-management-plan`,
     require('./costManagementPlanCreate').default,
   );
   app.put(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan/:id`,
+    `/tenant/:tenantId/cost-management-plan/:id`,
     require('./costManagementPlanUpdate').default,
   );
   app.post(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan/import`,
+    `/tenant/:tenantId/cost-management-plan/import`,
     require('./costManagementPlanImport').default,
   );
   app.delete(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan`,
+    `/tenant/:tenantId/cost-management-plan`,
     require('./costManagementPlanDestroy').default,
   );
   app.get(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan/autocomplete`,
+    `/tenant/:tenantId/cost-management-plan/autocomplete`,
     require('./costManagementPlanAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan`,
+    `/tenant/:tenantId/cost-management-plan`,
     require('./costManagementPlanList').default,
   );
   app.get(
-    `/tenant/:tenantId/project/:projectId/cost-management-plan/:id`,
+    `/tenant/:tenantId/cost-management-plan/:id`,
     require('./costManagementPlanFind').default,
   );
 };

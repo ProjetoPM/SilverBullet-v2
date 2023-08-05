@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/procurement-management-plan`,
+    require('./procurementManagementPlanCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/procurement-management-plan/:id`,
+    require('./procurementManagementPlanUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/procurement-management-plan/import`,
+    require('./procurementManagementPlanImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/procurement-management-plan`,
+    require('./procurementManagementPlanDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-management-plan/autocomplete`,
+    require('./procurementManagementPlanAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-management-plan`,
+    require('./procurementManagementPlanList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/procurement-management-plan/:id`,
+    require('./procurementManagementPlanFind').default,
+  );
+};

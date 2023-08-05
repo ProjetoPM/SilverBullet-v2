@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/quality-checklist`,
+    require('./qualityChecklistCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/quality-checklist/:id`,
+    require('./qualityChecklistUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/quality-checklist/import`,
+    require('./qualityChecklistImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/quality-checklist`,
+    require('./qualityChecklistDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/quality-checklist/autocomplete`,
+    require('./qualityChecklistAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/quality-checklist`,
+    require('./qualityChecklistList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/quality-checklist/:id`,
+    require('./qualityChecklistFind').default,
+  );
+};

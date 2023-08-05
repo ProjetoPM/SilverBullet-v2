@@ -1,0 +1,30 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/team-performance-evaluation`,
+    require('./teamPerformanceEvaluationCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/team-performance-evaluation/:id`,
+    require('./teamPerformanceEvaluationUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/team-performance-evaluation/import`,
+    require('./teamPerformanceEvaluationImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/team-performance-evaluation`,
+    require('./teamPerformanceEvaluationDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/team-performance-evaluation/autocomplete`,
+    require('./teamPerformanceEvaluationAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/team-performance-evaluation`,
+    require('./teamPerformanceEvaluationList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/team-performance-evaluation/:id`,
+    require('./teamPerformanceEvaluationFind').default,
+  );
+};
