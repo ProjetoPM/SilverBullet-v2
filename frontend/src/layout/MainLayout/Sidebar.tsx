@@ -1,9 +1,12 @@
 import { LinkMenu } from '@/components/Utils/LinkMenu'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { sidebar } from '@/constants/items-sidebar'
+import { useSidebar } from '@/stores/useSidebar'
 import { Label } from '@radix-ui/react-label'
 
 const Sidebar = () => {
+  const setOpen = useSidebar((state) => state.setOpen)
+
   return (
     <ScrollArea className="mt-4 w-full">
       {sidebar.map((item) => {
@@ -24,6 +27,7 @@ const Sidebar = () => {
                   key={item.id}
                   to={item.link}
                   data-hidden={item.isHidden}
+                  onClick={() => setOpen(false)}
                 >
                   {item.icon}
                   {item.title}
