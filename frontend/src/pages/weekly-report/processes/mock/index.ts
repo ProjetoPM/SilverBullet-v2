@@ -1,29 +1,38 @@
+export type Phases = {
+  id: string
+  key: string
+  entities: {
+    id: string
+    key: string
+  }[]
+}
+
 export const phases = [
   {
-    id: 1,
-    name: 'initiating',
+    id: '1',
+    key: 'initiating',
     entities: [
       {
-        id: 1,
-        name: 'project_charter'
+        id: '1',
+        key: 'project_charter'
       },
       {
-        id: 2,
-        name: 'business_case'
+        id: '2',
+        key: 'business_case'
       }
     ]
   },
   {
-    id: 2,
-    name: 'planning',
+    id: '2',
+    key: 'planning',
     entities: [
       {
-        id: 1,
-        name: 'project_management_plan'
+        id: '1',
+        key: 'project_management_plan'
       },
       {
-        id: 2,
-        name: 'requirements_management_document'
+        id: '2',
+        key: 'requirements_management_document'
       }
     ]
   }

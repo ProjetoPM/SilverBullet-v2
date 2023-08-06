@@ -8,7 +8,7 @@ import { Control, UseFieldArrayRemove, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { WeeklyReportSchema, max } from '../weekly-report.schema'
-import { processGroup } from './mock/data'
+import { Phases, phases } from './mock'
 import { RemoveProcess } from './processes.remove'
 
 type FieldsProcessProps = {
@@ -94,9 +94,29 @@ const SelectProcess = memo(
     form,
     control
   }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
-    const { t } = useTranslation('weekly-report')
+    const { t } = useTranslation(['phases', 'weekly-report'])
     const [isGroupOpen, setGroupOpen] = useState(false)
     const [isNameOpen, setNameOpen] = useState(false)
+    const [group, setGroup] = useState('1')
+
+    const onSelect = (
+      data: Pick<Phases, 'id' | 'key'>,
+      type: 'group' | 'name'
+    ) => {
+      form.setValue(`processes.${index}.${type}`, data.id)
+      form.clearErrors(`processes.${index}.${type}`)
+
+      switch (type) {
+        case 'group':
+          setGroup(data.id)
+          form.setValue(`processes.${index}.name`, '')
+          setGroupOpen(false)
+          break
+        case 'name':
+          setNameOpen(false)
+          break
+      }
+    }
 
     return (
       <>
@@ -105,7 +125,7 @@ const SelectProcess = memo(
           name={`processes.${index}.group`}
           render={({ field }) => (
             <Form.Item className="flex flex-col gap-1">
-              <Form.Label>{t('process_group.label')}</Form.Label>
+              <Form.Label>{t('weekly-report:process_group.label')}</Form.Label>
               <Popover.Root
                 open={isGroupOpen}
                 onOpenChange={setGroupOpen}
@@ -120,42 +140,38 @@ const SelectProcess = memo(
                         !field.value && 'text-muted-foreground'
                       )}
                     >
-                      {field.value
-                        ? processGroup.find(
-                            (process) => process.value === field.value
-                          )?.label
-                        : t('process_group.placeholder')}
+                      {t(
+                        phases.find((process) => process.id === field.value)
+                          ?.key ?? 'weekly-report:process_group.placeholder'
+                      )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </Form.Control>
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    <Command.Input placeholder={t('search_process_group')} />
-                    <Command.Empty>{t('no_results_found')}</Command.Empty>
+                    <Command.Input
+                      placeholder={t('weekly-report:search_process_group')}
+                    />
+                    <Command.Empty>
+                      {t('weekly-report:no_results_found')}
+                    </Command.Empty>
                     <Command.Group>
-                      {processGroup.map((process) => (
+                      {phases.map((phase) => (
                         <Command.Item
-                          value={process.label}
-                          key={process.value}
-                          onSelect={() => {
-                            form.setValue(
-                              `processes.${index}.group`,
-                              process.value
-                            )
-                            form.clearErrors(`processes.${index}.group`)
-                            setGroupOpen(false)
-                          }}
+                          value={t(phase.key)}
+                          key={phase.id}
+                          onSelect={() => onSelect(phase, 'group')}
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              process.value === field.value
+                              phase.id === field.value
                                 ? 'opacity-100'
                                 : 'opacity-0'
                             )}
                           />
-                          {process.label}
+                          {t(phase.key)}
                         </Command.Item>
                       ))}
                     </Command.Group>
@@ -171,7 +187,7 @@ const SelectProcess = memo(
           name={`processes.${index}.name`}
           render={({ field }) => (
             <Form.Item className="flex flex-col gap-1">
-              <Form.Label>{t('process_name.label')}</Form.Label>
+              <Form.Label>{t('weekly-report:process_name.label')}</Form.Label>
               <Popover.Root
                 open={isNameOpen}
                 onOpenChange={setNameOpen}
@@ -186,42 +202,39 @@ const SelectProcess = memo(
                         !field.value && 'text-muted-foreground'
                       )}
                     >
-                      {field.value
-                        ? processGroup.find(
-                            (process) => process.value === field.value
-                          )?.label
-                        : t('process_name.placeholder')}
+                      {t(
+                        phases[+group - 1]?.entities.find(
+                          (process) => process.id === field.value
+                        )?.key ?? 'weekly-report:process_name.placeholder'
+                      )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </Form.Control>
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    <Command.Input placeholder={t('search_process_name')} />
-                    <Command.Empty>{t('no_results_found')}</Command.Empty>
+                    <Command.Input
+                      placeholder={t('weekly-report:search_process_name')}
+                    />
+                    <Command.Empty>
+                      {t('weekly-report:no_results_found')}
+                    </Command.Empty>
                     <Command.Group>
-                      {processGroup.map((process) => (
+                      {phases[+group - 1]?.entities.map((process) => (
                         <Command.Item
-                          value={process.label}
-                          key={process.value}
-                          onSelect={() => {
-                            form.setValue(
-                              `processes.${index}.name`,
-                              process.value
-                            )
-                            form.clearErrors(`processes.${index}.name`)
-                            setNameOpen(false)
-                          }}
+                          value={t(process.key)}
+                          key={process.id}
+                          onSelect={() => onSelect(process, 'name')}
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              process.value === field.value
+                              process.id === field.value
                                 ? 'opacity-100'
                                 : 'opacity-0'
                             )}
                           />
-                          {process.label}
+                          {t(process.key)}
                         </Command.Item>
                       ))}
                     </Command.Group>
