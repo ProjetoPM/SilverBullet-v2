@@ -49,14 +49,14 @@ const Processes = ({ form, control }: ProcessesProps) => {
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content
-            align="end"
-            className="space-y-2"
-          >
+          <DropdownMenu.Content align="end">
             <DropdownMenu.Label>{t('order')}</DropdownMenu.Label>
             <DropdownMenu.Separator />
             <DropdownMenu.Item
-              className={cn('flex gap-3', order === 'desc' && 'bg-accent/70')}
+              className={cn(
+                'flex gap-3 mb-1',
+                order === 'desc' && 'bg-accent/70'
+              )}
               onClick={() => setOrder('desc')}
             >
               <ArrowUp10 size={18} />

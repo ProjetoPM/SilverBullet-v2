@@ -3,7 +3,7 @@ import { Button, Command, Form, Popover } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import { Label } from '@radix-ui/react-label'
 import { Check, ChevronsUpDown, Upload, XCircle } from 'lucide-react'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { Control, UseFieldArrayRemove, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -88,152 +88,154 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
   )
 }
 
-const SelectProcess = ({
-  index,
-  form,
-  control
-}: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
-  const { t } = useTranslation('weekly-report')
-  const [isGroupOpen, setGroupOpen] = useState(false)
-  const [isNameOpen, setNameOpen] = useState(false)
+const SelectProcess = memo(
+  ({
+    index,
+    form,
+    control
+  }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
+    const { t } = useTranslation('weekly-report')
+    const [isGroupOpen, setGroupOpen] = useState(false)
+    const [isNameOpen, setNameOpen] = useState(false)
 
-  return (
-    <>
-      <Form.Field
-        control={control}
-        name={`processes.${index}.group`}
-        render={({ field }) => (
-          <Form.Item className="flex flex-col gap-1">
-            <Form.Label>{t('process_group.label')}</Form.Label>
-            <Popover.Root
-              open={isGroupOpen}
-              onOpenChange={setGroupOpen}
-            >
-              <Popover.Trigger asChild>
-                <Form.Control>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className={cn(
-                      'justify-between',
-                      !field.value && 'text-muted-foreground'
-                    )}
-                  >
-                    {field.value
-                      ? processGroup.find(
-                          (process) => process.value === field.value
-                        )?.label
-                      : t('process_group.placeholder')}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </Form.Control>
-              </Popover.Trigger>
-              <Popover.Content className="p-0">
-                <Command.Root>
-                  <Command.Input placeholder={t('search_process_group')} />
-                  <Command.Empty>{t('no_results_found')}</Command.Empty>
-                  <Command.Group>
-                    {processGroup.map((process) => (
-                      <Command.Item
-                        value={process.label}
-                        key={process.value}
-                        onSelect={() => {
-                          form.setValue(
-                            `processes.${index}.group`,
-                            process.value
-                          )
-                          form.clearErrors(`processes.${index}.group`)
-                          setGroupOpen(false)
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            'mr-2 h-4 w-4',
-                            process.value === field.value
-                              ? 'opacity-100'
-                              : 'opacity-0'
-                          )}
-                        />
-                        {process.label}
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-                </Command.Root>
-              </Popover.Content>
-            </Popover.Root>
-            <Form.Message />
-          </Form.Item>
-        )}
-      />
-      <Form.Field
-        control={control}
-        name={`processes.${index}.name`}
-        render={({ field }) => (
-          <Form.Item className="flex flex-col gap-1">
-            <Form.Label>{t('process_name.label')}</Form.Label>
-            <Popover.Root
-              open={isNameOpen}
-              onOpenChange={setNameOpen}
-            >
-              <Popover.Trigger asChild>
-                <Form.Control>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className={cn(
-                      'justify-between',
-                      !field.value && 'text-muted-foreground'
-                    )}
-                  >
-                    {field.value
-                      ? processGroup.find(
-                          (process) => process.value === field.value
-                        )?.label
-                      : t('process_name.placeholder')}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </Form.Control>
-              </Popover.Trigger>
-              <Popover.Content className="p-0">
-                <Command.Root>
-                  <Command.Input placeholder={t('search_process_name')} />
-                  <Command.Empty>{t('no_results_found')}</Command.Empty>
-                  <Command.Group>
-                    {processGroup.map((process) => (
-                      <Command.Item
-                        value={process.label}
-                        key={process.value}
-                        onSelect={() => {
-                          form.setValue(
-                            `processes.${index}.name`,
-                            process.value
-                          )
-                          form.clearErrors(`processes.${index}.name`)
-                          setNameOpen(false)
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            'mr-2 h-4 w-4',
-                            process.value === field.value
-                              ? 'opacity-100'
-                              : 'opacity-0'
-                          )}
-                        />
-                        {process.label}
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-                </Command.Root>
-              </Popover.Content>
-            </Popover.Root>
-            <Form.Message />
-          </Form.Item>
-        )}
-      />
-    </>
-  )
-}
+    return (
+      <>
+        <Form.Field
+          control={control}
+          name={`processes.${index}.group`}
+          render={({ field }) => (
+            <Form.Item className="flex flex-col gap-1">
+              <Form.Label>{t('process_group.label')}</Form.Label>
+              <Popover.Root
+                open={isGroupOpen}
+                onOpenChange={setGroupOpen}
+              >
+                <Popover.Trigger asChild>
+                  <Form.Control>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        'justify-between',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value
+                        ? processGroup.find(
+                            (process) => process.value === field.value
+                          )?.label
+                        : t('process_group.placeholder')}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </Form.Control>
+                </Popover.Trigger>
+                <Popover.Content className="p-0">
+                  <Command.Root>
+                    <Command.Input placeholder={t('search_process_group')} />
+                    <Command.Empty>{t('no_results_found')}</Command.Empty>
+                    <Command.Group>
+                      {processGroup.map((process) => (
+                        <Command.Item
+                          value={process.label}
+                          key={process.value}
+                          onSelect={() => {
+                            form.setValue(
+                              `processes.${index}.group`,
+                              process.value
+                            )
+                            form.clearErrors(`processes.${index}.group`)
+                            setGroupOpen(false)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              process.value === field.value
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            )}
+                          />
+                          {process.label}
+                        </Command.Item>
+                      ))}
+                    </Command.Group>
+                  </Command.Root>
+                </Popover.Content>
+              </Popover.Root>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
+        <Form.Field
+          control={control}
+          name={`processes.${index}.name`}
+          render={({ field }) => (
+            <Form.Item className="flex flex-col gap-1">
+              <Form.Label>{t('process_name.label')}</Form.Label>
+              <Popover.Root
+                open={isNameOpen}
+                onOpenChange={setNameOpen}
+              >
+                <Popover.Trigger asChild>
+                  <Form.Control>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        'justify-between',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value
+                        ? processGroup.find(
+                            (process) => process.value === field.value
+                          )?.label
+                        : t('process_name.placeholder')}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </Form.Control>
+                </Popover.Trigger>
+                <Popover.Content className="p-0">
+                  <Command.Root>
+                    <Command.Input placeholder={t('search_process_name')} />
+                    <Command.Empty>{t('no_results_found')}</Command.Empty>
+                    <Command.Group>
+                      {processGroup.map((process) => (
+                        <Command.Item
+                          value={process.label}
+                          key={process.value}
+                          onSelect={() => {
+                            form.setValue(
+                              `processes.${index}.name`,
+                              process.value
+                            )
+                            form.clearErrors(`processes.${index}.name`)
+                            setNameOpen(false)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              process.value === field.value
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            )}
+                          />
+                          {process.label}
+                        </Command.Item>
+                      ))}
+                    </Command.Group>
+                  </Command.Root>
+                </Popover.Content>
+              </Popover.Root>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
+      </>
+    )
+  }
+)
 
 const ViewFileList = ({
   index,

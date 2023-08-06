@@ -15,13 +15,13 @@ const AddProcess = ({ title, append }: AddProcessProps) => {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <Label className="text-xl font-normal">{title}</Label>
       <Button
         type="button"
         variant={'ghost'}
         size={'icon'}
-        className="text-green-700 hover:text-green-600"
+        className="text-green-700 rounded-full hover:text-green-600"
         onClick={addProcess}
       >
         <PlusCircle />
