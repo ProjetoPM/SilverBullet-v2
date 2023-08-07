@@ -27,9 +27,7 @@ export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
         <Dialog.Content>
           <Dialog.Header className="space-y-3">
             <Dialog.Title>{t('default:are_you_certain.title')}</Dialog.Title>
-            <Dialog.Description>
-              {t('default:are_you_certain.delete')}
-            </Dialog.Description>
+            <Dialog.Description>{t('default:are_you_certain.delete')}</Dialog.Description>
           </Dialog.Header>
           <Dialog.Footer>
             <Dialog.Trigger asChild>

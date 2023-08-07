@@ -1,3 +1,4 @@
+import { WeeklyReport } from '@/@types/WeeklyReport'
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,7 +13,7 @@ import { WeeklyReportSchema, defaultValues, max } from './weekly-report.schema'
 type Form = z.infer<typeof WeeklyReportSchema>
 
 interface WeeklyReportFormProps {
-  data?: any
+  data?: WeeklyReport
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
@@ -45,7 +46,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.evaluationName}
-                  content={data?.evaluationName}
+                  readOnly
                   placeholder={t('evaluation_name.placeholder')}
                   {...field}
                 />
@@ -63,7 +64,6 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.toolEvaluation}
-                  content={data?.toolEvaluation}
                   placeholder={t('tool_evaluation.placeholder')}
                   as="textarea-3"
                   {...field}

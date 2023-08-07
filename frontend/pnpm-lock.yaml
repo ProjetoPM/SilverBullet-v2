@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@hookform/resolvers':
-    specifier: ^3.1.1
-    version: 3.1.1(react-hook-form@7.45.4)
+    specifier: ^3.2.0
+    version: 3.2.0(react-hook-form@7.45.4)
   '@radix-ui/react-alert-dialog':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)
@@ -96,8 +96,8 @@ dependencies:
     specifier: ^2.2.0
     version: 2.2.0
   i18next:
-    specifier: ^23.4.1
-    version: 23.4.1
+    specifier: ^23.4.2
+    version: 23.4.2
   i18next-browser-languagedetector:
     specifier: ^7.1.0
     version: 7.1.0
@@ -121,7 +121,7 @@ dependencies:
     version: 7.45.4(react@18.2.0)
   react-i18next:
     specifier: ^13.0.3
-    version: 13.0.3(i18next@23.4.1)(react-dom@18.2.0)(react@18.2.0)
+    version: 13.0.3(i18next@23.4.2)(react-dom@18.2.0)(react@18.2.0)
   react-query:
     specifier: ^3.39.3
     version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
@@ -148,10 +148,10 @@ dependencies:
     version: 3.21.4
   zod-i18n-map:
     specifier: ^2.14.0
-    version: 2.14.0(i18next@23.4.1)(zod@3.21.4)
+    version: 2.14.0(i18next@23.4.2)(zod@3.21.4)
   zustand:
-    specifier: ^4.4.0
-    version: 4.4.0(@types/react@18.2.18)(react@18.2.0)
+    specifier: ^4.4.1
+    version: 4.4.1(@types/react@18.2.18)(react@18.2.0)
 
 devDependencies:
   '@tailwindcss/typography':
@@ -196,6 +196,9 @@ devDependencies:
   postcss:
     specifier: ^8.4.27
     version: 8.4.27
+  prettier:
+    specifier: ^3.0.1
+    version: 3.0.1
   tailwindcss:
     specifier: ^3.3.3
     version: 3.3.3
@@ -738,8 +741,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@hookform/resolvers@3.1.1(react-hook-form@7.45.4):
-    resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
+  /@hookform/resolvers@3.2.0(react-hook-form@7.45.4):
+    resolution: {integrity: sha512-skXQHhLxq0Sz2xDwCyv5dygBCtXJe1GmWwxDzfdtl0X6agD6qcyTG8HrZWkjJoy8AkiLARqYvSYJ8z7+Nwmi7w==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
@@ -3236,8 +3239,8 @@ packages:
       - encoding
     dev: false
 
-  /i18next@23.4.1:
-    resolution: {integrity: sha512-07ekE7hbUrbxTYj97VnBzyhKcGURTJC9p4iWTwCVC8t63T+YrgqQmb/n1LBQMivZYwR61pqS+PC0G2rtENycyQ==}
+  /i18next@23.4.2:
+    resolution: {integrity: sha512-hkVPHKFLtn9iewdqHDiU+MGVIBk+bVFn5usw7CIeCn/SBcVKGTItGdjNPm2B8Lnz42CeHUlnSOTgsr5vbITjhA==}
     dependencies:
       '@babel/runtime': 7.22.6
     dev: false
@@ -3739,6 +3742,12 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prettier@3.0.1:
+    resolution: {integrity: sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
     dependencies:
@@ -3942,7 +3951,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-i18next@13.0.3(i18next@23.4.1)(react-dom@18.2.0)(react@18.2.0):
+  /react-i18next@13.0.3(i18next@23.4.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-/t4kt4Y2o+21hbvx+o9zpVnmoiud7KLDncyZFGN0U6TGAWYaXdTsp/ytAHFcKKSAODg4noIMaOO3X7bMgCqLHw==}
     peerDependencies:
       i18next: '>= 23.2.3'
@@ -3957,7 +3966,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.6
       html-parse-stringify: 3.0.1
-      i18next: 23.4.1
+      i18next: 23.4.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -4526,13 +4535,13 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  /zod-i18n-map@2.14.0(i18next@23.4.1)(zod@3.21.4):
+  /zod-i18n-map@2.14.0(i18next@23.4.2)(zod@3.21.4):
     resolution: {integrity: sha512-Z75WjzuoGieCjJqKu1kcAgemPTN9/bPQNqqC7Z6RDm6MtwE8wkXfgf5HQ+zr7iq4VrnkILCEviV2B1ZYi+JGng==}
     peerDependencies:
       i18next: '>=21.3.0'
       zod: '>=3.17.0'
     dependencies:
-      i18next: 23.4.1
+      i18next: 23.4.2
       zod: 3.21.4
     dev: false
 
@@ -4540,8 +4549,8 @@ packages:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false
 
-  /zustand@4.4.0(@types/react@18.2.18)(react@18.2.0):
-    resolution: {integrity: sha512-2dq6wq4dSxbiPTamGar0NlIG/av0wpyWZJGeQYtUOLegIUvhM2Bf86ekPlmgpUtS5uR7HyetSiktYrGsdsyZgQ==}
+  /zustand@4.4.1(@types/react@18.2.18)(react@18.2.0):
+    resolution: {integrity: sha512-QCPfstAS4EBiTQzlaGP1gmorkh/UL1Leaj2tdj+zZCZ/9bm0WS7sI2wnfD5lpOszFqWJ1DcPnGoY8RDL61uokw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'

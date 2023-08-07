@@ -58,7 +58,6 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.name}
-                  content={data?.name}
                   placeholder={t('name.placeholder')}
                   {...field}
                 />

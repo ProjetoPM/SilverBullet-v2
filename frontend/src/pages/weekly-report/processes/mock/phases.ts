@@ -32,7 +32,7 @@ export const phases = [
       },
       {
         id: '2',
-        key: 'requirements_management_document'
+        key: 'requirements_management_plan'
       }
     ]
   }

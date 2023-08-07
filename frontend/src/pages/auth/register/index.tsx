@@ -10,7 +10,10 @@ const RegisterPage = () => {
   const { t } = useTranslation('auth')
 
   return (
-    <PageLayout title={'Sign Up'} footer={false}>
+    <PageLayout
+      title={'Sign Up'}
+      footer={false}
+    >
       <AuthWrapper>
         <div className="flex items-center justify-center">
           <Card.Root className="w-full mx-2 my-6 xs:w-[400px]">
@@ -18,7 +21,10 @@ const RegisterPage = () => {
               <Card.Title>
                 <div className="flex items-center justify-between">
                   <h1>{t('register.title')}</h1>
-                  <Link to={routes.auth.index} className="text-xs">
+                  <Link
+                    to={routes.auth.index}
+                    className="text-xs"
+                  >
                     {t('already_have_an_account')}
                   </Link>
                 </div>

@@ -58,7 +58,6 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.name}
-                  content={data?.name}
                   placeholder={t('projects:name.placeholder')}
                   {...field}
                 />
@@ -76,7 +75,6 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.description}
-                  content={data?.description}
                   placeholder={t('projects:description.placeholder')}
                   as="textarea-3"
                   {...field}

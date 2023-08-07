@@ -8,7 +8,7 @@ import { Control, UseFieldArrayRemove, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { WeeklyReportSchema, max } from '../weekly-report.schema'
-import { Phases, phases } from './mock'
+import { Phases, phases } from './mock/phases'
 import { RemoveProcess } from './processes.remove'
 
 type FieldsProcessProps = {
@@ -89,20 +89,14 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
 }
 
 const SelectProcess = memo(
-  ({
-    index,
-    form,
-    control
-  }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
+  ({ index, form, control }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
     const { t } = useTranslation(['phases', 'weekly-report'])
     const [isGroupOpen, setGroupOpen] = useState(false)
     const [isNameOpen, setNameOpen] = useState(false)
-    const [group, setGroup] = useState('1')
 
-    const onSelect = (
-      data: Pick<Phases, 'id' | 'key'>,
-      type: 'group' | 'name'
-    ) => {
+    const [group, setGroup] = useState(form.getValues(`processes.${index}.group`) || '-1')
+
+    const onSelect = (data: Pick<Phases, 'id' | 'key'>, type: 'group' | 'name') => {
       form.setValue(`processes.${index}.${type}`, data.id)
       form.clearErrors(`processes.${index}.${type}`)
 
@@ -135,14 +129,11 @@ const SelectProcess = memo(
                     <Button
                       variant="outline"
                       role="combobox"
-                      className={cn(
-                        'justify-between',
-                        !field.value && 'text-muted-foreground'
-                      )}
+                      className={cn('justify-between', !field.value && 'text-muted-foreground')}
                     >
                       {t(
-                        phases.find((process) => process.id === field.value)
-                          ?.key ?? 'weekly-report:process_group.placeholder'
+                        phases.find((group) => group.id === field.value)?.key ??
+                          'weekly-report:process_group.placeholder'
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -150,28 +141,22 @@ const SelectProcess = memo(
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    <Command.Input
-                      placeholder={t('weekly-report:search_process_group')}
-                    />
-                    <Command.Empty>
-                      {t('weekly-report:no_results_found')}
-                    </Command.Empty>
+                    <Command.Input placeholder={t('weekly-report:search_process_group')} />
+                    <Command.Empty>{t('weekly-report:no_results_found')}</Command.Empty>
                     <Command.Group>
-                      {phases.map((phase) => (
+                      {phases.map((group) => (
                         <Command.Item
-                          value={t(phase.key)}
-                          key={phase.id}
-                          onSelect={() => onSelect(phase, 'group')}
+                          value={t(group.key)}
+                          key={group.id}
+                          onSelect={() => onSelect(group, 'group')}
                         >
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              phase.id === field.value
-                                ? 'opacity-100'
-                                : 'opacity-0'
+                              group.id === field.value ? 'opacity-100' : 'opacity-0'
                             )}
                           />
-                          {t(phase.key)}
+                          {t(group.key)}
                         </Command.Item>
                       ))}
                     </Command.Group>
@@ -197,15 +182,11 @@ const SelectProcess = memo(
                     <Button
                       variant="outline"
                       role="combobox"
-                      className={cn(
-                        'justify-between',
-                        !field.value && 'text-muted-foreground'
-                      )}
+                      className={cn('justify-between', !field.value && 'text-muted-foreground')}
                     >
                       {t(
-                        phases[+group - 1]?.entities.find(
-                          (process) => process.id === field.value
-                        )?.key ?? 'weekly-report:process_name.placeholder'
+                        phases.at(+group - 1)?.entities.find((name) => name.id === field.value)
+                          ?.key ?? 'weekly-report:process_name.placeholder'
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -213,31 +194,32 @@ const SelectProcess = memo(
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    <Command.Input
-                      placeholder={t('weekly-report:search_process_name')}
-                    />
-                    <Command.Empty>
-                      {t('weekly-report:no_results_found')}
-                    </Command.Empty>
-                    <Command.Group>
-                      {phases[+group - 1]?.entities.map((process) => (
-                        <Command.Item
-                          value={t(process.key)}
-                          key={process.id}
-                          onSelect={() => onSelect(process, 'name')}
-                        >
-                          <Check
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              process.id === field.value
-                                ? 'opacity-100'
-                                : 'opacity-0'
-                            )}
-                          />
-                          {t(process.key)}
-                        </Command.Item>
-                      ))}
-                    </Command.Group>
+                    {group !== '-1' && (
+                      <>
+                        <Command.Input placeholder={t('weekly-report:search_process_name')} />
+                        <Command.Empty>{t('weekly-report:no_results_found')}</Command.Empty>
+                        <Command.Group>
+                          {phases.at(+group - 1)?.entities.map((name) => (
+                            <Command.Item
+                              value={t(name.key)}
+                              key={name.id}
+                              onSelect={() => onSelect(name, 'name')}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  name.id === field.value ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              {t(name.key)}
+                            </Command.Item>
+                          ))}
+                        </Command.Group>
+                      </>
+                    )}
+                    {group === '-1' && (
+                      <Command.Item>{t('weekly-report:select_process_group_first')}</Command.Item>
+                    )}
                   </Command.Root>
                 </Popover.Content>
               </Popover.Root>
@@ -250,10 +232,7 @@ const SelectProcess = memo(
   }
 )
 
-const ViewFileList = ({
-  index,
-  form
-}: Pick<FieldsProcessProps, 'index' | 'form'>) => {
+const ViewFileList = ({ index, form }: Pick<FieldsProcessProps, 'index' | 'form'>) => {
   const { t } = useTranslation('weekly-report')
   const files = form.watch(`processes.${index}.files`) ?? []
 
