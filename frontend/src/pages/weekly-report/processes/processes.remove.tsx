@@ -2,6 +2,7 @@ import { Button, Dialog } from '@/components/ui'
 import { t } from 'i18next'
 import { Trash2 } from 'lucide-react'
 import { UseFieldArrayRemove } from 'react-hook-form'
+import { useLength } from '../hooks/useLength'
 
 type RemoveProcessProps = {
   index: number
@@ -9,6 +10,8 @@ type RemoveProcessProps = {
 }
 
 export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
+  const length = useLength((state) => state.length)
+
   return (
     <>
       <Dialog.Root>
@@ -27,7 +30,13 @@ export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
         <Dialog.Content>
           <Dialog.Header className="space-y-3">
             <Dialog.Title>{t('default:are_you_certain.title')}</Dialog.Title>
-            <Dialog.Description>{t('default:are_you_certain.delete')}</Dialog.Description>
+            <Dialog.Description>
+              {t(
+                length - 1 < index
+                  ? 'default:are_you_certain.delete'
+                  : 'default:are_you_certain.delete_edit'
+              )}
+            </Dialog.Description>
           </Dialog.Header>
           <Dialog.Footer>
             <Dialog.Trigger asChild>
