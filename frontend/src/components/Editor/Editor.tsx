@@ -97,6 +97,9 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       }
     }, [editor, value])
 
+    /**
+     * Change between the bubble menu and fixed menu.
+     */
     const handleFixed = () => {
       setFixed((previous) => !previous)
     }

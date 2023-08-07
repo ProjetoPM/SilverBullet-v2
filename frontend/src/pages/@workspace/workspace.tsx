@@ -1,30 +1,14 @@
-import { useTranslation } from 'react-i18next'
-import WorkspaceForm from './workspace.form'
-import { PageLayout } from '@/layout'
-import { useParams } from 'react-router-dom'
-import { api } from '@/services/api'
-import { useQuery } from 'react-query'
 import { Loading } from '@/components/Loading'
+import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
-import { Workspace } from '@/@types/Workspace'
-
-const getData = async (id?: string) => {
-  const url = `/tenant/${id}`
-
-  if (id) {
-    return api.get(url).then((res) => res.data)
-  }
-  return null
-}
+import { useTranslation } from 'react-i18next'
+import { useEdit } from './hooks/useEdit'
+import WorkspaceForm from './workspace.form'
 
 const WorkspacePage = () => {
   const { t } = useTranslation('workspace')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
-  const { id } = useParams()
-
-  const { data, isLoading, isError } = useQuery<Workspace>([`workspace-${id}`, id], () =>
-    getData(id)
-  )
+  const { id, data, isLoading, isError } = useEdit()
 
   if (isLoading) {
     return <Loading size={32} />

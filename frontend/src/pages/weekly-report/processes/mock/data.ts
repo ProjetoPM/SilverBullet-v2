@@ -1,6 +1,6 @@
 import { WeeklyReport } from '@/@types/WeeklyReport'
 
-export const data: WeeklyReport = {
+export const mockData: WeeklyReport = {
   evaluationName: 'Título mockado 1',
   toolEvaluation: 'Descrição mockada 1',
   processes: [

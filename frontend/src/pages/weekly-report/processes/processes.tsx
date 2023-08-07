@@ -7,10 +7,10 @@ import { ArrowDown01, ArrowUp10, MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 import { Control, UseFormReturn, useFieldArray } from 'react-hook-form'
 import { z } from 'zod'
+import { useLength } from '../hooks/useLength'
 import { WeeklyReportSchema } from '../weekly-report.schema'
 import { AddProcess } from './processes.add'
 import { Items } from './processes.items'
-import { useEdit } from './store/useEdit'
 
 type ProcessesProps = {
   form: UseFormReturn<z.infer<typeof WeeklyReportSchema>>
@@ -19,7 +19,7 @@ type ProcessesProps = {
 
 const Processes = ({ form, control }: ProcessesProps) => {
   const [order, setOrder] = useState('desc')
-  const length = useEdit((state) => state.length)
+  const length = useLength((state) => state.length)
 
   const { fields, append, remove } = useFieldArray({
     control: control,
