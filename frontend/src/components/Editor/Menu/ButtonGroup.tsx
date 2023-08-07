@@ -34,22 +34,20 @@ const ButtonGroup = ({ editor, isFixed, setFixed }: ButtonGroupProps) => {
           data-first={!isFixed}
           data-first-fixed={isFixed}
         >
-          <Heading1 className="w-5 h-5" />
+          <Heading1 className="w-4 h-4" />
         </BubbleButton>
         <BubbleButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           data-active={editor.isActive('heading', { level: 2 })}
         >
-          <Heading2 className="w-5 h-5" />
+          <Heading2 className="w-4 h-4" />
         </BubbleButton>
       </div>
       <div className="flex items-center">
         <BubbleButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           data-active={editor.isActive('bold')}
-          aria-label={
-            editor.isActive('bold') ? t('editor:remove.bold') : t('editor:add.bold')
-          }
+          aria-label={editor.isActive('bold') ? t('editor:remove.bold') : t('editor:add.bold')}
         >
           <Bold className="w-4 h-4" />
         </BubbleButton>
@@ -75,9 +73,7 @@ const ButtonGroup = ({ editor, isFixed, setFixed }: ButtonGroupProps) => {
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           data-active={editor.isActive('underline')}
           aria-label={
-            editor.isActive('underline')
-              ? t('editor:remove.underline')
-              : t('editor:add.underline')
+            editor.isActive('underline') ? t('editor:remove.underline') : t('editor:add.underline')
           }
         >
           <Underline className="w-4 h-4" />
