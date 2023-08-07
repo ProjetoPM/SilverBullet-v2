@@ -51,7 +51,7 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
           />
         </div>
         <div>
-          <Label className="text-sm font-medium">{t('actions')}</Label>
+          <Label className="text-sm font-medium">{t('default:actions')}</Label>
           <div className="flex flex-wrap gap-2 mt-1">
             <Button
               type="button"
