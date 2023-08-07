@@ -12,7 +12,7 @@ import { FixedMenu } from './Menu/FixedMenu'
 import { starterKitConfigs } from './configs'
 import { editorStyles, placeholderStyles } from './configs.style'
 
-type InputProps = ComponentPropsWithoutRef<'div'>
+type InputProps = ComponentPropsWithoutRef<'input'>
 type ContentProps = Omit<EditorContentProps, 'editor' | 'ref'>
 type EditorProps = InputProps &
   ContentProps & {
@@ -66,10 +66,10 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         Underline
       ],
       content: content,
-      editable: !readOnly,
       onUpdate: ({ editor }) => {
         props.onChange?.(editor.getHTML())
-      }
+      },
+      editable: !readOnly
     })
 
     /**
@@ -128,13 +128,14 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         {editor && (
           <>
             <span className="absolute text-[11.25px] text-neutral-500 -top-[22.75px] right-0">
-              {chars}/{props.limit} {t('characters')}{' '}
+              {chars}/{props.limit}
+              <span className="hidden xs:inline-flex">&nbsp;{t('characters')}&nbsp;</span>
               <span className="hidden sm:inline-flex">
-                | {words} {words > 1 ? t('words') : t('word')}
+                | {words} {t(words > 1 ? 'words' : 'word')}
               </span>
             </span>
             <input
-              className="absolute top-0 left-0 w-0 h-0 opacity-0"
+              className="absolute w-0 h-0 opacity-0"
               tabIndex={-1}
               onFocus={() => editor.commands.focus()}
               ref={ref}
