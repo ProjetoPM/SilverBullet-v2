@@ -18,7 +18,7 @@ const data = [
   {
     id: 2,
     user: {
-      name: 'John Doe'
+      name: 'Joe Test'
     },
     evaluationName: 'Evaluation 2',
     score: 100
@@ -26,7 +26,7 @@ const data = [
   {
     id: 3,
     user: {
-      name: 'John Doe'
+      name: 'Aladin'
     },
     evaluationName: 'Evaluation 3',
     score: 100

@@ -38,22 +38,25 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
+  const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      globalFilter,
       rowSelection
     }
   })
@@ -61,15 +64,18 @@ export function DataTable<TData, TValue>({
   if (isError) {
     return (
       <div className="text-lg font-extrabold">
-        Oops! Something went{' '}
-        <span className="text-red-600 dark:text-red-500">wrong</span>.
+        Oops! Something went <span className="text-red-600 dark:text-red-500">wrong</span>.
       </div>
     )
   }
 
   return (
     <>
-      <DataTableHeader table={table} />
+      <DataTableHeader
+        table={table}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
       <div className="rounded-md border">
         <Table.Root>
           <Table.Header>
@@ -80,10 +86,7 @@ export function DataTable<TData, TValue>({
                     <Table.Head key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </Table.Head>
                   )
                 })}

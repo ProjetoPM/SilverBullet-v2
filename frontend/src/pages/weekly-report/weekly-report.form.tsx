@@ -46,7 +46,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.evaluationName}
-                  readOnly
+                  readOnly={!!data}
                   placeholder={t('evaluation_name.placeholder')}
                   {...field}
                 />

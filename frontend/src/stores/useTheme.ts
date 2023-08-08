@@ -10,7 +10,7 @@ const useTheme = create<ThemeProps>()(
   devtools(
     persist(
       (set) => ({
-        theme: 'light',
+        theme: 'dark',
         setTheme: (theme) => set({ theme: theme })
       }),
       {
