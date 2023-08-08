@@ -42,6 +42,12 @@ const en = {
   },
 
   tenant: {
+
+    weeklyReport: {
+      errors: {
+        rangeDateError: ''
+      }
+    },
     exists:
       'There is already a workspace on this application.',
     url: {
@@ -53,6 +59,7 @@ const en = {
     planActive: `There is a plan active for this workspace. Please cancel the plan first.`,
     stripeNotConfigured: 'Stripe is not configured.',
   },
+
 
   importer: {
     errors: {

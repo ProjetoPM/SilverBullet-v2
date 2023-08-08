@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 export default (database) => {
   try {
-    return database.model('project');
+    return database.model('weeklyEvaluation');
   } catch (error) {
     // continue, because model doesnt exist
   }
@@ -26,11 +26,11 @@ export default (database) => {
         ],
       }, 
       startDate: {
-        type: String,
+        type: Date,
         required: true,
       },
       endDate: {
-        type: String,
+        type: Date,
         required: true,
       },
       metrics: [MetricGroupSchema],

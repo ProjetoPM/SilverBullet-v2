@@ -5,35 +5,19 @@ const Schema = mongoose.Schema;
 
 export default (database) => {
   try {
-    return database.model('project');
+    return database.model('weeklyReport');
   } catch (error) {
     // continue, because model doesnt exist
   }
 
   const WeeklyReportSchema = new Schema(
     {
-      name: {
-        type: String,
-        required: true,
-        maxlength: 255,
-      },
-      type: {
-        type: String,
-        required: true,
-        enum: [
-          'Individual Report',
-          'Group Report'
-        ],
-      }, 
-      startDate: {
-        type: String,
-        required: true,
-      },
-      endDate: {
-        type: String,
-        required: true,
-      },
       score: MetricGroupSchema,
+      weeklyEvaluation: {
+        type: Schema.Types.ObjectId,
+        ref: 'weeklyEvaluation',
+        required: true,
+      },
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',

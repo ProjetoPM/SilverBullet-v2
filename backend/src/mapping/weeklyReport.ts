@@ -1,4 +1,48 @@
-const weeklyReportMapping = {
+export default {
+  metricGroups: [
+    {
+      id: 1,
+      metrics: [
+        {
+          name: 'NOK',
+          value: 0
+        },
+        {
+          name: 'POK',
+          value: 5
+        },
+        {
+          name: 'TOK',
+          value: 10
+        },
+      ]
+    },
+    {
+      id: 2,
+      metrics: [
+        {
+          name: 'NOK',
+          value: 0
+        },
+        {
+          name: 'PNOK',
+          value: 2.5
+        },
+        {
+          name: 'POK',
+          value: 5
+        },
+        {
+          name: 'PTOK',
+          value: 7.5
+        },
+        {
+          name: 'TOK',
+          value: 10
+        },
+      ]
+    }
+  ],
   phases: [
     {
       id: 1,
@@ -204,3 +248,4 @@ const weeklyReportMapping = {
     }
   ],
 };
+

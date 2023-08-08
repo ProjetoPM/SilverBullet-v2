@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
-import MetricGroupSchema from './schemas/metricGroup';
 import FileSchema from './schemas/fileSchema';
 
 const Schema = mongoose.Schema;
 
 export default (database) => {
   try {
-    return database.model('project');
+    return database.model('processReport');
   } catch (error) {
     // continue, because model doesnt exist
   }
@@ -66,5 +65,5 @@ export default (database) => {
     getters: true,
   });
 
-  return database.model('weeklyReport', ProcessReportSchema);
+  return database.model('processReport', ProcessReportSchema);
 };
