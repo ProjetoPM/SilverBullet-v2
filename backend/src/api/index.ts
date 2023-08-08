@@ -93,6 +93,21 @@ require('./costEstimates').default(routes);
 require('./qualityManagementPlan').default(routes);
 require('./resourceManagementPlan').default(routes);
 require('./resourceBreakdownStructure').default(routes);
+require('./communicationsManagementPlan').default(routes);
+require('./riskManagementPlan').default(routes);
+require('./riskRegistration').default(routes);
+require('./procurementManagementPlan').default(routes);
+require('./procurementStatementWorkRegister').default(routes);
+require('./projectPerformanceMonitoringReport').default(routes);
+require('./workPerformanceReports').default(routes);
+require('./issueLog').default(routes);
+require('./lessonLearnedRegister').default(routes);
+require('./qualityChecklist').default(routes);
+require('./teamPerformanceEvaluation').default(routes);
+require('./changeRequest').default(routes);
+require('./projectClosure').default(routes);
+require('./closedProcurementDocumentation').default(routes);
+require('./finalReport').default(routes);
 
 // Loads the Tenant if the :tenantId param is passed
 routes.param('tenantId', tenantMiddleware);
