@@ -7,39 +7,59 @@ import weeklyReportMapping from '../../mapping/weeklyReport';
 import { IWeeklyReport } from '../../interfaces';
 import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
 import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvaluationRepository';
+import ProcessReportCreateService from '../processReport/createService';
 
-
-export default class ProjectService {
+export default class WeeklyReportCreateService {
   options: IServiceOptions;
 
   constructor(options) {
     this.options = options;
   }
 
-  async create(data: IWeeklyReport, weeklyEvaluationId: string, language: string){
+  async create(
+    data: IWeeklyReport,
+    weeklyEvaluationId: string,
+    language: string,
+  ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
+    console.log(data);
 
-
-    
-    try{
-
+    try {
       const date = Date.now();
 
-      const isInRange = await WeeklyEvaluationRepository.verifySubmitDateRange(date, weeklyEvaluationId, this.options);
-        console.log(isInRange);
+      const isInRange =
+        await WeeklyEvaluationRepository.verifySubmitDateRange(
+          date,
+          weeklyEvaluationId,
+          this.options,
+        );
+      console.log(isInRange);
 
-        if(!isInRange) throw new Error400(language);
+      if (!isInRange) throw new Error400(language);
 
-        if(data && data.score){
-          delete data.score;
-        }
-        
-      let record = await WeeklyReportRepository.create(data, weeklyEvaluationId,{
-        ...this.options,
-        session,
-      });
+      if (data && data.score) {
+        delete data.score;
+      }
+
+      let record = await WeeklyReportRepository.create(
+        data,
+        weeklyEvaluationId,
+        {
+          ...this.options,
+          session,
+        },
+      );
+
+      if (!record) throw new Error400();
+
+      if (data.processes) {
+        const processes =
+          await new ProcessReportCreateService(
+            this.options,
+          ).create(data.processes, record.id, language);
+      }
 
       await MongooseRepository.commitTransaction(session);
 

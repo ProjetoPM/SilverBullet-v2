@@ -28,9 +28,23 @@ export interface IWeeklyReport {
     endDate: Date | string;
     score?: IMetricGroup;
     weeklyEvaluation: string | null;
+    processes: Array<IProcessReport>;
     tenant: string | null;
     createdAt: Date | string | null;
     updatedAt: Date | string | null;
+}
+
+export interface IProcessReport {
+    _id: Object | null;
+    id: Object | null;
+    processPhase: string;
+    processName: string;
+    description: string;
+    files: Array<any>;
+    weeklyReport: string | null;
+    createdAt: Date | string | null;
+    updatedAt: Date | string | null;
+    
 }
 
 export interface IMetricGroup {

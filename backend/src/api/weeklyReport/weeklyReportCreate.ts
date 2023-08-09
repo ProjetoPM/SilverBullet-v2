@@ -7,8 +7,6 @@ import WeeklyReportCreateService from '../../services/weeklyReport/createService
 export default async (req, res, next) => {
   try {
 
-    console.log(req.language);
-    
     
     if (!req.currentUser || !req.currentUser.id) {
       throw new Error403(req.language);

@@ -12,6 +12,10 @@ export default (database) => {
 
   const WeeklyReportSchema = new Schema(
     {
+      toolEvaluation: {
+        type: 'string',
+        maxlength: 5000
+      },
       score: MetricGroupSchema,
       weeklyEvaluation: {
         type: Schema.Types.ObjectId,

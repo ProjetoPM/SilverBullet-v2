@@ -14,20 +14,20 @@ export default (database) => {
     {
       processPhase: {
         type: String,
-        required: true,
+        required: true
       },
       processName: {
         type: String,
       },
       description: {
         type: String,
-        maxLength: 2000,
+        maxlength: 2000,
       },
       files: [FileSchema],
       weeklyReport: {
         type: Schema.Types.ObjectId,
         ref: 'weeklyReport',
-        required: true
+        required: true,
       },
       createdBy: {
         type: Schema.Types.ObjectId,
@@ -65,5 +65,8 @@ export default (database) => {
     getters: true,
   });
 
-  return database.model('processReport', ProcessReportSchema);
+  return database.model(
+    'processReport',
+    ProcessReportSchema,
+  );
 };

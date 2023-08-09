@@ -8,7 +8,7 @@ import weeklyReportMapping from '../../mapping/weeklyReport';
 import { IWeeklyEvaluation } from '../../interfaces';
 
 
-export default class ProjectService {
+export default class WeeklyEvaluationCreateService {
   options: IServiceOptions;
 
   constructor(options) {
