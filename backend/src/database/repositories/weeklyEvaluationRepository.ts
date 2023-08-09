@@ -182,45 +182,31 @@ class WeeklyEvaluationRepository {
   ) {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
-    // let criteria = {
-    //   _id: id,
-    //   _tenant: currentTenant.tenant,
-    //   startDate: {
-    //     $lte: date,
-    //   },
-    //   endDate: {
-    //     $lte: date,
-    //   },
-    // };
-    let criteriaAnd: any = [];
 
-    criteriaAnd.push({
-      ['_id']: MongooseQueryUtils.uuid(id),
-    });
-
-    criteriaAnd.push({
-      tenant: currentTenant.id,
-    });
-
-    criteriaAnd.push({
-      startDate: {
-        $lte: date,
+    const criteriaAnd: any = [
+      {
+        tenant: currentTenant.id
       },
-    });
-
-    criteriaAnd.push({
-      endDate: {
-        $gte: date,
+      {
+        startDate: {
+          $lte: date,
+        }
       },
-    });
-
+      {
+        endDate: {
+          $gte: date,
+        }
+      },
+      {
+        '_id': id,
+      }
+    ];
     const criteria = { $and: criteriaAnd };
     
     const data = await WeeklyEvaluation(
       options.database,
     ).find(criteria);
 
-    console.log(data);
 
     const exists = data.length > 0 ? true : false;
     return exists;

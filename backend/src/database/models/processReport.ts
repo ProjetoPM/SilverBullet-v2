@@ -12,12 +12,13 @@ export default (database) => {
 
   const ProcessReportSchema = new Schema(
     {
-      processPhase: {
+      group: {
         type: String,
         required: true
       },
-      processName: {
+      name: {
         type: String,
+        required: true
       },
       description: {
         type: String,

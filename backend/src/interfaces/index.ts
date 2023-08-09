@@ -15,7 +15,7 @@ export interface IWeeklyEvaluation {
     type: string;
     startDate: Date | string;
     endDate: Date | string;
-    metrics: Array<IMetricGroup>;
+    metrics: Array<IMetric>;
     tenant: string | null;
     createdAt: Date | string | null;
     updatedAt: Date | string | null;
@@ -27,7 +27,7 @@ export interface IWeeklyReport {
     name: string;
     endDate: Date | string;
     score?: IMetricGroup;
-    weeklyEvaluation: string | null;
+    weeklyEvaluation: string;
     processes: Array<IProcessReport>;
     tenant: string | null;
     createdAt: Date | string | null;
@@ -37,8 +37,8 @@ export interface IWeeklyReport {
 export interface IProcessReport {
     _id: Object | null;
     id: Object | null;
-    processPhase: string;
-    processName: string;
+    group: string;
+    name: string;
     description: string;
     files: Array<any>;
     weeklyReport: string | null;
@@ -47,7 +47,27 @@ export interface IProcessReport {
     
 }
 
+export interface weeklyReportMapping {
+
+}
+
+
 export interface IMetricGroup {
+    id: string;
+    metrics: Array<IMetric>;
+}
+
+export interface IProcessGroup {
+    id: string;
+    key: string;
+    entities: Array<IProcessName>;
+}
+
+export interface IProcessName {
+    id: string;
+    key: string;
+}
+export interface IMetric {
     name: string;
     value: number;
 }

@@ -4,7 +4,7 @@ import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvalua
 import Error400 from '../../errors/Error400';
 import { IServiceOptions } from '../IServiceOptions';
 
-import weeklyReportMapping from '../../mapping/weeklyReport';
+import {metricGroups} from '../../mapping/weeklyReport';
 import { IWeeklyEvaluation } from '../../interfaces';
 
 
@@ -15,17 +15,19 @@ export default class WeeklyEvaluationCreateService {
     this.options = options;
   }
 
-  async create(data: IWeeklyEvaluation, metricGroupId: number){
+  async create(data: IWeeklyEvaluation, metricGroupId: string){
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
     if(!data.startDate || !data.endDate) throw new Error400();
 
-    const { metricGroups } = weeklyReportMapping;
 
-    const [metricGroup] = metricGroups.filter(metric => metric.id === metricGroupId) 
-    data.metrics = metricGroup.metrics;
+    const metricGroup = metricGroups.find(metric => metric.id === metricGroupId);
+    
+    if(metricGroup){
+      data.metrics = metricGroup.metrics;
+    }
     
     try{
         

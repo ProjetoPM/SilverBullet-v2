@@ -3,7 +3,7 @@ import MongooseRepository from '../../database/repositories/mongooseRepository';
 import Error400 from '../../errors/Error400';
 import { IServiceOptions } from '../IServiceOptions';
 
-import weeklyReportMapping from '../../mapping/weeklyReport';
+import {groups} from '../../mapping/weeklyReport';
 import { IWeeklyReport } from '../../interfaces';
 import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
 import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvaluationRepository';
@@ -18,9 +18,10 @@ export default class WeeklyReportCreateService {
 
   async create(
     data: IWeeklyReport,
-    weeklyEvaluationId: string,
     language: string,
   ) {
+
+
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
@@ -29,16 +30,19 @@ export default class WeeklyReportCreateService {
 
     try {
       const date = Date.now();
+      if(!data.weeklyEvaluation) throw new Error400();
 
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
-          weeklyEvaluationId,
+          data.weeklyEvaluation,
           this.options,
         );
+      console.log('isInRange');
       console.log(isInRange);
 
-      if (!isInRange) throw new Error400(language);
+
+      if (!isInRange) throw new Error400(language, 'tenant.weeklyReport.errors.rangeDateError');
 
       if (data && data.score) {
         delete data.score;
@@ -46,7 +50,6 @@ export default class WeeklyReportCreateService {
 
       let record = await WeeklyReportRepository.create(
         data,
-        weeklyEvaluationId,
         {
           ...this.options,
           session,
@@ -55,6 +58,9 @@ export default class WeeklyReportCreateService {
 
       if (!record) throw new Error400();
 
+      console.log("data.processes");
+      console.log(data.processes);
+      
       if (data.processes) {
          processes =
           await new ProcessReportCreateService(
@@ -67,7 +73,9 @@ export default class WeeklyReportCreateService {
       await MongooseRepository.commitTransaction(session);
 
       return record;
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.message);
+      
       await MongooseRepository.abortTransaction(session);
       throw error;
     }

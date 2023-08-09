@@ -45,7 +45,7 @@ const en = {
 
     weeklyReport: {
       errors: {
-        rangeDateError: ''
+        rangeDateError: 'dabsjdas'
       }
     },
     exists:

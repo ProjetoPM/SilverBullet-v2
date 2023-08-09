@@ -11,7 +11,6 @@ import { IWeeklyReport } from '../../interfaces';
 class WeeklyReportRepository {
   static async create(
     data: IWeeklyReport,
-    weeklyEvaluationId: string,
     options: IRepositoryOptions,
   ) {
 
@@ -29,7 +28,6 @@ class WeeklyReportRepository {
         {
           ...data,
           tenant: currentTenant.id,
-          weeklyEvaluation: weeklyEvaluationId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         }
