@@ -25,6 +25,7 @@ export default class WeeklyReportCreateService {
       this.options.database,
     );
     console.log(data);
+    let processes;
 
     try {
       const date = Date.now();
@@ -55,11 +56,13 @@ export default class WeeklyReportCreateService {
       if (!record) throw new Error400();
 
       if (data.processes) {
-        const processes =
+         processes =
           await new ProcessReportCreateService(
             this.options,
           ).create(data.processes, record.id, language);
       }
+
+      record.processes = processes;
 
       await MongooseRepository.commitTransaction(session);
 
