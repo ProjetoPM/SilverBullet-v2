@@ -41,12 +41,9 @@ export default (database) => {
   );
 
   WeeklyReportSchema.index(
-    { importHash: 1 },
+    { createdBy: 1, weeklyEvaluation: 1},
     {
-      unique: true,
-      partialFilterExpression: {
-        importHash: { $type: 'string' },
-      },
+      unique: true
     },
   );
 

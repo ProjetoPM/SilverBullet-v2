@@ -134,42 +134,38 @@ export const groups: Array<IProcessGroup> = [
       },
       {
         id: '15',
-        key: 'product_quality_checklists',
-      },
-      {
-        id: '16',
         key: 'resource_management_plan',
       },
       {
-        id: '17',
+        id: '16',
         key: 'resource_breakdown_structure',
       },
       {
-        id: '18',
+        id: '17',
         key: 'communication_management_plan',
       },
       {
-        id: '19',
+        id: '18',
         key: 'risk_management_plan',
       },
       {
-        id: '20',
+        id: '19',
         key: 'risk_register',
       },
       {
-        id: '21',
+        id: '20',
         key: 'general_project_risk_checklist',
       },
       {
-        id: '22',
+        id: '21',
         key: 'procurement_management_plan',
       },
       {
-        id: '23',
+        id: '22',
         key: 'procurement_statement_of_work',
       },
       {
-        id: '24',
+        id: '23',
         key: 'stakeholder_engagement_plan',
       },
     ],
@@ -199,21 +195,17 @@ export const groups: Array<IProcessGroup> = [
         key: 'lesson_learned_register',
       },
       {
-        id: '5',
+        id: '6',
         key: 'product_quality_checklists',
       },
       {
-        id: '6',
+        id: '7',
         key: 'quality_reports',
       },
       {
-        id: '7',
-        key: 'team_performance_assessments',
-      },
-      {
         id: '8',
-        key: 'project_performance_and_monitoring_report',
-      },
+        key: 'team_performance_assessments',
+      }
     ],
   },
   {

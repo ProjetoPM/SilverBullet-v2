@@ -41,6 +41,11 @@ const ptBR = {
   },
 
   tenant: {
+    weeklyReport: {
+      errors: {
+        rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida'
+      }
+    },
     exists: 'Já existe um inquilino para esta aplicação.',
     url: {
       exists:

@@ -43,6 +43,11 @@ const es = {
     },
   },
   tenant: {
+    weeklyReport: {
+      errors: {
+        rangeDateError: 'This weekly evaluation is not available to be submitted'
+      }
+    },
     exists:
       'Ya hay un espacio de trabajo en esta aplicación.',
     url: {

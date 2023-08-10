@@ -45,7 +45,7 @@ const en = {
 
     weeklyReport: {
       errors: {
-        rangeDateError: 'dabsjdas'
+        rangeDateError: 'This weekly evaluation is not available to be submitted'
       }
     },
     exists:
