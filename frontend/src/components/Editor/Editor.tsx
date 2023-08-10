@@ -5,22 +5,19 @@ import Typography from '@tiptap/extension-typography'
 import { Underline } from '@tiptap/extension-underline'
 import { EditorContent, EditorContentProps, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { ComponentPropsWithoutRef, forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BubbleMenu } from './Menu/BubbleMenu'
 import { FixedMenu } from './Menu/FixedMenu'
 import { starterKitConfigs } from './configs'
 import { editorStyles, placeholderStyles } from './configs.style'
 
-type InputProps = ComponentPropsWithoutRef<'input'>
-type ContentProps = Omit<EditorContentProps, 'editor' | 'ref'>
-type EditorProps = InputProps &
-  ContentProps & {
-    limit?: number
-    isFixed?: boolean
-    as?: 'textarea-3' | 'textarea-4' | 'textarea-5'
-    onChange?: (content: string) => void
-  }
+type EditorProps = Omit<EditorContentProps, 'editor' | 'ref'> & {
+  limit?: number
+  isFixed?: boolean
+  as?: 'textarea-3' | 'textarea-4' | 'textarea-5'
+  onChange?: (content: string) => void
+}
 
 const getSizeTextarea = ({ as }: Pick<EditorProps, 'as'>) => {
   switch (as) {
@@ -57,7 +54,7 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
         }),
         Typography,
         Placeholder.configure({
-          placeholder: props.placeholder ?? '...',
+          placeholder: props.placeholder,
           emptyEditorClass: placeholderStyles
         }),
         CharacterCount.configure({
@@ -138,11 +135,11 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
               </span>
             </span>
             <input
-              className="absolute w-0 h-0 opacity-0"
-              tabIndex={-1}
-              onFocus={() => editor.commands.focus()}
-              ref={ref}
               {...props}
+              className="absolute w-0 h-0 opacity-0"
+              onFocus={() => editor.commands.focus()}
+              tabIndex={-1}
+              ref={ref}
             />
           </>
         )}

@@ -6,9 +6,9 @@ import { Control, UseFieldArrayRemove, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { WeeklyReportSchema, max } from '../weekly-report.schema'
+import { ViewFileList } from './processes.files'
 import { RemoveProcess } from './processes.remove'
 import { SelectProcess } from './processes.select'
-import { ViewFileList } from './processes.files'
 
 export type FieldsProcessProps = {
   index: number

@@ -1,17 +1,18 @@
-import { Button, Command, Form, Popover } from '@/components/ui'
+import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Phases, phases } from './mock/phases'
+import { Phases, usePhases } from '../hooks/usePhases'
 import { FieldsProcessProps } from './processes.items'
 
 export const SelectProcess = memo(
   ({ index, form, control }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
+    const { phases } = usePhases()
+
     const { t } = useTranslation(['phases', 'weekly-report'])
     const [isGroupOpen, setGroupOpen] = useState(false)
     const [isNameOpen, setNameOpen] = useState(false)
-
     const [group, setGroup] = useState(form.getValues(`processes.${index}.group`) || '-1')
 
     const onSelect = (data: Pick<Phases, 'id' | 'key'>, type: 'group' | 'name') => {
@@ -50,7 +51,7 @@ export const SelectProcess = memo(
                       className={cn('justify-between', !field.value && 'text-muted-foreground')}
                     >
                       {t(
-                        phases.find((group) => group.id === field.value)?.key ??
+                        phases?.find((group) => group.id === field.value)?.key ??
                           'weekly-report:process_group.placeholder'
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -61,23 +62,25 @@ export const SelectProcess = memo(
                   <Command.Root>
                     <Command.Input placeholder={t('weekly-report:search_process_group')} />
                     <Command.Empty>{t('weekly-report:no_results_found')}</Command.Empty>
-                    <Command.Group>
-                      {phases.map((group) => (
-                        <Command.Item
-                          value={t(group.key)}
-                          key={group.id}
-                          onSelect={() => onSelect(group, 'group')}
-                        >
-                          <Check
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              group.id === field.value ? 'opacity-100' : 'opacity-0'
-                            )}
-                          />
-                          {t(group.key)}
-                        </Command.Item>
-                      ))}
-                    </Command.Group>
+                    <ScrollArea className="max-h-[300px]">
+                      <Command.Group>
+                        {phases?.map((group) => (
+                          <Command.Item
+                            value={t(group.key)}
+                            key={group.id}
+                            onSelect={() => onSelect(group, 'group')}
+                          >
+                            <Check
+                              className={cn(
+                                'mr-2 h-4 w-4',
+                                group.id === field.value ? 'opacity-100' : 'opacity-0'
+                              )}
+                            />
+                            {t(group.key)}
+                          </Command.Item>
+                        ))}
+                      </Command.Group>
+                    </ScrollArea>
                   </Command.Root>
                 </Popover.Content>
               </Popover.Root>
@@ -103,7 +106,7 @@ export const SelectProcess = memo(
                       className={cn('justify-between', !field.value && 'text-muted-foreground')}
                     >
                       {t(
-                        phases.at(+group - 1)?.entities.find((name) => name.id === field.value)
+                        phases?.[+group - 1]?.entities.find((name) => name.id === field.value)
                           ?.key ?? 'weekly-report:process_name.placeholder'
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -116,23 +119,26 @@ export const SelectProcess = memo(
                       <>
                         <Command.Input placeholder={t('weekly-report:search_process_name')} />
                         <Command.Empty>{t('weekly-report:no_results_found')}</Command.Empty>
-                        <Command.Group>
-                          {phases.at(+group - 1)?.entities.map((name) => (
-                            <Command.Item
-                              value={t(name.key)}
-                              key={name.id}
-                              onSelect={() => onSelect(name, 'name')}
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  name.id === field.value ? 'opacity-100' : 'opacity-0'
-                                )}
-                              />
-                              {t(name.key)}
-                            </Command.Item>
-                          ))}
-                        </Command.Group>
+                        <ScrollArea className="max-h-[300px]">
+                          <Command.Group>
+                            {phases?.[+group - 1]?.entities.map((name) => (
+                              <Command.Item
+                                id={name.key}
+                                value={t(name.key)}
+                                key={name.id}
+                                onSelect={() => onSelect(name, 'name')}
+                              >
+                                <Check
+                                  className={cn(
+                                    'mr-2 h-4 w-4',
+                                    name.id === field.value ? 'opacity-100' : 'opacity-0'
+                                  )}
+                                />
+                                {t(name.key)}
+                              </Command.Item>
+                            ))}
+                          </Command.Group>
+                        </ScrollArea>
                       </>
                     )}
                     {group === '-1' && (

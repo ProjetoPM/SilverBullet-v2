@@ -1,6 +1,6 @@
 import { LinkMenu } from '@/components/Utils/LinkMenu'
 import { ScrollArea } from '@/components/ui/ScrollArea'
-import { sidebar } from '@/constants/items-sidebar'
+import { sidebar } from '@/constants/sidebar-items'
 import { useSidebar } from '@/stores/useSidebar'
 import { Label } from '@radix-ui/react-label'
 

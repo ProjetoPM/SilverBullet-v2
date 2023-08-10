@@ -1,6 +1,5 @@
-import { Button, DropdownMenu } from '@/components/ui'
+import { Button, DropdownMenu, Label } from '@/components/ui'
 import { cn } from '@/lib/utils'
-import { Label } from '@radix-ui/react-label'
 import { motion } from 'framer-motion'
 import { t } from 'i18next'
 import { ArrowDown01, ArrowUp10, MoreHorizontal } from 'lucide-react'
@@ -63,7 +62,7 @@ const Processes = ({ form, control }: ProcessesProps) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className={cn('flex flex-col-reverse gap-3', order === 'asc' && 'flex-col')}>
+      <div className={cn('flex flex-col-reverse gap-3', { 'flex-col': order === 'asc' })}>
         {fields.map((field, index) => {
           return (
             <motion.div

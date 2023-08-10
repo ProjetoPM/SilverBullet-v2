@@ -40,7 +40,11 @@ export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
           </Dialog.Header>
           <Dialog.Footer>
             <Dialog.Trigger asChild>
-              <Button variant="ghost">{t('default:btn.cancel')}</Button>
+              <Button
+                variant="ghost"
+              >
+                {t('default:btn.cancel')}
+              </Button>
             </Dialog.Trigger>
             <Dialog.Trigger asChild>
               <Button
