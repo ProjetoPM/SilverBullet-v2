@@ -3,11 +3,11 @@ import { Badge, Button, Card, CommandDialog } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { areas } from '../../constants/menu-items'
 import { useTranslation } from 'react-i18next'
+import { items } from '../../constants/menu-items'
 
 export const CommandMenu = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['areas', 'phases'])
   const [search, setSearch] = useState('')
   const [open, setOpen] = useState(false)
 
@@ -24,8 +24,8 @@ export const CommandMenu = () => {
   }, [])
 
   const filtered =
-    search.trim().length > 0
-      ? areas
+    search.length > 0
+      ? items
           .flatMap((area) =>
             area.phases.map((phase) => ({
               ...phase,
@@ -34,18 +34,12 @@ export const CommandMenu = () => {
               border: area.border
             }))
           )
-          .filter((phase) =>
-            phase.name.toString().toLowerCase().includes(search.toLowerCase())
-          )
+          .filter((phase) => phase.name().toLowerCase().includes(search.toLowerCase()))
       : undefined
 
   return (
     <>
-      <Button
-        className="px-3 justify-between"
-        variant="outline"
-        onClick={() => setOpen(true)}
-      >
+      <Button className="px-3 justify-between" variant="outline" onClick={() => setOpen(true)}>
         <p className="text-sm items-center text-muted-foreground bg-outline rounded-lg">
           <span className="mr-4">Menu</span>
           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
@@ -72,18 +66,14 @@ export const CommandMenu = () => {
             />
           </div>
         </div>
-        <h1 className="p-4 pb-0 text-2xl">{filtered ? 'Phases' : 'Areas'}</h1>
+        <h1 className="p-4 pb-0 text-2xl">{t(filtered ? 'phases:name' : 'areas:name')}</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-3">
-          {filtered?.length === 0 && <span>{t('label.no_results')}</span>}
+          {filtered?.length === 0 && <span>{t('default:label.no_results')}</span>}
           {!filtered &&
-            areas.map((item) => (
+            items.map((item) => (
               <Card.Root
-                id={item.id}
                 key={item.id}
-                className={cn(
-                  'border-l-8 cursor-pointer hover:scale-105',
-                  item.border
-                )}
+                className={cn('border-l-8 cursor-pointer hover:scale-[103%]', item.border)}
               >
                 <Card.Header>
                   <Card.Title className="flex gap-3 mb-3">
@@ -99,10 +89,7 @@ export const CommandMenu = () => {
               <Card.Root
                 id={item.id}
                 key={item.id}
-                className={cn(
-                  'border-l-8 cursor-pointer hover:scale-105',
-                  item.border
-                )}
+                className={cn('border-l-8 cursor-pointer hover:scale-105', item.border)}
               >
                 <Card.Header>
                   <Card.Title className="flex gap-3 mb-3 text-md">
@@ -115,8 +102,8 @@ export const CommandMenu = () => {
                   <Badge>{item.area()}</Badge>
                   {item.badges.map((badge) => {
                     return (
-                      <Badge key={badge} variant={'outline'}>
-                        {badge}
+                      <Badge key={badge?.()} variant={'outline'}>
+                        {badge?.()}
                       </Badge>
                     )
                   })}
