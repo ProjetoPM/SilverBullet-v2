@@ -23,11 +23,7 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SelectProcess
-          index={index}
-          form={form}
-          control={control}
-        />
+        <SelectProcess index={index} form={form} control={control} />
       </div>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-6 md:gap-4">
         <div className="col-span-5">
@@ -62,18 +58,12 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
             >
               <Upload className="w-5 h-5" />
             </Button>
-            <RemoveProcess
-              index={index}
-              remove={remove}
-            />
+            <RemoveProcess index={index} remove={remove} />
           </div>
         </div>
       </div>
       <div>
-        <ViewFileList
-          index={index}
-          form={form}
-        />
+        <ViewFileList index={index} form={form} />
       </div>
     </div>
   )

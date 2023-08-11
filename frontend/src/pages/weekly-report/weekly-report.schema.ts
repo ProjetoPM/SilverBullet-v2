@@ -23,8 +23,14 @@ export const WeeklyReportSchema = z.object({
   processes: z
     .array(
       z.object({
-        group: string().refine((value) => value.length > 0, params('select_process_group')),
-        name: string().refine((value) => value.length > 0, params('select_process_name')),
+        group: string().refine(
+          (value) => value.length > 0,
+          params('select_process_group')
+        ),
+        name: string().refine(
+          (value) => value.length > 0,
+          params('select_process_name')
+        ),
         description: string()
           .refine((value) => html(value, 3, '>='), params('at_least', 3))
           .refine(

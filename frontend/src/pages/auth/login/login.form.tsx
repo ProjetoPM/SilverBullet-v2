@@ -26,10 +26,7 @@ const LoginForm = () => {
 
   return (
     <Form.Root {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-3"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <Form.Field
           control={form.control}
           name="email"

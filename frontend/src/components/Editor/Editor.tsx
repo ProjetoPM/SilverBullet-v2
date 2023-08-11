@@ -108,11 +108,7 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
       <div className={cn('relative w-full', props.className)}>
         {editor && (
           <>
-            <FixedMenu
-              isFixed={fixed}
-              setFixed={handleFixed}
-              editor={editor}
-            />
+            <FixedMenu isFixed={fixed} setFixed={handleFixed} editor={editor} />
             <BubbleMenu
               isFixed={fixed}
               setFixed={handleFixed}
@@ -129,7 +125,9 @@ export const Editor = forwardRef<HTMLInputElement, EditorProps>(
           <>
             <span className="absolute text-[11.25px] text-neutral-500 -top-[22.75px] right-0">
               {chars}/{props.limit}
-              <span className="hidden xs:inline-flex">&nbsp;{t('characters')}&nbsp;</span>
+              <span className="hidden xs:inline-flex">
+                &nbsp;{t('characters')}&nbsp;
+              </span>
               <span className="hidden sm:inline-flex">
                 | {words} {t(words > 1 ? 'words' : 'word')}
               </span>

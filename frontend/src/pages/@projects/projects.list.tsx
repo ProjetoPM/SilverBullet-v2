@@ -13,10 +13,7 @@ const ProjectListPage = () => {
   const { data, isLoading } = useList()
 
   return (
-    <PageLayout
-      title={t('title')}
-      breadcrumb={breadcrumb}
-    >
+    <PageLayout title={t('title')} breadcrumb={breadcrumb}>
       <div className="min-h-screen">
         <ProjectToolbar />
         <Separator className="my-5" />

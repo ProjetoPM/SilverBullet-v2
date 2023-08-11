@@ -16,7 +16,9 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<Project>([`project-${id}`, id], async () => getData(id))
+  const { ...props } = useQuery<Project>([`project-${id}`, id], async () =>
+    getData(id)
+  )
 
   return { id, ...props }
 }

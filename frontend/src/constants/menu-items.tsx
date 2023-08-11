@@ -1,21 +1,26 @@
 import { t } from '@/utils/translate-text'
 import { AlertCircle, Clock2, SearchCheck, Star, Users2 } from 'lucide-react'
-import { FaBullhorn, FaMoneyBill, FaPeopleCarry, FaTrophy } from 'react-icons/fa'
+import {
+  FaBullhorn,
+  FaMoneyBill,
+  FaPeopleCarry,
+  FaTrophy
+} from 'react-icons/fa'
 import { IoMdPricetags } from 'react-icons/io'
 
-type Function = () => string
+type fn = () => string
 
 export type Areas = {
   id: string
   icon: JSX.Element
-  name: Function
-  description: Function
+  name: fn
+  description: fn
   border: string
   phases: {
     id: string
-    name: Function
-    description: Function
-    badges: [Function, Function?]
+    name: fn
+    description: fn
+    badges: [fn, fn?]
   }[]
 }
 

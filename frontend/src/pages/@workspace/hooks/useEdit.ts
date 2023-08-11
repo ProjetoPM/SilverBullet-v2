@@ -15,7 +15,9 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<Workspace>([`workspace-${id}`, id], async () => getData(id))
+  const { ...props } = useQuery<Workspace>([`workspace-${id}`, id], async () =>
+    getData(id)
+  )
 
   return { id, ...props }
 }

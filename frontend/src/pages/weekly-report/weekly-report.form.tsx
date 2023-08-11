@@ -73,16 +73,10 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
             </Form.Item>
           )}
         />
-        <Processes
-          form={form}
-          control={form.control}
-        />
+        <Processes form={form} control={form.control} />
         <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
-          <Button
-            type="submit"
-            className="w-30 gap-1 font-medium"
-          >
+          <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (
               <>
                 <Edit size={20} />

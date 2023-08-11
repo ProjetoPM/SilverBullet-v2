@@ -56,7 +56,9 @@ export default class ProjectService {
 
   static async delete(data: DeleteProject) {
     const response = await api
-      .delete(`/tenant/${getWorkspaceId()}/project`, { params: { ids: [data._id] } })
+      .delete(`/tenant/${getWorkspaceId()}/project`, {
+        params: { ids: [data._id] }
+      })
       .catch((err) => err.response)
 
     switch (response?.status) {

@@ -38,18 +38,11 @@ const WeeklyReportListPage = () => {
   const breadcrumb = [['Home', routes.weekly_report.index], [t('title')]]
 
   return (
-    <PageLayout
-      title={t('title')}
-      breadcrumb={breadcrumb}
-    >
+    <PageLayout title={t('title')} breadcrumb={breadcrumb}>
       <div className="min-h-screen">
         <WeeklyReportToolbar />
         <Separator className="my-5" />
-        <DataTable
-          isLoading={false}
-          columns={columns}
-          data={data}
-        />
+        <DataTable isLoading={false} columns={columns} data={data} />
       </div>
     </PageLayout>
   )

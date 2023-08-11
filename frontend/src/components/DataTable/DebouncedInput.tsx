@@ -1,7 +1,10 @@
 import { InputHTMLAttributes, useEffect, useState } from 'react'
 import { Input } from '../ui'
 
-type DebouncedInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
+type DebouncedInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onChange'
+> & {
   value: string | number
   onChange: (value: string | number) => void
   debounce?: number
@@ -25,7 +28,7 @@ export const DebouncedInput = ({
     }, debounce)
 
     return () => clearTimeout(timeout)
-  }, [value])
+  }, [value, debounce, onChange])
 
   return (
     <Input

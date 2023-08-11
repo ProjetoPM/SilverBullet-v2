@@ -19,7 +19,9 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<WeeklyReport>([`wr-${id}`, id], async () => getData(id))
+  const { ...props } = useQuery<WeeklyReport>([`wr-${id}`, id], async () =>
+    getData(id)
+  )
 
   setLength(mockData.processes.length)
 

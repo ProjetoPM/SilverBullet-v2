@@ -13,10 +13,7 @@ const WorkspaceListPage = () => {
   const { data, isLoading } = useList()
 
   return (
-    <PageLayout
-      title={t('title')}
-      breadcrumb={breadcrumb}
-    >
+    <PageLayout title={t('title')} breadcrumb={breadcrumb}>
       <div className="min-h-screen">
         <WorkspaceToolbar />
         <Separator className="my-5" />

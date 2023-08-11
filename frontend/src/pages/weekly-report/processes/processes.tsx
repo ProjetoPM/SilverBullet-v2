@@ -34,10 +34,7 @@ const Processes = ({ form, control }: ProcessesProps) => {
         />
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <Button
-              variant="ghost"
-              className="h-8 w-8 p-0"
-            >
+            <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">{t('open_menu')}</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
@@ -46,7 +43,10 @@ const Processes = ({ form, control }: ProcessesProps) => {
             <DropdownMenu.Label>{t('order')}</DropdownMenu.Label>
             <DropdownMenu.Separator />
             <DropdownMenu.Item
-              className={cn('flex gap-3 mb-1', order === 'desc' && 'bg-accent/70')}
+              className={cn(
+                'flex gap-3 mb-1',
+                order === 'desc' && 'bg-accent/70'
+              )}
               onClick={() => setOrder('desc')}
             >
               <ArrowUp10 size={18} />
@@ -62,7 +62,11 @@ const Processes = ({ form, control }: ProcessesProps) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className={cn('flex flex-col-reverse gap-3', { 'flex-col': order === 'asc' })}>
+      <div
+        className={cn('flex flex-col-reverse gap-3', {
+          'flex-col': order === 'asc'
+        })}
+      >
         {fields.map((field, index) => {
           return (
             <motion.div
@@ -75,7 +79,10 @@ const Processes = ({ form, control }: ProcessesProps) => {
               key={field.id}
               className={cn(
                 'relative gap-2 border border-dashed rounded-md px-5 pt-11 pb-8',
-                { 'border-blue-800/60 dark:bg-gray-900/5 border-solid': length > index },
+                {
+                  'border-blue-800/60 dark:bg-gray-900/5 border-solid':
+                    length > index
+                },
                 { 'border-green-900 dark:bg-green-950/5': length <= index }
               )}
             >

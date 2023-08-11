@@ -3,7 +3,10 @@ import { XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { FieldsProcessProps } from './processes.items'
 
-export const ViewFileList = ({ index, form }: Pick<FieldsProcessProps, 'index' | 'form'>) => {
+export const ViewFileList = ({
+  index,
+  form
+}: Pick<FieldsProcessProps, 'index' | 'form'>) => {
   const { t } = useTranslation('weekly-report')
   const files = form.watch(`processes.${index}.files`) ?? []
 

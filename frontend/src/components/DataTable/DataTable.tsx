@@ -64,7 +64,8 @@ export function DataTable<TData, TValue>({
   if (isError) {
     return (
       <div className="text-lg font-extrabold">
-        Oops! Something went <span className="text-red-600 dark:text-red-500">wrong</span>.
+        Oops! Something went{' '}
+        <span className="text-red-600 dark:text-red-500">wrong</span>.
       </div>
     )
   }
@@ -86,7 +87,10 @@ export function DataTable<TData, TValue>({
                     <Table.Head key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </Table.Head>
                   )
                 })}

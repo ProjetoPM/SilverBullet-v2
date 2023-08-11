@@ -67,10 +67,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           )}
         />
         <div className="space-y-2 space-x-2.5">
-          <Button
-            type="submit"
-            className="w-30 gap-1 font-medium"
-          >
+          <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (
               <>
                 <Edit size={20} />

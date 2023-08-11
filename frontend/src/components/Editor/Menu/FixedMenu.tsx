@@ -16,11 +16,7 @@ const FixedMenu = ({ editor, isFixed, setFixed }: FixedMenuProps) => {
         isFixed ? '' : 'hidden'
       )}
     >
-      <ButtonGroup
-        editor={editor}
-        isFixed={isFixed}
-        setFixed={setFixed}
-      />
+      <ButtonGroup editor={editor} isFixed={isFixed} setFixed={setFixed} />
     </div>
   )
 }

@@ -4,7 +4,10 @@ interface BubbleButtonProps extends ComponentProps<'button'> {
   children: React.ReactNode
 }
 
-export const BubbleButton = ({ type = 'button', ...props }: BubbleButtonProps) => {
+export const BubbleButton = ({
+  type = 'button',
+  ...props
+}: BubbleButtonProps) => {
   return (
     <button
       type={type}

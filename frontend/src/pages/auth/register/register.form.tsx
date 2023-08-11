@@ -37,10 +37,7 @@ const RegisterForm = () => {
 
   return (
     <Form.Root {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-3"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <Form.Field
           control={form.control}
           name="email"
@@ -78,11 +75,7 @@ const RegisterForm = () => {
         />
         <PasswordChecker password={form.watch('password')} />
         <div>
-          <Button
-            type="submit"
-            className="mt-3 w-full"
-            disabled={isLoading}
-          >
+          <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
             {!isLoading && t('btn.sign_up')}
             {isLoading && <Loader className="animate-spin" />}
           </Button>

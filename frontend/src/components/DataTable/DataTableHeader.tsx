@@ -24,7 +24,7 @@ export function DataTableHeader<TData>({
 
   const getFirstColumn = useMemo(() => {
     return table.getAllColumns().at(1)
-  }, [])
+  }, [table])
 
   return (
     <div className="flex items-center pb-4 gap-2">
@@ -41,15 +41,14 @@ export function DataTableHeader<TData>({
           <Input
             placeholder={t('label.search_by')}
             value={(getFirstColumn?.getFilterValue() as string) ?? ''}
-            onChange={(event) => getFirstColumn?.setFilterValue(event.target.value)}
+            onChange={(event) =>
+              getFirstColumn?.setFilterValue(event.target.value)
+            }
           />
         )}
         <DropdownMenu.Root>
           <DropdownMenuTrigger asChild>
-            <Button
-              size={'icon'}
-              variant={'outline'}
-            >
+            <Button size={'icon'} variant={'outline'}>
               <Filter className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
