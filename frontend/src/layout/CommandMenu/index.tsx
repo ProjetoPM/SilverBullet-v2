@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { items } from '../../constants/menu-items'
 
 export const CommandMenu = () => {
-  const { t } = useTranslation(['areas', 'phases'])
+  const { t } = useTranslation(['areas', 'phases', 'menu'])
   const [search, setSearch] = useState('')
   const [open, setOpen] = useState(false)
 
@@ -29,8 +29,9 @@ export const CommandMenu = () => {
           .flatMap((area) =>
             area.phases.map((phase) => ({
               ...phase,
-              icon: area.icon,
               area: area.name,
+              background: area.background,
+              icon: area.icon,
               border: area.border
             }))
           )
@@ -56,7 +57,7 @@ export const CommandMenu = () => {
       <CommandDialog
         open={open}
         onOpenChange={setOpen}
-        className="max-w-5xl max-h-screen lg:max-h-[800px] lg:min-h-[800px] overflow-y-auto"
+        className="max-w-[1095px] max-h-screen lg:max-h-[772px] lg:min-h-[772px] overflow-y-auto"
       >
         <div className="flex items-center border-b px-3">
           <Search className="mr-2 h-5 w-5 shrink-0 opacity-50" />
@@ -65,7 +66,7 @@ export const CommandMenu = () => {
               className={
                 'h-11 border-none ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0'
               }
-              placeholder="Search phases..."
+              placeholder={t('menu:search_phases')}
               value={search}
               onChange={(value) => setSearch(String(value))}
               debounce={250}
@@ -89,7 +90,7 @@ export const CommandMenu = () => {
                 )}
               >
                 <Card.Header>
-                  <Card.Title className="flex gap-3 mb-3">
+                  <Card.Title className="flex items-center gap-3 mb-3">
                     <span className="text-foreground/90">{item.icon}</span>
                     <span>{item.name()}</span>
                   </Card.Title>
@@ -108,14 +109,18 @@ export const CommandMenu = () => {
                 )}
               >
                 <Card.Header>
-                  <Card.Title className="flex gap-3 mb-3 text-md">
+                  <Card.Title className="flex items-center gap-3 mb-3 text-base">
                     <span className="text-foreground/90">{item.icon}</span>
-                    <span>{item.name()}</span>
+                    <span className="truncate hover:whitespace-normal">
+                      {item.name()}
+                    </span>
                   </Card.Title>
                   <Card.Description>{item.description()}</Card.Description>
                 </Card.Header>
-                <Card.Content className="flex gap-2">
-                  <Badge>{item.area()}</Badge>
+                <Card.Content className="flex gap-2 peer">
+                  <Badge variant={'ghost'} className={item?.background}>
+                    {item.area()}
+                  </Badge>
                   {item.badges.map((badge) => {
                     return (
                       <Badge key={badge?.()} variant={'outline'}>

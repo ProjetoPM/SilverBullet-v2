@@ -1,5 +1,4 @@
 import { Translate } from '@/components/Utils/Translate'
-import i18next from 'i18next'
 import { FolderOpen, Folders, PanelTop } from 'lucide-react'
 
 type SidebarItem = {
@@ -25,7 +24,7 @@ export const sidebar: SidebarItem[] = [
     children: [
       {
         id: 'workspaces',
-        title: i18next.t('select_all'),
+        title: <Translate text="workspaces" />,
         icon: <Folders size={22} />,
         link: '/workspaces'
       },
