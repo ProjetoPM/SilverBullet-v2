@@ -1,5 +1,5 @@
-import { Workspace } from '@/@types/Workspace'
 import { api } from '@/services/api'
+import { WorkspaceData } from '@/services/modules/WorkspaceService'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 
@@ -15,8 +15,9 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<Workspace>([`workspace-${id}`, id], async () =>
-    getData(id)
+  const { ...props } = useQuery<WorkspaceData>(
+    [`workspace-${id}`, id],
+    async () => getData(id)
   )
 
   return { id, ...props }

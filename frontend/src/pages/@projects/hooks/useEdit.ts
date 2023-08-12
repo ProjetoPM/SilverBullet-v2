@@ -1,5 +1,5 @@
-import { Project } from '@/@types/Project'
 import { api } from '@/services/api'
+import { ProjectData } from '@/services/modules/ProjectService'
 import { getWorkspaceId } from '@/stores/useWorkspace'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
@@ -16,7 +16,7 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<Project>([`project-${id}`, id], async () =>
+  const { ...props } = useQuery<ProjectData>([`project-${id}`, id], async () =>
     getData(id)
   )
 

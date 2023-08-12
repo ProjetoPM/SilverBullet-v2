@@ -1,6 +1,5 @@
-import { ProjectList } from '@/@types/Project'
 import { routes } from '@/routes/routes'
-import ProjectService from '@/services/modules/ProjectService'
+import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,7 +15,7 @@ export const useList = () => {
     return response
   }
 
-  const { ...props } = useQuery<ProjectList>('projects', getData)
+  const { ...props } = useQuery<{ rows: ProjectData }>('projects', getData)
 
   return { ...props }
 }

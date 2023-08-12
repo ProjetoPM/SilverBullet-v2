@@ -1,6 +1,5 @@
-import { Project } from '@/@types/Project'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import ProjectService from '@/services/modules/ProjectService'
+import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 type ProjectActionsProps = {
   id: string
-  data: Project
+  data: ProjectData
 }
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {

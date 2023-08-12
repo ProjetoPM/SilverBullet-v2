@@ -23,3 +23,5 @@ export const defaultValues = {
   name: '',
   description: ''
 }
+
+export type Project = z.infer<typeof ProjectSchema>

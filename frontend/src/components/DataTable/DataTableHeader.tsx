@@ -28,13 +28,14 @@ export function DataTableHeader<TData>({
 
   return (
     <div className="flex items-center pb-4 gap-2">
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         {type === 'all' && (
           <DebouncedInput
             value={globalFilter ?? ''}
             onChange={(value) => setGlobalFilter(String(value))}
             placeholder={t('label.search_by')}
             debounce={100}
+            className="lg:min-w-[300px]"
           />
         )}
         {type === 'first' && (
@@ -44,6 +45,7 @@ export function DataTableHeader<TData>({
             onChange={(event) =>
               getFirstColumn?.setFilterValue(event.target.value)
             }
+            className="lg:min-w-[300px]"
           />
         )}
         <DropdownMenu.Root>

@@ -32,7 +32,9 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
             name={`processes.${index}.description`}
             render={({ field }) => (
               <Form.Item>
-                <Form.Label>{t('process_description.label')}</Form.Label>
+                <Form.Label required>
+                  {t('process_description.label')}
+                </Form.Label>
                 <Form.Control>
                   <Editor
                     limit={max.processes.description}

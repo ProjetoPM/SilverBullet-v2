@@ -1,22 +1,28 @@
-import { Workspace } from '@/@types/Workspace'
+import { WorkspaceSchema } from '@/pages/@workspace/workspace.schema'
 import { useWorkspace } from '@/stores/useWorkspace'
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'
+import { z } from 'zod'
 import { api } from '../api'
 import { queryClient } from '../react-query'
 
-type CreateWorkspace = Pick<Workspace, 'name'>
-type EditWorkspace = Pick<Workspace, 'name'>
-type DeleteWorkspace = Workspace
+export type WorkspaceData = z.infer<typeof WorkspaceSchema> & {
+  _id: string
+  createdAt: string
+  updatedAt: string
+}
+
+type FormWorkspace = Pick<WorkspaceData, 'name'>
+type DeleteWorkspace = WorkspaceData
 
 export default class WorkspaceService {
   static async list() {
     return await api.get('/tenant').then((res) => res.data)
   }
 
-  static async create(data: CreateWorkspace) {
+  static async create(data: FormWorkspace) {
     const response = await api
       .post('/tenant', { data: { ...data } })
       .catch((err) => err.response)
@@ -31,7 +37,7 @@ export default class WorkspaceService {
     return response
   }
 
-  static async edit(id: string, data: EditWorkspace) {
+  static async edit(id: string, data: FormWorkspace) {
     const response = await api
       .put(`/tenant/${id}`, {
         data: { ...data }

@@ -4,23 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { z } from 'zod'
-import { LoginSchema, defaultValues } from './login.schema'
+import { Login, LoginSchema, defaultValues } from './login.schema'
 
-type Form = z.infer<typeof LoginSchema>
-
-const LoginForm = () => {
+export const LoginForm = () => {
   const { t } = useTranslation('auth')
   const signIn = useAuth((state) => state.signIn)
   const isAuthenticating = useAuth((state) => state.isAuthenticating)
 
-  const form = useForm<Form>({
+  const form = useForm<Login>({
     mode: 'all',
     resolver: zodResolver(LoginSchema),
     defaultValues: defaultValues
   })
 
-  const onSubmit = async (data: Form) => {
+  const onSubmit = async (data: Login) => {
     await signIn(data)
   }
 
@@ -32,7 +29,7 @@ const LoginForm = () => {
           name="email"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('email.label')}</Form.Label>
+              <Form.Label required>{t('email.label')}</Form.Label>
               <Form.Control>
                 <Input
                   placeholder={t('email.placeholder')}
@@ -49,7 +46,7 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('password.label')}</Form.Label>
+              <Form.Label required>{t('password.label')}</Form.Label>
               <Form.Control>
                 <Input
                   type="password"
@@ -94,5 +91,3 @@ const LoginForm = () => {
     </Form.Root>
   )
 }
-
-export { LoginForm }

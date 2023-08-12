@@ -1,8 +1,7 @@
-import { WeeklyReport } from '@/@types/WeeklyReport'
 import { api } from '@/services/api'
+import { FormWeeklyReport } from '@/services/modules/WeeklyReportService'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { mockData } from '../processes/mock/data'
 import { useLength } from './useLength'
 
 export const useEdit = () => {
@@ -19,11 +18,12 @@ export const useEdit = () => {
     return null
   }
 
-  const { ...props } = useQuery<WeeklyReport>([`wr-${id}`, id], async () =>
-    getData(id)
+  const { data, ...props } = useQuery<FormWeeklyReport>(
+    [`wr-${id}`, id],
+    async () => getData(id)
   )
 
-  setLength(mockData.processes.length)
+  setLength(0)
 
-  return { id, mockData, ...props }
+  return { id, data, ...props }
 }

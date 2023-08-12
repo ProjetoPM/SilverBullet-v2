@@ -1,12 +1,12 @@
-import { Project } from '@/@types/Project'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
+import { ProjectData } from '@/services/modules/ProjectService'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { ProjectActions } from './projects.actions'
 
-const helper = createColumnHelper<Project>()
+const helper = createColumnHelper<ProjectData>()
 
 export const columns = [
   /**

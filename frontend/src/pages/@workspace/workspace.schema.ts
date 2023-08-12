@@ -1,4 +1,4 @@
-import { params, html } from '@/utils/replace-html-tags'
+import { html, params } from '@/utils/replace-html-tags'
 import { string, z } from 'zod'
 
 export const max = {
@@ -14,3 +14,5 @@ export const WorkspaceSchema = z.object({
 export const defaultValues = {
   name: ''
 }
+
+export type Workspace = z.infer<typeof WorkspaceSchema>

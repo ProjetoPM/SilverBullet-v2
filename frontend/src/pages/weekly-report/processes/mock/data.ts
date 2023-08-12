@@ -1,4 +1,4 @@
-import { WeeklyReport } from '@/@types/WeeklyReport'
+import { WeeklyReport } from '@/services/modules/WeeklyReportService'
 
 export const mockData: WeeklyReport = {
   evaluationName: 'Título mockado 1',

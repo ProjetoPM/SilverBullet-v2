@@ -16,10 +16,12 @@ export const WeeklyReportSchema = z.object({
       (value) => html(value, max.evaluationName, '<='),
       params('at_most', max.evaluationName)
     ),
-  toolEvaluation: string().refine(
-    (value) => html(value, max.toolEvaluation, '<='),
-    params('at_most', max.toolEvaluation)
-  ),
+  toolEvaluation: string()
+    .refine((value) => html(value, 3, '>='), params('at_least', 3))
+    .refine(
+      (value) => html(value, max.toolEvaluation, '<='),
+      params('at_most', max.toolEvaluation)
+    ),
   processes: z
     .array(
       z.object({
@@ -48,3 +50,5 @@ export const defaultValues = {
   toolEvaluation: '',
   processes: undefined
 }
+
+export type WeeklyReport = z.infer<typeof WeeklyReportSchema>

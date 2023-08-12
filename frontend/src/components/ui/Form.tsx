@@ -1,6 +1,6 @@
-import * as React from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
+import * as React from 'react'
 import {
   Controller,
   ControllerProps,
@@ -10,8 +10,8 @@ import {
   useFormContext
 } from 'react-hook-form'
 
-import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/Label'
+import { cn } from '@/lib/utils'
 
 const Root = FormProvider
 
@@ -86,12 +86,19 @@ FormItem.displayName = 'FormItem'
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    required?: boolean
+  }
+>(({ className, required = false, ...props }, ref) => {
   const { formItemId } = useFormField()
 
   return (
-    <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
+    <>
+      <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
+      {required && (
+        <span className="ml-0.5 text-destructive select-none">*</span>
+      )}
+    </>
   )
 })
 FormLabel.displayName = 'FormLabel'

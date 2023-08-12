@@ -2,8 +2,8 @@ import { Loading } from '@/components/Loading'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import WorkspaceForm from './projects.form'
 import { useEdit } from './hooks/useEdit'
+import { ProjectForm } from './projects.form'
 
 const ProjectPage = () => {
   const { t } = useTranslation('projects')
@@ -23,7 +23,7 @@ const ProjectPage = () => {
       title={t(`${id ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
-      <WorkspaceForm data={data} />
+      <ProjectForm data={data} />
     </PageLayout>
   )
 }

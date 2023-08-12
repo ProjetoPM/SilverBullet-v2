@@ -3,7 +3,7 @@ import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
 import { useEdit } from './hooks/useEdit'
-import WorkspaceForm from './workspace.form'
+import { WorkspaceForm } from './workspace.form'
 
 const WorkspacePage = () => {
   const { t } = useTranslation('workspace')

@@ -1,31 +1,28 @@
+import { PasswordChecker } from '@/components/PasswordChecker'
 import { Button, Form, Input } from '@/components/ui'
+import { routes } from '@/routes/routes'
+import AuthService from '@/services/modules/AuthService'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { StatusCodes } from 'http-status-codes'
 import { Loader } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { z } from 'zod'
-import { RegisterSchema, defaultValues } from './register.schema'
-import { PasswordChecker } from '@/components/PasswordChecker'
-import AuthService from '@/services/modules/AuthService'
 import { useNavigate } from 'react-router-dom'
-import { routes } from '@/routes/routes'
-import { StatusCodes } from 'http-status-codes'
+import { Register, RegisterSchema, defaultValues } from './register.schema'
 
-type Form = z.infer<typeof RegisterSchema>
-
-const RegisterForm = () => {
+export const RegisterForm = () => {
   const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
 
-  const form = useForm<Form>({
+  const form = useForm<Register>({
     mode: 'all',
     resolver: zodResolver(RegisterSchema),
     defaultValues: defaultValues
   })
 
-  const onSubmit = async (data: Form) => {
+  const onSubmit = async (data: Register) => {
     setLoading(true)
     const response = await AuthService.create(data)
 
@@ -43,7 +40,7 @@ const RegisterForm = () => {
           name="email"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('email.label')}</Form.Label>
+              <Form.Label required>{t('email.label')}</Form.Label>
               <Form.Control>
                 <Input
                   placeholder={t('email.placeholder')}
@@ -60,7 +57,7 @@ const RegisterForm = () => {
           name="password"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('password.label')}</Form.Label>
+              <Form.Label required>{t('password.label')}</Form.Label>
               <Form.Control>
                 <Input
                   type="password"
@@ -84,5 +81,3 @@ const RegisterForm = () => {
     </Form.Root>
   )
 }
-
-export { RegisterForm }

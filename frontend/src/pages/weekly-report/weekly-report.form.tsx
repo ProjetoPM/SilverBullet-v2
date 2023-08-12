@@ -1,34 +1,50 @@
-import { WeeklyReport } from '@/@types/WeeklyReport'
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
+import { routes } from '@/routes/routes'
+import WeeklyReportService, {
+  WeeklyReportData
+} from '@/services/modules/WeeklyReportService'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosResponse } from 'axios'
+import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { z } from 'zod'
+import { useNavigate } from 'react-router-dom'
 import { Processes } from './processes/processes'
-import { WeeklyReportSchema, defaultValues, max } from './weekly-report.schema'
-
-type Form = z.infer<typeof WeeklyReportSchema>
+import {
+  WeeklyReport,
+  WeeklyReportSchema,
+  defaultValues,
+  max
+} from './weekly-report.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyReport
+  data?: WeeklyReportData
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
-  const [output, setOutput] = useState('')
+  const navigate = useNavigate()
 
-  const form = useForm<Form>({
+  const form = useForm<WeeklyReport>({
     mode: 'all',
     resolver: zodResolver(WeeklyReportSchema),
     defaultValues: data ?? defaultValues
   })
 
-  const onSubmit = async (form: Form) => {
-    console.table(form.processes)
-    setOutput(JSON.stringify(form, null, 2))
+  const onSubmit = async (form: WeeklyReport) => {
+    let response: AxiosResponse | undefined
+
+    if (data) {
+      // response = await WeeklyReportService.edit(data._id, form) // TODO
+    } else {
+      response = await WeeklyReportService.create(form)
+    }
+
+    if (response?.status === StatusCodes.OK) {
+      navigate(routes.workspaces.index)
+    }
   }
 
   return (
@@ -42,7 +58,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           name="evaluationName"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('evaluation_name.label')}</Form.Label>
+              <Form.Label required>{t('evaluation_name.label')}</Form.Label>
               <Form.Control>
                 <Editor
                   limit={max.evaluationName}
@@ -60,7 +76,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           name="toolEvaluation"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('tool_evaluation.label')}</Form.Label>
+              <Form.Label required>{t('tool_evaluation.label')}</Form.Label>
               <Form.Control>
                 <Editor
                   limit={max.toolEvaluation}
@@ -74,7 +90,6 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           )}
         />
         <Processes form={form} control={form.control} />
-        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
           <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (

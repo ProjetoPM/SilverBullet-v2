@@ -1,5 +1,6 @@
-import { WorkspaceList } from '@/@types/Workspace'
-import WorkspaceService from '@/services/modules/WorkspaceService'
+import WorkspaceService, {
+  WorkspaceData
+} from '@/services/modules/WorkspaceService'
 import { useQuery } from 'react-query'
 
 export const useList = () => {
@@ -7,7 +8,10 @@ export const useList = () => {
     return await WorkspaceService.list()
   }
 
-  const { ...props } = useQuery<WorkspaceList>('workspaces', getData)
+  const { ...props } = useQuery<{ rows: WorkspaceData[] }>(
+    'workspaces',
+    getData
+  )
 
   return { ...props }
 }

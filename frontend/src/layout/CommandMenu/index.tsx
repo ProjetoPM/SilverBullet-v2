@@ -1,6 +1,7 @@
 import { DebouncedInput } from '@/components/DataTable/DebouncedInput'
 import { Badge, Button, Card, CommandDialog } from '@/components/ui'
 import { cn } from '@/lib/utils'
+import i18next from 'i18next'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -94,7 +95,12 @@ export const CommandMenu = () => {
                     <span className="text-foreground/90">{item.icon}</span>
                     <span>{item.name()}</span>
                   </Card.Title>
-                  <Card.Description>{item.description()}</Card.Description>
+                  <Card.Description
+                    className="text-justify hyphens-auto"
+                    lang={i18next.language}
+                  >
+                    {item.description()}
+                  </Card.Description>
                 </Card.Header>
               </Card.Root>
             ))}
@@ -115,7 +121,9 @@ export const CommandMenu = () => {
                       {item.name()}
                     </span>
                   </Card.Title>
-                  <Card.Description>{item.description()}</Card.Description>
+                  {item.description && (
+                    <Card.Description>{item.description()}</Card.Description>
+                  )}
                 </Card.Header>
                 <Card.Content className="flex gap-2 peer">
                   <Badge variant={'ghost'} className={item?.background}>
