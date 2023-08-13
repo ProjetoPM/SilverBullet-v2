@@ -15,7 +15,7 @@ export const useList = () => {
     return response
   }
 
-  const { ...props } = useQuery<{ rows: ProjectData }>('projects', getData)
+  const { ...props } = useQuery<{ rows: ProjectData[] }>('projects', getData)
 
   return { ...props }
 }

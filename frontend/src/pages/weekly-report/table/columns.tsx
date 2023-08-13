@@ -1,10 +1,10 @@
-import { WeeklyReport } from '@/@types/WeeklyReport'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
+import { WeeklyReportData } from '@/services/modules/WeeklyReportService'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
 
-const helper = createColumnHelper<WeeklyReport>()
+const helper = createColumnHelper<WeeklyReportData>()
 
 export const columns = [
   /**

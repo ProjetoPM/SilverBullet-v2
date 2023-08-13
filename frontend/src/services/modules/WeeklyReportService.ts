@@ -8,6 +8,7 @@ import { api } from '../api'
 
 export type WeeklyReportData = z.infer<typeof WeeklyReportSchema> & {
   _id: string
+  evaluationName: string
   tenantId: string
   createdAt: string
   updatedAt: string

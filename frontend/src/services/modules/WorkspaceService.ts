@@ -10,6 +10,7 @@ import { queryClient } from '../react-query'
 
 export type WorkspaceData = z.infer<typeof WorkspaceSchema> & {
   _id: string
+  planStatus: string
   createdAt: string
   updatedAt: string
 }
