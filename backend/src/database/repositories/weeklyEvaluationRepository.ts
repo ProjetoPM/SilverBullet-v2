@@ -12,8 +12,6 @@ class WeeklyEvaluationRepository {
     data: IWeeklyEvaluation,
     options: IRepositoryOptions,
   ) {
-    console.log('data');
-    console.log(data);
 
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
@@ -140,11 +138,11 @@ class WeeklyEvaluationRepository {
   }
 
   static async destroyAll(
-    weeklyEvaluations: Array<IWeeklyEvaluation>,
+    ids: Array<string>,
     options: IRepositoryOptions,
   ) {
-    for (const weeklyEvaluation of weeklyEvaluations) {
-      this.destroy(weeklyEvaluation.id!, options);
+    for (const id of ids) {
+      this.destroy(id, options);
     }
   }
 
