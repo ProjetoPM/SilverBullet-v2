@@ -3,11 +3,22 @@ import MongooseRepository from '../../database/repositories/mongooseRepository';
 import Error400 from '../../errors/Error400';
 import { IServiceOptions } from '../IServiceOptions';
 
-import {groups} from '../../mapping/weeklyReport';
-import { IWeeklyReport } from '../../interfaces';
-import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
 import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvaluationRepository';
+import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
 import ProcessReportCreateService from '../processReport/createService';
+
+export type Process = {
+  group: string;
+  name: string;
+  description: string;
+  files?: FileList;
+};
+
+export type RequestWeeklyReport = {
+  weeklyEvaluationId: string;
+  toolEvaluation: string;
+  processes?: Process[];
+};
 
 export default class WeeklyReportCreateService {
   options: IServiceOptions;
@@ -17,36 +28,30 @@ export default class WeeklyReportCreateService {
   }
 
   async create(
-    data: IWeeklyReport,
+    data: RequestWeeklyReport,
     language: string,
   ) {
-
-
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
-    console.log(data);
-    let processes;
 
     try {
       const date = Date.now();
-      if(!data.weeklyEvaluation) throw new Error400();
+
+      if (!data.weeklyEvaluationId) throw new Error400();
 
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
-          data.weeklyEvaluation,
+          data.weeklyEvaluationId,
           this.options,
         );
-      console.log('isInRange');
-      console.log(isInRange);
 
-
-      if (!isInRange) throw new Error400(language, 'tenant.weeklyReport.errors.rangeDateError');
-
-      if (data && data.score) {
-        delete data.score;
-      }
+      if (!isInRange)
+        throw new Error400(
+          language,
+          'tenant.weeklyReport.errors.rangeDateError',
+        );
 
       let record = await WeeklyReportRepository.create(
         data,
@@ -58,26 +63,23 @@ export default class WeeklyReportCreateService {
 
       if (!record) throw new Error400();
 
-      console.log("data.processes");
-      console.log(data.processes);
-      
       if (data.processes) {
-         processes =
+        record.processes =
           await new ProcessReportCreateService(
             this.options,
-          ).create(data.processes, record.id, language);
+          ).create(
+            { processes: data.processes },
+            record.id,
+            language,
+          );
       }
 
-      record.processes = processes;
-
       await MongooseRepository.commitTransaction(session);
-
       return record;
     } catch (error: any) {
-      console.log(error.message);
-      
-      await MongooseRepository.abortTransaction(session);
       throw error;
+    } finally {
+      await MongooseRepository.abortTransaction(session);
     }
   }
 }

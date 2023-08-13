@@ -6,31 +6,34 @@ import Error404 from '../../errors/Error404';
 import Error400 from '../../errors/Error400';
 import { IRepositoryOptions } from './IRepositoryOptions';
 import { IWeeklyReport } from '../../interfaces';
-
+import { RequestWeeklyReport } from '../../services/weeklyReport/createService';
 
 class WeeklyReportRepository {
   static async create(
-    data: IWeeklyReport,
+    data: RequestWeeklyReport,
     options: IRepositoryOptions,
   ) {
-
-    
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
     if (!currentTenant) {
       throw new Error400();
     }
+
     const currentUser =
       MongooseRepository.getCurrentUser(options);
-    const [record] = await WeeklyReport(options.database).create(
+
+    const [record] = await WeeklyReport(
+      options.database,
+    ).create(
       [
         {
           ...data,
+          weeklyEvaluation: data.weeklyEvaluationId,
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
-        }
+        },
       ],
       options,
     );
@@ -114,8 +117,10 @@ class WeeklyReportRepository {
     return await this.findById(id, options);
   }
 
-  static async destroy(id: Object, options: IRepositoryOptions) {
-
+  static async destroy(
+    id: Object,
+    options: IRepositoryOptions,
+  ) {
     let record =
       await MongooseRepository.wrapWithSessionIfExists(
         WeeklyReport(options.database).findById(id),
@@ -133,7 +138,6 @@ class WeeklyReportRepository {
       record,
       options,
     );
-
   }
 
   static async destroyAll(
@@ -176,7 +180,6 @@ class WeeklyReportRepository {
   ) {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
-
 
     let criteriaAnd: any = [];
 
@@ -240,8 +243,6 @@ class WeeklyReportRepository {
       options.database,
     ).countDocuments(criteria);
 
-
-
     return { rows, count };
   }
 
@@ -253,7 +254,8 @@ class WeeklyReportRepository {
   ) {
     await AuditLogRepository.log(
       {
-        entityName: WeeklyReport(options.database).modelName,
+        entityName: WeeklyReport(options.database)
+          .modelName,
         entityId: id,
         action,
         values: data,
@@ -261,7 +263,6 @@ class WeeklyReportRepository {
       options,
     );
   }
-
 }
 
 export default WeeklyReportRepository;

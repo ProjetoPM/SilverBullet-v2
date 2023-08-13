@@ -1,36 +1,38 @@
-import MongooseRepository from './mongooseRepository';
-import MongooseQueryUtils from '../utils/mongooseQueryUtils';
-import AuditLogRepository from './auditLogRepository';
-import ProcessReport from '../models/processReport';
-import Error404 from '../../errors/Error404';
 import Error400 from '../../errors/Error400';
-import { IRepositoryOptions } from './IRepositoryOptions';
+import Error404 from '../../errors/Error404';
 import { IProcessReport } from '../../interfaces';
-
+import { Process } from '../../services/weeklyReport/createService';
+import ProcessReport from '../models/processReport';
+import { IRepositoryOptions } from './IRepositoryOptions';
+import AuditLogRepository from './auditLogRepository';
+import MongooseRepository from './mongooseRepository';
 
 class ProcessReportRepository {
-
   static async create(
-    data: IProcessReport,
+    weeklyReportId: string,
+    process: Process,
     options: IRepositoryOptions,
   ) {
-
-    
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
     if (!currentTenant) {
       throw new Error400();
     }
+
     const currentUser =
       MongooseRepository.getCurrentUser(options);
-    const [record] = await ProcessReport(options.database).create(
+
+    const [record] = await ProcessReport(
+      options.database,
+    ).create(
       [
         {
-          ...data,
+          ...process,
+          weeklyReport: weeklyReportId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
-        }
+        },
       ],
       options,
     );
@@ -38,7 +40,7 @@ class ProcessReportRepository {
     await this._createAuditLog(
       AuditLogRepository.CREATE,
       record.id,
-      data,
+      process,
       {
         ...options,
         currentTenant,
@@ -78,7 +80,6 @@ class ProcessReportRepository {
     );
 
     return await this.findById(id, options);
-  
   }
 
   static async findById(id, options: IRepositoryOptions) {
@@ -99,8 +100,10 @@ class ProcessReportRepository {
     return output;
   }
 
-  static async destroy(id: Object, options: IRepositoryOptions) {
-
+  static async destroy(
+    id: Object,
+    options: IRepositoryOptions,
+  ) {
     let record =
       await MongooseRepository.wrapWithSessionIfExists(
         ProcessReport(options.database).findById(id),
@@ -118,7 +121,6 @@ class ProcessReportRepository {
       record,
       options,
     );
-
   }
 
   static async destroyAll(
@@ -132,11 +134,12 @@ class ProcessReportRepository {
 
   static async count(filter, options: IRepositoryOptions) {
     return MongooseRepository.wrapWithSessionIfExists(
-      ProcessReport(options.database).countDocuments(filter),
+      ProcessReport(options.database).countDocuments(
+        filter,
+      ),
       options,
     );
   }
-
 
   static async _createAuditLog(
     action,
@@ -146,7 +149,8 @@ class ProcessReportRepository {
   ) {
     await AuditLogRepository.log(
       {
-        entityName: ProcessReport(options.database).modelName,
+        entityName: ProcessReport(options.database)
+          .modelName,
         entityId: id,
         action,
         values: data,
@@ -154,7 +158,6 @@ class ProcessReportRepository {
       options,
     );
   }
-
 }
 
 export default ProcessReportRepository;
