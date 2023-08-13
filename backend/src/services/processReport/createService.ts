@@ -35,21 +35,13 @@ export default class ProcessReportCreateService {
           (group) => group.id === process.group,
         );
 
-        if (!group)
-          throw new Error400(
-            language,
-            "A group in processes doesn't exist.",
-          );
+        if (!group) break;
 
         const processName = group.entities.find(
           (entity) => entity.id === process.name,
         );
 
-        if (!processName)
-          throw new Error400(
-            language,
-            "A process name in processes doesn't exist.",
-          );
+        if (!processName) break;
 
         let record = await ProcessReportRepository.create(
           weeklyReportId,
