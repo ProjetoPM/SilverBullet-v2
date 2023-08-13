@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Error401 from '../../errors/Error401';
 import MetricGroupSchema from './schemas/metricGroup';
 
 const Schema = mongoose.Schema;
@@ -14,7 +15,7 @@ export default (database) => {
     {
       toolEvaluation: {
         type: 'string',
-        maxlength: 5000
+        maxlength: 5000,
       },
       score: MetricGroupSchema,
       weeklyEvaluation: {
@@ -41,9 +42,9 @@ export default (database) => {
   );
 
   WeeklyReportSchema.index(
-    { createdBy: 1, weeklyEvaluation: 1},
+    { createdBy: 1, weeklyEvaluation: 1 },
     {
-      unique: true
+      unique: true,
     },
   );
 

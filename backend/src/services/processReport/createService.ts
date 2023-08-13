@@ -1,12 +1,11 @@
 import MongooseRepository from '../../database/repositories/mongooseRepository';
-
-import Error400 from '../../errors/Error400';
-import { IServiceOptions } from '../IServiceOptions';
-import {groups} from '../../mapping/weeklyReport';
-
-import { IProcessReport, IWeeklyReport } from '../../interfaces';
 import ProcessReportRepository from '../../database/repositories/processReportRepository';
+import Error400 from '../../errors/Error400';
+import { groups } from '../../mapping/weeklyReport';
+import { IServiceOptions } from '../IServiceOptions';
+import { RequestWeeklyReport } from '../weeklyReport/createService';
 
+type Processes = Pick<RequestWeeklyReport, 'processes'>;
 
 export default class ProcessReportCreateService {
   options: IServiceOptions;
@@ -15,37 +14,56 @@ export default class ProcessReportCreateService {
     this.options = options;
   }
 
-  async create(data: Array<IProcessReport>, weeklyReportId: string, language: string){
+  async create(
+    data: Processes,
+    weeklyReportId: string,
+    language: string,
+  ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
+    try {
+      let processes: Processes[] = [];
 
-    
-    try{
+      /**
+       * Usando '!' uma vez que existe uma verificação anterior que garante
+       * a existência de processos (WeeklyReportCreateService:66).
+       */
+      for (const process of data.processes!) {
+        const group = groups.find(
+          (group) => group.id === process.group,
+        );
 
-      let processes: Array<any> = [];
-      
-      for (const process of data) {
-        const group = groups.find(group => group.id === process.group); 
-        if(!group) break;
+        if (!group)
+          throw new Error400(
+            language,
+            "A group in processes doesn't exist.",
+          );
 
-        const processName = group.entities.find(entity => entity.id === process.name);
-        if(!processName) break;
+        const processName = group.entities.find(
+          (entity) => entity.id === process.name,
+        );
 
-        process.weeklyReport = weeklyReportId;
-        let record = await ProcessReportRepository.create(process, {
-          ...this.options,
-          session,
-        });
+        if (!processName)
+          throw new Error400(
+            language,
+            "A process name in processes doesn't exist.",
+          );
 
-        if(record){
+        let record = await ProcessReportRepository.create(
+          weeklyReportId,
+          process,
+          {
+            ...this.options,
+            session,
+          },
+        );
 
+        if (record) {
           processes.push(record);
         }
-        
       }
-
 
       await MongooseRepository.commitTransaction(session);
 
