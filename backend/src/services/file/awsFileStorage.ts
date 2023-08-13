@@ -1,11 +1,16 @@
 import { getConfig } from '../../config';
+import { IFile } from '../../interfaces';
+import {
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 
-const aws = require('aws-sdk');
-
-const s3 = new aws.S3({
-  accessKeyId: getConfig().AWS_ACCESS_KEY_ID,
-  secretAccessKey: getConfig().AWS_SECRET_ACCESS_KEY,
+const s3 = new S3Client({
   region: getConfig().AWS_REGION,
+  credentials: {
+    accessKeyId: getConfig().AWS_ACCESS_KEY_ID,
+    secretAccessKey: getConfig().AWS_SECRET_ACCESS_KEY,
+  },
 });
 
 export default class AWSStorage {
@@ -14,69 +19,36 @@ export default class AWSStorage {
    * the frontend to upload directly to S3 in a
    * secure way
    */
-  static async uploadCredentials(
-    privateUrl,
-    maxSizeInBytes,
-    publicRead,
-    tokenExpiresAt,
-  ) {
-    const expires =
-      tokenExpiresAt || Date.now() + 10 * 60 * 1000;
 
-    const Conditions: Array<any> = [];
-
-    if (maxSizeInBytes) {
-      Conditions.push([
-        'content-length-range',
-        0,
-        maxSizeInBytes,
-      ]);
+  static async create(receiveParams: any) {
+    try {
+      await s3.send(new PutObjectCommand(receiveParams));
+      return true;
+    } catch (err) {
+      console.log('Error', err);
+      return false;
     }
-
-    let publicUrl;
-
-    const Fields: any = { key: privateUrl };
-
-    if (publicRead) {
-      Fields.acl = 'public-read';
-      Conditions.push({ acl: 'public-read' });
-      publicUrl = await this.downloadUrl(
-        privateUrl,
-        publicRead,
-      );
-    }
-
-    const policy = await s3.createPresignedPost({
-      Bucket: getConfig().FILE_STORAGE_BUCKET,
-      Fields,
-      Expires: tokenExpiresAt,
-      Conditions,
-    });
-
-    return {
-      ...policy,
-      publicUrl,
-    };
   }
 
-  /**
-   * Returns a signed download URL.
-   */
-  static async downloadUrl(privateUrl, publicRead) {
-    if (publicRead) {
-      return `https://${
-        getConfig().FILE_STORAGE_BUCKET
-      }.s3.amazonaws.com/${privateUrl}`;
-    }
-
-    const params = {
-      Key: privateUrl,
-      Bucket: getConfig().FILE_STORAGE_BUCKET,
+  static async saveFileS3(
+    file: File,
+    fileNameKey: string,
+    extension: string,
+  ) {
+    
+    const s3Params = {
+      Bucket: process.env.Bucket,
+      Key: fileNameKey,
+      Body: file,
+      ContentType: '',
+      ContentEncoding: '',
     };
 
-    return await s3.getSignedUrlPromise(
-      'getObject',
-      params,
-    );
+    if (extension === 'pdf') {
+      s3Params.ContentType = 'application/pdf';
+      s3Params.ContentEncoding = 'binary';
+    }
+
+    return await this.create(s3Params);
   }
 }

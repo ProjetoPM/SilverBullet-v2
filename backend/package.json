@@ -11,6 +11,7 @@
     "stripe:start": "stripe listen --forward-to localhost:8080/api/plan/stripe/webhook"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.388.0",
     "@google-cloud/storage": "5.3.0",
     "@sendgrid/mail": "7.2.6",
     "aws-sdk": "2.756.0",

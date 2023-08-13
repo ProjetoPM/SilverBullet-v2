@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     // );
 
     const payload = await new WeeklyEvaluationCreateService(req).create(
-      req.body.data, req.body.metricGroupId
+      req.body.data
     );
 
     await ApiResponseHandler.success(req, res, payload);
