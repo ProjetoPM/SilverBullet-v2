@@ -35,13 +35,19 @@ export default class ProcessReportCreateService {
           (group) => group.id === process.group,
         );
 
-        if (!group) break;
-
-        const processName = group.entities.find(
+        const processName = group?.entities.find(
           (entity) => entity.id === process.name,
         );
 
-        if (!processName) break;
+        /**
+         * Ignora o 'erro' e continua na próxima iteração,
+         * evitando interromper o fluxo antes de chegar no
+         * último item para garantir dados parciais, caso
+         * exista itens posteriores válidos.
+         */
+        if (!group || !processName) {
+          continue;
+        }
 
         let record = await ProcessReportRepository.create(
           weeklyReportId,
