@@ -1,5 +1,5 @@
 import { Editor } from '@/components/Editor/Editor'
-import { Button, Form } from '@/components/ui'
+import { Button, Form, Input } from '@/components/ui'
 import { routes } from '@/routes/routes'
 import WeeklyReportService, {
   WeeklyReportData
@@ -43,7 +43,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
     }
 
     if (response?.status === StatusCodes.OK) {
-      navigate(routes.workspaces.index)
+      navigate(routes.weekly_report.index)
     }
   }
 
@@ -55,13 +55,12 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
       >
         <Form.Field
           control={form.control}
-          name="evaluationName"
+          name="weeklyEvaluationId"
           render={({ field }) => (
             <Form.Item>
               <Form.Label required>{t('evaluation_name.label')}</Form.Label>
               <Form.Control>
-                <Editor
-                  limit={max.evaluationName}
+                <Input
                   readOnly={!!data}
                   placeholder={t('evaluation_name.placeholder')}
                   {...field}

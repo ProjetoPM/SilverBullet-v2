@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -24,6 +25,7 @@ interface WorkspaceFormPageProps {
 
 export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   const { t } = useTranslation('workspace')
+  const [isLoading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const form = useForm<Workspace>({
@@ -33,6 +35,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   })
 
   const onSubmit = async (form: Workspace) => {
+    setLoading(true)
     let response: AxiosResponse | undefined
 
     if (data) {
@@ -44,6 +47,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
     if (response?.status === StatusCodes.OK) {
       navigate(routes.workspaces.index)
     }
+    setLoading(false)
   }
 
   return (
@@ -70,7 +74,11 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
           )}
         />
         <div className="space-y-2 space-x-2.5">
-          <Button type="submit" className="w-30 gap-1 font-medium">
+          <Button
+            type="submit"
+            className="w-30 gap-1 font-medium"
+            disabled={isLoading}
+          >
             {data && (
               <>
                 <Edit size={20} />
