@@ -1,9 +1,9 @@
-import TranslateText from '@/components/Utils/TranslateText'
+import { Translate } from '@/components/Utils/Translate'
 import { FolderOpen, Folders, PanelTop } from 'lucide-react'
 
 type SidebarItem = {
   id: string
-  label?: string
+  label?: string | React.ReactNode
   children?: {
     id: string
     title: React.ReactNode
@@ -24,13 +24,13 @@ export const sidebar: SidebarItem[] = [
     children: [
       {
         id: 'workspaces',
-        title: <TranslateText text="workspaces" />,
+        title: <Translate text="workspaces" />,
         icon: <Folders size={22} />,
         link: '/workspaces'
       },
       {
         id: 'projects',
-        title: <TranslateText text="projects" />,
+        title: <Translate text="projects" />,
         icon: <FolderOpen size={22} />,
         link: '/projects',
         isHidden: getWorkspace() === null
@@ -43,7 +43,7 @@ export const sidebar: SidebarItem[] = [
     children: [
       {
         id: 'other',
-        title: <TranslateText text="menu" />,
+        title: <Translate text="menu" />,
         icon: <PanelTop size={22} />,
         link: '/menu'
       }

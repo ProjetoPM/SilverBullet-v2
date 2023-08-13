@@ -43,7 +43,9 @@ export const columns = [
       />
     ),
     cell: ({ row }) => (
-      <div id={`name-${row.index}`}>{replaceHtmlTags(row.getValue('name'))}</div>
+      <div id={`name-${row.index}`}>
+        {replaceHtmlTags(row.getValue('name'))}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true
@@ -100,12 +102,7 @@ export const columns = [
     id: 'actions',
     header: () => i18next.t('data-table:actions'),
     cell: ({ row }) => {
-      return (
-        <WorkspaceActions
-          id={row.index.toString()}
-          data={row.original}
-        />
-      )
+      return <WorkspaceActions id={row.index.toString()} data={row.original} />
     }
   })
 ]

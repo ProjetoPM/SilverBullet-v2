@@ -1,6 +1,5 @@
-import { Project } from '@/@types/Project'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import ProjectService from '@/services/modules/ProjectService'
+import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 type ProjectActionsProps = {
   id: string
-  data: Project
+  data: ProjectData
 }
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
@@ -29,11 +28,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
     <Dialog.Root>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <Button
-            id={id}
-            variant="ghost"
-            className="h-8 w-8 p-0"
-          >
+          <Button id={id} variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">{t('open_menu')}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -48,10 +43,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link
-            to={`/projects/${data._id}/edit`}
-            id={`edit-${id}`}
-          >
+          <Link to={`/projects/${data._id}/edit`} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -90,6 +82,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
             <Button
+              variant="delete"
               onClick={() => handleDelete()}
               disabled={isLoading}
             >

@@ -9,3 +9,5 @@ export const defaultValues = {
   email: '',
   password: ''
 }
+
+export type Register = z.infer<typeof RegisterSchema>

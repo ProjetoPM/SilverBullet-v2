@@ -9,7 +9,12 @@ type BreadcrumbProps = ComponentProps<'div'> & {
   items?: string[][]
 }
 
-const Breadcrumb = ({ title, items = [], className, ...props }: BreadcrumbProps) => {
+const Breadcrumb = ({
+  title,
+  items = [],
+  className,
+  ...props
+}: BreadcrumbProps) => {
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <ol className="text-sm flex items-center">

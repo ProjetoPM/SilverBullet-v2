@@ -87,7 +87,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <Button variant="ghost">{t('default:btn.cancel')}</Button>
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
-            <Button onClick={() => handleDelete()} disabled={isLoading}>
+            <Button
+              variant="delete"
+              onClick={() => handleDelete()}
+              disabled={isLoading}
+            >
               {t('default:btn.confirm')}
             </Button>
           </Dialog.Trigger>

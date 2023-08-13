@@ -3,12 +3,17 @@ import { Logo } from '@/components/Logo'
 import { Button, Separator, Sheet } from '@/components/ui'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { Dropdown as ConfigDropdown } from '@/layout/MainLayout/Dropdown'
+import { useSidebar } from '@/stores/useSidebar'
 import { Menu } from 'lucide-react'
 import { Sidebar } from './Sidebar'
+import { CommandMenu } from '../CommandMenu'
 
 const Header = () => {
+  const open = useSidebar((state) => state.open)
+  const setOpen = useSidebar((state) => state.setOpen)
+
   return (
-    <Sheet.Root>
+    <Sheet.Root open={open} onOpenChange={setOpen}>
       <div className="flex flex-1 items-center justify-between mx-5 px-0 lg:px-5">
         <div className="flex gap-3">
           <Sheet.Trigger className="flex lg:hidden" asChild>
@@ -21,6 +26,7 @@ const Header = () => {
           </div>
         </div>
         <div className="flex gap-2">
+          <CommandMenu />
           <LocaleSwitch />
           <ThemeSwitch />
           <ConfigDropdown />

@@ -19,7 +19,7 @@ const BubbleMenu = ({
   return (
     <_BubbleMenu
       className={cn(
-        'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-lg divide-x divide-neutral-600 max-w-[400px]',
+        'flex items-center justify-center bg-accent rounded-lg divide-x divide-neutral-300 dark:divide-neutral-600 max-w-[300px] xs:max-w-[400px] overflow-x-auto',
         className,
         isFixed ? 'hidden' : ''
       )}

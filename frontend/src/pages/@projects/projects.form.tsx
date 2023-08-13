@@ -1,35 +1,34 @@
-import { Project } from '@/@types/Project'
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import ProjectService from '@/services/modules/ProjectService'
+import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { z } from 'zod'
-import { ProjectSchema, defaultValues, max } from './projects.schema'
+import { Project, ProjectSchema, defaultValues, max } from './projects.schema'
 
-type Form = z.infer<typeof ProjectSchema>
-
-interface ProjectFormProps {
-  data?: Pick<Project, '_id' | 'name' | 'description'>
+interface ProjectFormPageProps {
+  data?: ProjectData
 }
 
-const ProjectForm = ({ data }: ProjectFormProps) => {
+export const ProjectForm = ({ data }: ProjectFormPageProps) => {
   const { t } = useTranslation(['default', 'projects'])
+  const [isLoading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const form = useForm<Form>({
+  const form = useForm<Project>({
     mode: 'all',
     resolver: zodResolver(ProjectSchema),
     defaultValues: data ?? defaultValues
   })
 
-  const onSubmit = async (form: Form) => {
+  const onSubmit = async (form: Project) => {
+    setLoading(true)
     let response: AxiosResponse | undefined
 
     if (data) {
@@ -41,6 +40,7 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
     if (response?.status === StatusCodes.OK) {
       navigate(routes.projects.index)
     }
+    setLoading(false)
   }
 
   return (
@@ -54,11 +54,10 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
           name="name"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('projects:edit.name')}</Form.Label>
+              <Form.Label required>{t('projects:edit.name')}</Form.Label>
               <Form.Control>
                 <Editor
                   limit={max.name}
-                  content={data?.name}
                   placeholder={t('projects:name.placeholder')}
                   {...field}
                 />
@@ -76,7 +75,6 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
               <Form.Control>
                 <Editor
                   limit={max.description}
-                  content={data?.description}
                   placeholder={t('projects:description.placeholder')}
                   as="textarea-3"
                   {...field}
@@ -90,6 +88,7 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
+            disabled={isLoading}
           >
             {data && (
               <>
@@ -117,5 +116,3 @@ const ProjectForm = ({ data }: ProjectFormProps) => {
     </Form.Root>
   )
 }
-
-export default ProjectForm

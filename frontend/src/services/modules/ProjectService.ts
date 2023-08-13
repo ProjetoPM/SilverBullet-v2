@@ -1,14 +1,21 @@
-import { Project } from '@/@types/Project'
+import { ProjectSchema } from '@/pages/@projects/projects.schema'
 import { getWorkspaceId } from '@/stores/useWorkspace'
 import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'
+import { z } from 'zod'
 import { api } from '../api'
 import { queryClient } from '../react-query'
 
-type CreateProject = Pick<Project, 'name' | 'description'>
-type EditProject = Pick<Project, 'name' | 'description'>
-type DeleteProject = Pick<Project, '_id'>
+export type ProjectData = z.infer<typeof ProjectSchema> & {
+  _id: string
+  tenant: string
+  createdAt: string
+  updatedAt: string
+}
+
+type FormProject = Pick<ProjectData, 'name' | 'description'>
+type DeleteProject = Pick<ProjectData, '_id'>
 
 export default class ProjectService {
   static async list() {
@@ -24,14 +31,19 @@ export default class ProjectService {
     }
   }
 
-  static async create(data: CreateProject) {
+  static async create(data: FormProject) {
     const response = await api
       .post(`/tenant/${getWorkspaceId()}/project/create`, { data: { ...data } })
       .catch((err) => err.response)
 
+    console.log(response)
+
     switch (response?.status) {
       case StatusCodes.OK:
         toast.success(i18next.t('projects:created_successfully'))
+        break
+      case StatusCodes.BAD_REQUEST:
+        toast.info(i18next.t('projects:project_already_exists'))
         break
       default:
         toast.error(i18next.t('projects:error_creating_project'))
@@ -39,7 +51,7 @@ export default class ProjectService {
     return response
   }
 
-  static async edit(id: string, data: EditProject) {
+  static async edit(id: string, data: FormProject) {
     const response = await api
       .put(`/tenant/${getWorkspaceId()}/project/${id}`, { data: { ...data } })
       .catch((err) => err.response)
@@ -56,7 +68,9 @@ export default class ProjectService {
 
   static async delete(data: DeleteProject) {
     const response = await api
-      .delete(`/tenant/${getWorkspaceId()}/project`, { params: { ids: [data._id] } })
+      .delete(`/tenant/${getWorkspaceId()}/project`, {
+        params: { ids: [data._id] }
+      })
       .catch((err) => err.response)
 
     switch (response?.status) {

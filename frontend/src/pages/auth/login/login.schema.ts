@@ -11,3 +11,5 @@ export const defaultValues = {
   password: '',
   rememberMe: true
 }
+
+export type Login = z.infer<typeof LoginSchema>

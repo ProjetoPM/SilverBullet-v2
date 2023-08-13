@@ -9,11 +9,19 @@ export const max = {
 export const ProjectSchema = z.object({
   name: string()
     .refine((value) => html(value, 3, '>='), params('at_least', 3))
-    .refine((value) => html(value, max.name, '<='), params('at_most', max.name)),
-  description: string()
+    .refine(
+      (value) => html(value, max.name, '<='),
+      params('at_most', max.name)
+    ),
+  description: string().refine(
+    (value) => html(value, max.description, '<='),
+    params('at_most', max.description)
+  )
 })
 
 export const defaultValues = {
   name: '',
   description: ''
 }
+
+export type Project = z.infer<typeof ProjectSchema>

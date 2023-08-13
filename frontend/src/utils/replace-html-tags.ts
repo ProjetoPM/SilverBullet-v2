@@ -6,8 +6,11 @@ export const removeHtmlEscapeCodes = (html: string) => {
   return html.replace(/&[a-zA-Z]+;/g, '')
 }
 
-export const params = (key: string, number: number) => {
-  return { params: { i18n: { key: key, values: { value: number } } } }
+export const params = (key: string, number?: number) => {
+  if (number) {
+    return { params: { i18n: { key: key, values: { value: number } } } }
+  }
+  return { params: { i18n: { key: key } } }
 }
 
 export const html = (html: string, number: number, type: '<=' | '>=') => {

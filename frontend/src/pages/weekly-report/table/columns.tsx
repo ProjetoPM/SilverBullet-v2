@@ -1,9 +1,10 @@
+import { WeeklyReport } from '@/@types/WeeklyReport'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
 
-const helper = createColumnHelper<any>()
+const helper = createColumnHelper<WeeklyReport>()
 
 export const columns = [
   /**
@@ -29,33 +30,17 @@ export const columns = [
     enableHiding: false
   }),
   /**
-   * User Name
-   */
-  helper.accessor((row) => row.user.name, {
-    id: 'user.name',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={'User'}
-      />
-    ),
-    cell: ({ row }) => <div id={`user-${row.index}`}>{row.getValue('user.name')}</div>,
-    enableSorting: true,
-    enableHiding: true
-  }),
-  /**
    * Evaluation Name
    */
   helper.accessor((row) => row.evaluationName, {
     id: 'evaluationName',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={'Evaluation Name'}
-      />
+      <DataTableColumnHeader column={column} header={'Evaluation Name'} />
     ),
     cell: ({ row }) => (
-      <div id={`evaluation-name-${row.index}`}>{row.getValue('evaluationName')}</div>
+      <div id={`evaluation-name-${row.index}`}>
+        {row.getValue('evaluationName')}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true
@@ -66,10 +51,7 @@ export const columns = [
   helper.display({
     id: 'actions',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={'Actions'}
-      />
+      <DataTableColumnHeader column={column} header={'Actions'} />
     ),
     cell: () => <h1>Actions!</h1>,
     enableSorting: false,

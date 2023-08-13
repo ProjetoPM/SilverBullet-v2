@@ -1,12 +1,12 @@
-import { Project } from '@/@types/Project'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
+import { ProjectData } from '@/services/modules/ProjectService'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { ProjectActions } from './projects.actions'
 
-const helper = createColumnHelper<Project>()
+const helper = createColumnHelper<ProjectData>()
 
 export const columns = [
   /**
@@ -43,7 +43,9 @@ export const columns = [
       />
     ),
     cell: ({ row }) => (
-      <div id={`name-${row.index}`}>{replaceHtmlTags(row.getValue('name'))}</div>
+      <div id={`name-${row.index}`}>
+        {replaceHtmlTags(row.getValue('name'))}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true
@@ -99,12 +101,7 @@ export const columns = [
     id: 'actions',
     header: () => i18next.t('data-table:actions'),
     cell: ({ row }) => {
-      return (
-        <ProjectActions
-          id={row.index.toString()}
-          data={row.original}
-        />
-      )
+      return <ProjectActions id={row.index.toString()} data={row.original} />
     }
   })
 ]

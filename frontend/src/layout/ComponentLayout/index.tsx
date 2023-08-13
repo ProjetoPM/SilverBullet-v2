@@ -12,7 +12,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
     <>
       {layout === 'simple' && (
         <>
-          <div className="max-w-[1536px] mx-auto my-2">
+          <div className="max-w-[1536px] mx-auto py-2">
             <div className="flex items-center py-1">
               <Header />
             </div>
@@ -23,7 +23,7 @@ const ComponentLayout = ({ layout = 'blank' }: ComponentLayoutProps) => {
               <div className="hidden lg:flex border-r">
                 <Sidebar />
               </div>
-              <div className="p-5 lg:px-10">
+              <div className="p-5 lg:px-10 bg-accent/5">
                 <Outlet />
               </div>
             </div>

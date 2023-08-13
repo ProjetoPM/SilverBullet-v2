@@ -9,7 +9,9 @@ type CreateAccount = z.infer<typeof RegisterSchema>
 
 export default class AuthService {
   static async create(data: CreateAccount) {
-    const response = await api.post('/auth/sign-up', data).catch((err) => err.response)
+    const response = await api
+      .post('/auth/sign-up', data)
+      .catch((err) => err.response)
 
     switch (response?.status) {
       case StatusCodes.OK:
