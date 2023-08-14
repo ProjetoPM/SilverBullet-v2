@@ -10,7 +10,6 @@ import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
 import { Processes } from './processes/processes'
 import {
@@ -51,6 +50,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
     // if (response?.status === StatusCodes.OK) {
     //   navigate(routes.weekly_report.index)
     // }
+    console.table(form.processes)
   }
 
   return (
@@ -89,36 +89,47 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
                   </Popover.Trigger>
                   <Popover.Content className="p-0">
                     <Command.Root>
-                      <Command.Input
-                        placeholder={t('search_weekly_evaluation')}
-                      />
-                      <Command.Empty>
-                        {t('weekly-report:no_results_found')}
-                      </Command.Empty>
-                      <ScrollArea className="max-h-[300px]">
-                        <Command.Group>
-                          {weList?.rows?.map((data) => (
-                            <Command.Item
-                              value={data.id}
-                              key={data.id}
-                              onSelect={() => {
-                                form.setValue('weeklyEvaluationId', data.id)
-                                form.clearErrors('weeklyEvaluationId')
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  data.id === field.value
-                                    ? 'opacity-100'
-                                    : 'opacity-0'
-                                )}
-                              />
-                              {data.name}
-                            </Command.Item>
-                          ))}
-                        </Command.Group>
-                      </ScrollArea>
+                      {weList && weList.count > 0 && (
+                        <>
+                          <Command.Input
+                            placeholder={t('search_weekly_evaluation')}
+                          />
+                          <Command.Empty>
+                            {t('weekly-report:no_results_found')}
+                          </Command.Empty>
+                          <ScrollArea className="max-h-[300px]">
+                            <Command.Group>
+                              {weList.rows.map((data) => (
+                                <Command.Item
+                                  value={data.id}
+                                  key={data.id}
+                                  onSelect={() => {
+                                    form.setValue('weeklyEvaluationId', data.id)
+                                    form.clearErrors('weeklyEvaluationId')
+                                    setOpen(false)
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      data.id === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {data.name}
+                                </Command.Item>
+                              ))}
+                            </Command.Group>
+                          </ScrollArea>
+                        </>
+                      )}
+                      {!weList ||
+                        (weList?.count === 0 && (
+                          <Command.Item>
+                            {t('weekly-report:no_weekly_evaluation_exists')}
+                          </Command.Item>
+                        ))}
                     </Command.Root>
                   </Popover.Content>
                 </Popover.Root>

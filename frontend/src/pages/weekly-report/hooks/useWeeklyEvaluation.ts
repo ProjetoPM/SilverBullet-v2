@@ -13,12 +13,10 @@ export const useWeeklyEvaluation = () => {
     return api.get(url).then((res) => res.data)
   }
 
-  const { data, ...props } = useQuery<{ rows: SelectWeeklyEvaluation[] }>(
-    'weekly-evaluation-list',
-    async () => getData()
-  )
-
-  console.log(data)
+  const { data, ...props } = useQuery<{
+    rows: SelectWeeklyEvaluation[]
+    count: number
+  }>('weekly-evaluation-list', async () => getData())
 
   return { data, ...props }
 }
