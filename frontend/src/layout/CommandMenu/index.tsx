@@ -2,13 +2,13 @@ import { DebouncedInput } from '@/components/DataTable/DebouncedInput'
 import { Badge, Button, Card, CommandDialog } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import i18next from 'i18next'
-import { Search } from 'lucide-react'
+import { MenuSquare, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { items } from '../../constants/menu-items'
 
 export const CommandMenu = () => {
-  const { t } = useTranslation(['areas', 'phases', 'menu'])
+  const { t } = useTranslation(['areas', 'phases', 'menu', 'description'])
   const [search, setSearch] = useState('')
   const [open, setOpen] = useState(false)
 
@@ -44,16 +44,17 @@ export const CommandMenu = () => {
   return (
     <>
       <Button
-        className="px-3 justify-between"
+        className="px-0 xs:px-3 items-center xs:justify-between max-xs:h-10 max-xs:w-10"
         variant="outline"
         onClick={() => setOpen(true)}
       >
         <p className="text-sm items-center text-muted-foreground bg-outline rounded-lg">
-          <span className="mr-4">Menu</span>
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+          <span className="mr-4 max-xs:hidden">Menu</span>
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 max-xs:hidden">
             <span className="text-xs">⌘</span>K
           </kbd>
         </p>
+        <MenuSquare className="inline-flex xs:hidden w-5 h-5" />
       </Button>
       <CommandDialog
         open={open}
@@ -70,7 +71,7 @@ export const CommandMenu = () => {
               placeholder={t('menu:search_phases')}
               value={search}
               onChange={(value) => setSearch(String(value))}
-              debounce={250}
+              debounce={200}
             />
           </div>
         </div>
@@ -110,22 +111,27 @@ export const CommandMenu = () => {
                 id={item.id}
                 key={item.id}
                 className={cn(
-                  'border-l-8 cursor-pointer hover:scale-105',
+                  'border-l-8 cursor-pointer hover:scale-105 group',
                   item.border
                 )}
               >
                 <Card.Header>
                   <Card.Title className="flex items-center gap-3 mb-3 text-base">
                     <span className="text-foreground/90">{item.icon}</span>
-                    <span className="truncate hover:whitespace-normal">
+                    <span className="truncate group-hover:whitespace-normal">
                       {item.name()}
                     </span>
                   </Card.Title>
                   {item.description && (
-                    <Card.Description>{item.description()}</Card.Description>
+                    <Card.Description
+                      className="text-justify line-clamp-2 group-hover:line-clamp-none"
+                      lang={i18next.language}
+                    >
+                      {item.description()}
+                    </Card.Description>
                   )}
                 </Card.Header>
-                <Card.Content className="flex gap-2 peer">
+                <Card.Content className="flex gap-2">
                   <Badge variant={'ghost'} className={item?.background}>
                     {item.area()}
                   </Badge>

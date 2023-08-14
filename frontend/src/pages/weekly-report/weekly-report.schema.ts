@@ -2,7 +2,6 @@ import { html, params } from '@/utils/replace-html-tags'
 import { string, z } from 'zod'
 
 export const max = {
-  evaluationName: 50,
   toolEvaluation: 200,
   processes: {
     description: 1000
@@ -10,12 +9,10 @@ export const max = {
 }
 
 export const WeeklyReportSchema = z.object({
-  weeklyEvaluationId: string()
-    .refine((value) => html(value, 3, '>='), params('at_least', 3))
-    .refine(
-      (value) => html(value, max.evaluationName, '<='),
-      params('at_most', max.evaluationName)
-    ),
+  weeklyEvaluationId: string().refine(
+    (value) => value.length > 0,
+    params('select_weekly_evaluation')
+  ),
   toolEvaluation: string()
     .refine((value) => html(value, 3, '>='), params('at_least', 3))
     .refine(

@@ -1,5 +1,6 @@
 import { Editor } from '@/components/Editor/Editor'
-import { Button, Form, Input } from '@/components/ui'
+import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
+import { cn } from '@/lib/utils'
 import { routes } from '@/routes/routes'
 import WeeklyReportService, {
   WeeklyReportData
@@ -7,10 +8,12 @@ import WeeklyReportService, {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse } from 'axios'
 import { StatusCodes } from 'http-status-codes'
-import { Edit, RotateCcw, Save } from 'lucide-react'
+import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
 import { Processes } from './processes/processes'
 import {
   WeeklyReport,
@@ -25,6 +28,8 @@ interface WeeklyReportFormProps {
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
+  const [open, setOpen] = useState(false)
+  const { data: weList } = useWeeklyEvaluation()
   const navigate = useNavigate()
 
   const form = useForm<WeeklyReport>({
@@ -35,6 +40,8 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
 
   const onSubmit = async (form: WeeklyReport) => {
     let response: AxiosResponse | undefined
+
+    console.log(form)
 
     if (data) {
       // response = await WeeklyReportService.edit(data._id, form) // TODO
@@ -58,15 +65,66 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           name="weeklyEvaluationId"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label required>{t('evaluation_name.label')}</Form.Label>
-              <Form.Control>
-                <Input
-                  readOnly={!!data}
-                  placeholder={t('evaluation_name.placeholder')}
-                  {...field}
-                />
-              </Form.Control>
-              <Form.Message />
+              <Form.Label hint={t('description:project_charter')} required>
+                {t('evaluation_name.label')}
+              </Form.Label>
+              <div className="flex flex-col gap-1">
+                <Popover.Root open={open} onOpenChange={setOpen}>
+                  <Popover.Trigger asChild>
+                    <Form.Control>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          'justify-between',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {t(
+                          weList?.rows?.find((name) => name.id === field.value)
+                            ?.name ?? 'select_weekly_evaluation'
+                        )}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </Form.Control>
+                  </Popover.Trigger>
+                  <Popover.Content className="p-0">
+                    <Command.Root>
+                      <Command.Input
+                        placeholder={t('search_weekly_evaluation')}
+                      />
+                      <Command.Empty>
+                        {t('weekly-report:no_results_found')}
+                      </Command.Empty>
+                      <ScrollArea className="max-h-[300px]">
+                        <Command.Group>
+                          {weList?.rows?.map((data) => (
+                            <Command.Item
+                              value={data.id}
+                              key={data.id}
+                              onSelect={() => {
+                                form.setValue('weeklyEvaluationId', data.id)
+                                form.clearErrors('weeklyEvaluationId')
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  data.id === field.value
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                )}
+                              />
+                              {data.name}
+                            </Command.Item>
+                          ))}
+                        </Command.Group>
+                      </ScrollArea>
+                    </Command.Root>
+                  </Popover.Content>
+                </Popover.Root>
+                <Form.Message />
+              </div>
             </Form.Item>
           )}
         />

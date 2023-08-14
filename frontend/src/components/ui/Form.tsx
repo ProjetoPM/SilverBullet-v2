@@ -10,8 +10,10 @@ import {
   useFormContext
 } from 'react-hook-form'
 
+import { Popover } from '@/components/ui'
 import { Label } from '@/components/ui/Label'
 import { cn } from '@/lib/utils'
+import { AlertCircle } from 'lucide-react'
 
 const Root = FormProvider
 
@@ -78,7 +80,7 @@ const FormItem = React.forwardRef<
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn('space-y-1', className)} {...props} />
+      <div ref={ref} className={cn('space-y-2', className)} {...props} />
     </FormItemContext.Provider>
   )
 })
@@ -88,17 +90,34 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
     required?: boolean
+    hint?: string
   }
->(({ className, required = false, ...props }, ref) => {
+>(({ className, required = false, hint, ...props }, ref) => {
   const { formItemId } = useFormField()
+  const [open, setOpen] = React.useState(false)
 
   return (
-    <>
-      <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
-      {required && (
-        <span className="ml-0.5 text-destructive select-none">*</span>
+    <div className="flex gap-1">
+      <Label
+        ref={ref}
+        className={cn('flex gap-0.5', className)}
+        htmlFor={formItemId}
+        {...props}
+      >
+        {props.children}
+        {required && <span className="text-destructive select-none">*</span>}
+      </Label>
+      {!!hint && (
+        <Popover.Root open={open} onOpenChange={setOpen}>
+          <Popover.Trigger>
+            <AlertCircle className="w-4 h-4" />
+          </Popover.Trigger>
+          <Popover.Content className="max-w-sm">
+            <p className="text-sm">{hint}</p>
+          </Popover.Content>
+        </Popover.Root>
       )}
-    </>
+    </div>
   )
 })
 FormLabel.displayName = 'FormLabel'

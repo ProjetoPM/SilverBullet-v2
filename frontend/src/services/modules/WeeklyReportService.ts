@@ -16,7 +16,7 @@ export type WeeklyReportData = z.infer<typeof WeeklyReportSchema> & {
 
 export type FormWeeklyReport = Omit<
   WeeklyReportData,
-  '_id' | 'tenantId' | 'createdAt' | 'updatedAt'
+  '_id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'evaluationName'
 >
 
 export default class WeeklyReportService {
