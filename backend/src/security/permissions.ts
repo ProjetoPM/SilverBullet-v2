@@ -45,6 +45,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      availableEvaluations: {
+        id: 'availableEvaluations',
+        allowedRoles: [roles.admin, roles.custom],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       projectRead: {
         id: 'projectRead',
         allowedRoles: [roles.admin, roles.custom],
