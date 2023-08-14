@@ -7,6 +7,9 @@ import WeeklyReportCreateService from '../../services/weeklyReport/createService
 export default async (req, res, next) => {
   try {
 
+    console.log("body");
+    
+    console.log(JSON.stringify(req.body));
     
     if (!req.currentUser || !req.currentUser.id) {
       throw new Error403(req.language);
@@ -16,7 +19,7 @@ export default async (req, res, next) => {
     // );
 
     const payload = await new WeeklyReportCreateService(req).create(
-      req.body.data, req.language
+      req.body.data, req.language, req.params.tenantId
     );
 
     await ApiResponseHandler.success(req, res, payload);

@@ -1,5 +1,6 @@
 import { getConfig } from '../../config';
 import { IFile } from '../../interfaces';
+import { v4 } from 'uuid';
 import {
   PutObjectCommand,
   S3Client,
@@ -30,25 +31,54 @@ export default class AWSStorage {
     }
   }
 
-  static async saveFileS3(
-    file: File,
-    fileNameKey: string,
-    extension: string,
-  ) {
-    
+  static async saveFileS3(file: File, fileKey: string) {
     const s3Params = {
-      Bucket: process.env.Bucket,
-      Key: fileNameKey,
+      Bucket: getConfig().WEEKLY_REPORT_BUCKET,
+      Key: fileKey,
       Body: file,
       ContentType: '',
       ContentEncoding: '',
     };
 
-    if (extension === 'pdf') {
+    console.log(file.type);
+
+    if (file.type === 'pdf') {
       s3Params.ContentType = 'application/pdf';
       s3Params.ContentEncoding = 'binary';
     }
 
     return await this.create(s3Params);
+  }
+
+  static async saveWeeklyReportFiles(
+    files: File[],
+    tenantId: string,
+  ) {
+    console.log('saveWeeklyReportFiles');
+    let filesToReturn: any = [];
+    console.log(files["0"]);
+
+    const arr = Array.from(files);
+
+    arr.forEach(file => console.log(file.name));
+    console.log(JSON.stringify(arr));
+    
+    Array.from(files).map((file) => {
+      console.log(file.type);
+      console.log(file.name);
+
+      const fileKey = v4();
+
+      this.saveFileS3(file, fileKey);
+
+      // filesToReturn.push({
+      //   name: file.name,
+      //   sizeInBytes: file.size,
+      //   privateUrl: fileKey,
+      //   tenant: tenantId,
+      // });
+    });
+
+    return filesToReturn;
   }
 }

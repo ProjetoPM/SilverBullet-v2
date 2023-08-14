@@ -11,7 +11,7 @@ export type Process = {
   group: string;
   name: string;
   description: string;
-  files?: FileList;
+  files?: File[];
 };
 
 export type RequestWeeklyReport = {
@@ -30,11 +30,15 @@ export default class WeeklyReportCreateService {
   async create(
     data: RequestWeeklyReport,
     language: string,
+    tenantId: string,
   ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
+    console.log('data');
+    console.log(data);
+    
     try {
       const date = Date.now();
 
@@ -71,6 +75,7 @@ export default class WeeklyReportCreateService {
             { processes: data.processes },
             record.id,
             language,
+            tenantId,
           );
       }
 

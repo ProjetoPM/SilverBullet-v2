@@ -11,6 +11,7 @@ class ProcessReportRepository {
   static async create(
     weeklyReportId: string,
     process: Process,
+    files: Array<any>,
     options: IRepositoryOptions,
   ) {
     const currentTenant =
@@ -29,6 +30,7 @@ class ProcessReportRepository {
       [
         {
           ...process,
+          files,
           weeklyReport: weeklyReportId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,

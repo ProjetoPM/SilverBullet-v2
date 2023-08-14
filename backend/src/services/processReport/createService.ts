@@ -4,6 +4,7 @@ import Error400 from '../../errors/Error400';
 import { groups } from '../../mapping/weeklyReport';
 import { IServiceOptions } from '../IServiceOptions';
 import { RequestWeeklyReport } from '../weeklyReport/createService';
+import AWSStorage from '../file/awsFileStorage';
 
 type Processes = Pick<RequestWeeklyReport, 'processes'>;
 
@@ -18,6 +19,7 @@ export default class ProcessReportCreateService {
     data: Processes,
     weeklyReportId: string,
     language: string,
+    tenantId: string
   ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
@@ -25,7 +27,7 @@ export default class ProcessReportCreateService {
 
     try {
       let processes: Processes[] = [];
-
+      
       /**
        * Usando '!' uma vez que existe uma verificação anterior que garante
        * a existência de processos (WeeklyReportCreateService:66).
@@ -49,9 +51,16 @@ export default class ProcessReportCreateService {
           continue;
         }
 
+        console.log('process.files');
+        console.log(process.files);
+        
+        const files = await AWSStorage.saveWeeklyReportFiles(process.files!, tenantId);
+
+        delete process.files;
         let record = await ProcessReportRepository.create(
           weeklyReportId,
           process,
+          files,
           {
             ...this.options,
             session,
