@@ -1,13 +1,11 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
 import { cn } from '@/lib/utils'
-import { routes } from '@/routes/routes'
 import WeeklyReportService, {
   WeeklyReportData
 } from '@/services/modules/WeeklyReportService'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse } from 'axios'
-import { StatusCodes } from 'http-status-codes'
 import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -30,7 +28,8 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const [open, setOpen] = useState(false)
   const { data: weList } = useWeeklyEvaluation()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -41,7 +40,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const onSubmit = async (form: WeeklyReport) => {
     let response: AxiosResponse | undefined
 
-    console.log(form)
+    setOutput(JSON.stringify(form, null, 2))
 
     if (data) {
       // response = await WeeklyReportService.edit(data._id, form) // TODO
@@ -49,9 +48,9 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
       response = await WeeklyReportService.create(form)
     }
 
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.weekly_report.index)
-    }
+    // if (response?.status === StatusCodes.OK) {
+    //   navigate(routes.weekly_report.index)
+    // }
   }
 
   return (
@@ -147,6 +146,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           )}
         />
         <Processes form={form} control={form.control} />
+        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
           <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (
