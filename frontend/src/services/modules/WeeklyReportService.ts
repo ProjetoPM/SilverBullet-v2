@@ -31,14 +31,10 @@ export default class WeeklyReportService {
       formData.append(key, data[key])
     }
 
+    console.log(formData)
+
     const response = await api
-      .post(
-        `/tenant/${getWorkspaceId()}/weekly-report/create`,
-        {
-          data: { ...formData }
-        },
-        { headers: { 'Content-Type': 'multipart/form-data' } }
-      )
+      .post(`/tenant/${getWorkspaceId()}/weekly-report/create`, formData)
       .catch((err) => err.response)
 
     switch (response?.status) {
