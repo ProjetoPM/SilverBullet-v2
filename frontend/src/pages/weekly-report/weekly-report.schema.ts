@@ -36,9 +36,16 @@ export const WeeklyReportSchema = z.object({
             (value) => html(value, max.processes.description, '<='),
             params('at_most', max.processes.description)
           ),
-        files: z
-          .instanceof(FileList)
-          .transform((value) => (value.length === 0 ? undefined : value))
+        content: z
+          .object({
+            uuid: z.string(),
+            files: z.array(
+              z.object({
+                name: z.string()
+              })
+            )
+          })
+          .optional()
       })
     )
     .optional()

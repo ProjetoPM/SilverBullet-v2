@@ -25,16 +25,12 @@ export default class WeeklyReportService {
   }
 
   static async create(data: FormWeeklyReport) {
-    const formData = new FormData()
-
-    for (const key in data) {
-      formData.append(key, data[key])
-    }
-
-    console.log(formData)
+    console.log(data.processes)
 
     const response = await api
-      .post(`/tenant/${getWorkspaceId()}/weekly-report/create`, formData)
+      .post(`/tenant/${getWorkspaceId()}/weekly-report/create`, {
+        data: { ...data }
+      })
       .catch((err) => err.response)
 
     switch (response?.status) {
