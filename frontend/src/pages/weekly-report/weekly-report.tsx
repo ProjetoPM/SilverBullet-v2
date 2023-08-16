@@ -23,7 +23,7 @@ const WeeklyReportPage = () => {
       title={t(`${id ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
-      <WeeklyReportForm data={mockData} />
+      <WeeklyReportForm />
     </PageLayout>
   )
 }
