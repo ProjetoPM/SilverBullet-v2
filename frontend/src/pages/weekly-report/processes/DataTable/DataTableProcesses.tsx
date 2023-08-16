@@ -11,10 +11,10 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 
+import { Loading } from '@/components/Loading'
 import { Table } from '@/components/ui'
 import i18next from 'i18next'
-import { ComponentProps, useState } from 'react'
-import { Loading } from '../Loading'
+import { ComponentProps, useEffect, useState } from 'react'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
 
@@ -30,7 +30,7 @@ interface DataTableProps<TData, TValue>
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataTableProcesses<TData, TValue>({
   columns,
   data,
   isError = false,
@@ -72,6 +72,10 @@ export function DataTable<TData, TValue>({
       </div>
     )
   }
+
+  useEffect(() => {
+    table.setPageSize(5)
+  }, [])
 
   return (
     <div {...props}>

@@ -35,10 +35,12 @@ export const useWeeklyReport = () => {
   const create = async (data: FormWeeklyReport) => {
     setLoading(true)
 
-    if (data.processes) {
+    if (data.processes && files) {
       for (const process of data.processes) {
-        if (files && process.content) {
-          const { folder, files: localFiles } = process.content
+        const { content } = process
+
+        if (content) {
+          const { folder, files: localFiles } = content
 
           for (const local of localFiles) {
             const matchingFile = files.find((file) => file.name === local.name)

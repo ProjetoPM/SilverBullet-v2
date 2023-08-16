@@ -55,7 +55,11 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               </Form.Label>
               <div className="flex flex-col gap-1">
                 <Popover.Root open={open} onOpenChange={setOpen}>
-                  <Popover.Trigger asChild>
+                  <Popover.Trigger
+                    asChild
+                    disabled={!!data}
+                    aria-disabled={!!data}
+                  >
                     <Form.Control>
                       <Button
                         variant="outline"

@@ -8,15 +8,11 @@ import { api } from '../api'
 
 export type WeeklyReportData = z.infer<typeof WeeklyReportSchema> & {
   _id: string
-  evaluationName: string
-  tenantId: string
-  createdAt: string
-  updatedAt: string
 }
 
 export type FormWeeklyReport = Omit<
   WeeklyReportData,
-  '_id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'evaluationName'
+  '_id' | 'tenantId' | 'createdAt' | 'updatedAt'
 >
 
 export default class WeeklyReportService {
