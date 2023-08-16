@@ -15,11 +15,7 @@ export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
   return (
     <>
       <Dialog.Root>
-        <Dialog.Trigger
-          className="flex gap-3 px-2 py-1.5"
-          type="button"
-          asChild
-        >
+        <Dialog.Trigger className="flex gap-3 py-1.5" type="button" asChild>
           <Button size={'icon'} variant={'destructive'}>
             <Trash2 className="w-5 h-5" />
           </Button>

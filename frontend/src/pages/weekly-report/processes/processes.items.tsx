@@ -25,7 +25,7 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
         <SelectProcess index={index} form={form} control={control} />
       </div>
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
+        <div className="flex-1 max-w-full md:max-w-[calc(100%-6.50rem)]">
           <Form.Field
             control={form.control}
             name={`processes.${index}.description`}
