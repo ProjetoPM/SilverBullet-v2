@@ -38,7 +38,7 @@ export const WeeklyReportSchema = z.object({
           ),
         content: z
           .object({
-            uuid: z.string(),
+            folder: z.string(),
             files: z.array(
               z.object({
                 name: z.string()

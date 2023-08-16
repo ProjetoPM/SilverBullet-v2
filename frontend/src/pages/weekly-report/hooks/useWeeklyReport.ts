@@ -38,7 +38,7 @@ export const useWeeklyReport = () => {
     if (data.processes) {
       for (const process of data.processes) {
         if (files && process.content) {
-          const { uuid, files: localFiles } = process.content
+          const { folder, files: localFiles } = process.content
 
           for (const local of localFiles) {
             const matchingFile = files.find((file) => file.name === local.name)
@@ -47,11 +47,9 @@ export const useWeeklyReport = () => {
               const { error } = await supabase.storage
                 .from('weekly-report')
                 .upload(
-                  `/processes/${uuid}/${matchingFile.name}`,
+                  `/processes/${folder}/${matchingFile.name}`,
                   matchingFile,
-                  {
-                    upsert: true
-                  }
+                  { upsert: true }
                 )
 
               if (error) {
@@ -74,11 +72,11 @@ export const useWeeklyReport = () => {
 
         processes?.forEach(async (process) => {
           if (process.content) {
-            const { uuid } = process.content
+            const { folder } = process.content
             const deleteFiles = new Array<string>()
 
             for (const file of process.content.files) {
-              deleteFiles.push(`processes/${uuid}/${file.name}`)
+              deleteFiles.push(`processes/${folder}/${file.name}`)
             }
             await supabase.storage.from('weekly-report').remove(deleteFiles)
           }

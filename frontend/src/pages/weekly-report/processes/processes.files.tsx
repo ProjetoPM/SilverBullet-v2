@@ -12,7 +12,7 @@ export const ViewFileList = ({
   const { t } = useTranslation('weekly-report')
   const [files, setFiles] = useState<File[]>()
   const uuidv4 = useMemo(() => {
-    const uuid = form.getValues(`processes.${index}.content.uuid`)
+    const uuid = form.getValues(`processes.${index}.content.folder`)
     return uuid ?? crypto.randomUUID()
   }, [])
 
@@ -58,7 +58,7 @@ export const ViewFileList = ({
     if (!files) {
       setFiles(Array.from(targetFiles))
       setGlobalFiles([...globalFiles, ...targetFiles])
-      form.setValue(`processes.${index}.content.uuid`, uuidv4)
+      form.setValue(`processes.${index}.content.folder`, uuidv4)
       form.setValue(`processes.${index}.content.files`, fileNames)
       return
     }
@@ -77,7 +77,7 @@ export const ViewFileList = ({
      * Adicionar ao estado global de arquivos e ao form.
      */
     setGlobalFiles([...globalFiles, ...target])
-    form.setValue(`processes.${index}.content.uuid`, uuidv4)
+    form.setValue(`processes.${index}.content.folder`, uuidv4)
     form.setValue(`processes.${index}.content.files`, fileNames)
   }
 
