@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
-import { getWorkspaceId } from '@/stores/useWorkspace'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { StatusCodes } from 'http-status-codes'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

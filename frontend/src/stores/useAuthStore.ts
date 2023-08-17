@@ -23,7 +23,7 @@ type Actions = {
   signOut: () => void
 }
 
-const useAuth = create<State & Actions>()(
+export const useAuthStore = create<State & Actions>()(
   devtools(
     persist(
       (set) => ({
@@ -75,5 +75,3 @@ const useAuth = create<State & Actions>()(
     )
   )
 )
-
-export { useAuth }

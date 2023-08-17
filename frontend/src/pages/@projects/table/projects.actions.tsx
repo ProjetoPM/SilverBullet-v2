@@ -1,9 +1,9 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useProjects } from '../hooks/useProjects'
+import { ProjectData } from '../projects.types'
 
 type ProjectActionsProps = {
   id: string
@@ -12,12 +12,10 @@ type ProjectActionsProps = {
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const [isLoading, setLoading] = useState(false)
+  const { _delete } = useProjects()
 
   const handleDelete = async () => {
-    setLoading(true)
-    await ProjectService.delete(data)
-    setLoading(false)
+    await _delete.mutateAsync(data)
   }
 
   const handleOpen = () => {
@@ -60,7 +58,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
+            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -84,7 +82,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <Button
               variant="delete"
               onClick={() => handleDelete()}
-              disabled={isLoading}
+              isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>

@@ -38,13 +38,14 @@ export const columns = [
   /**
    * Actions
    */
-  helper.accessor((row) => row.folder, {
-    id: 'folder',
+  helper.display({
+    id: 'actions',
     header: 'Actions',
-    cell: () => (
+    cell: ({ row }) => (
       <div className="flex gap-2">
         <View className="w-4 h-4 cursor-pointer" />
         <FileMinus2 className="w-4 h-4 cursor-pointer hover:text-destructive" />
+        {row.getValue('folder')}
       </div>
     ),
     enableSorting: false,

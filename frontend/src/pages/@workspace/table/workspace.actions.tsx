@@ -1,28 +1,25 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import WorkspaceService from '@/services/modules/WorkspaceService'
-import { useWorkspace } from '@/stores/useWorkspace'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { Workspace } from '../../../@types/Workspace'
+import { useWorkspace } from '../hooks/useWorkspace'
+import { WorkspaceData } from '../workspace.types'
 
 type WorkspaceActionsProps = {
   id: string
-  data: Workspace
+  data: WorkspaceData
 }
 
 const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspace'])
   const navigate = useNavigate()
-  const open = useWorkspace((state) => state.open)
-  const [isLoading, setLoading] = useState(false)
+  const open = useWorkspaceStore((state) => state.open)
+  const { _delete } = useWorkspace()
 
   const handleDelete = async () => {
-    setLoading(true)
-    await WorkspaceService.delete(data)
-    setLoading(false)
+    await _delete.mutateAsync(data)
   }
 
   const handleOpen = () => {
@@ -66,7 +63,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
+            onClick={() => navigator.clipboard.writeText(data._id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -90,7 +87,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <Button
               variant="delete"
               onClick={() => handleDelete()}
-              disabled={isLoading}
+              isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>

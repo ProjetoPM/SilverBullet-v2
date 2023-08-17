@@ -1,23 +1,17 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import WorkspaceService, {
-  WorkspaceData
-} from '@/services/modules/WorkspaceService'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AxiosResponse } from 'axios'
-import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useWorkspace } from './hooks/useWorkspace'
 import {
   Workspace,
   WorkspaceSchema,
   defaultValues,
   max
 } from './workspace.schema'
+import { WorkspaceData } from './workspace.types'
 
 interface WorkspaceFormPageProps {
   data?: WorkspaceData
@@ -25,8 +19,7 @@ interface WorkspaceFormPageProps {
 
 export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   const { t } = useTranslation('workspace')
-  const [isLoading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const { create, edit } = useWorkspace()
 
   const form = useForm<Workspace>({
     mode: 'all',
@@ -35,19 +28,11 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   })
 
   const onSubmit = async (form: Workspace) => {
-    setLoading(true)
-    let response: AxiosResponse | undefined
-
     if (data) {
-      response = await WorkspaceService.edit(data._id, form)
+      await edit.mutateAsync({ _id: data._id, ...form })
     } else {
-      response = await WorkspaceService.create(form)
+      await create.mutateAsync(form)
     }
-
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.workspaces.index)
-    }
-    setLoading(false)
   }
 
   return (
@@ -77,7 +62,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            disabled={isLoading}
+            isLoading={create.isLoading || edit.isLoading}
           >
             {data && (
               <>

@@ -5,9 +5,7 @@ type SidebarProps = {
   setOpen: (open: boolean) => void
 }
 
-const useSidebar = create<SidebarProps>()((set) => ({
+export const useSidebarStore = create<SidebarProps>()((set) => ({
   open: false,
   setOpen: (open) => set({ open })
 }))
-
-export { useSidebar }

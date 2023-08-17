@@ -1,9 +1,9 @@
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
-import { WorkspaceData } from '@/services/modules/WorkspaceService'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
+import { WorkspaceData } from '../workspace.types'
 import { WorkspaceActions } from './workspace.actions'
 
 const helper = createColumnHelper<WorkspaceData>()

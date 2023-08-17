@@ -1,5 +1,5 @@
 import { WeeklyReportSchema } from '@/pages/weekly-report/weekly-report.schema'
-import { getWorkspaceId } from '@/stores/useWorkspace'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { StatusCodes } from 'http-status-codes'
 import i18next from 'i18next'
 import { toast } from 'react-toastify'

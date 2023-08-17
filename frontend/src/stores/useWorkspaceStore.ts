@@ -1,4 +1,4 @@
-import { WorkspaceData } from '@/services/modules/WorkspaceService'
+import { WorkspaceData } from '@/pages/@workspace/workspace.types'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { toast } from 'react-toastify'
@@ -11,9 +11,10 @@ type State = {
 
 type Actions = {
   open: (workspace: WorkspaceData) => void
+  close: () => void
 }
 
-const useWorkspace = create<State & Actions>()(
+export const useWorkspaceStore = create<State & Actions>()(
   devtools(
     persist(
       (set) => ({
@@ -22,7 +23,8 @@ const useWorkspace = create<State & Actions>()(
           set({ workspace })
           setDataHiddenProjects(false)
           toast.success(replaceHtmlTags(workspace.name))
-        }
+        },
+        close: () => ({ workspace: null })
       }),
       {
         name: 'workspace',
@@ -33,7 +35,5 @@ const useWorkspace = create<State & Actions>()(
 )
 
 export const getWorkspaceId = () => {
-  return useWorkspace.getState().workspace?._id ?? 'null'
+  return useWorkspaceStore.getState().workspace?._id ?? 'null'
 }
-
-export { useWorkspace }

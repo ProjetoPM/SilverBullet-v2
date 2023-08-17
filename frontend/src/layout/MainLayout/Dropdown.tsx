@@ -12,10 +12,10 @@ import {
 } from 'lucide-react'
 
 import { Button, DropdownMenu } from '@/components/ui'
-import { useAuth } from '@/stores/useAuth'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const Dropdown = () => {
-  const signOut = useAuth((state) => state.signOut)
+  const signOut = useAuthStore((state) => state.signOut)
 
   return (
     <DropdownMenu.Root>

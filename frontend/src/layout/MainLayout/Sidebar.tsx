@@ -1,11 +1,11 @@
 import { LinkMenu } from '@/components/Utils/LinkMenu'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { sidebar } from '@/constants/sidebar-items'
-import { useSidebar } from '@/stores/useSidebar'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 import { Label } from '@radix-ui/react-label'
 
 const Sidebar = () => {
-  const setOpen = useSidebar((state) => state.setOpen)
+  const setOpen = useSidebarStore((state) => state.setOpen)
 
   return (
     <ScrollArea className="mt-4 w-full">

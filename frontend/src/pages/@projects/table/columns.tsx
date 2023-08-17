@@ -1,9 +1,9 @@
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
-import { ProjectData } from '@/services/modules/ProjectService'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
+import { ProjectData } from '../projects.types'
 import { ProjectActions } from './projects.actions'
 
 const helper = createColumnHelper<ProjectData>()

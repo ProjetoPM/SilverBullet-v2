@@ -3,14 +3,14 @@ import { Logo } from '@/components/Logo'
 import { Button, Separator, Sheet } from '@/components/ui'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { Dropdown as ConfigDropdown } from '@/layout/MainLayout/Dropdown'
-import { useSidebar } from '@/stores/useSidebar'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 import { Menu } from 'lucide-react'
-import { Sidebar } from './Sidebar'
 import { CommandMenu } from '../CommandMenu'
+import { Sidebar } from './Sidebar'
 
 const Header = () => {
-  const open = useSidebar((state) => state.open)
-  const setOpen = useSidebar((state) => state.setOpen)
+  const open = useSidebarStore((state) => state.open)
+  const setOpen = useSidebarStore((state) => state.setOpen)
 
   return (
     <Sheet.Root open={open} onOpenChange={setOpen}>

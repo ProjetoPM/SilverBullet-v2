@@ -1,16 +1,12 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AxiosResponse } from 'axios'
-import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useProjects } from './hooks/useProjects'
 import { Project, ProjectSchema, defaultValues, max } from './projects.schema'
+import { ProjectData } from './projects.types'
 
 interface ProjectFormPageProps {
   data?: ProjectData
@@ -18,8 +14,7 @@ interface ProjectFormPageProps {
 
 export const ProjectForm = ({ data }: ProjectFormPageProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const [isLoading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const { create, edit } = useProjects()
 
   const form = useForm<Project>({
     mode: 'all',
@@ -28,19 +23,11 @@ export const ProjectForm = ({ data }: ProjectFormPageProps) => {
   })
 
   const onSubmit = async (form: Project) => {
-    setLoading(true)
-    let response: AxiosResponse | undefined
-
     if (data) {
-      response = await ProjectService.edit(data._id, form)
+      await edit.mutateAsync({ _id: data._id, ...form })
     } else {
-      response = await ProjectService.create(form)
+      await create.mutateAsync(form)
     }
-
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.projects.index)
-    }
-    setLoading(false)
   }
 
   return (
@@ -88,7 +75,7 @@ export const ProjectForm = ({ data }: ProjectFormPageProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            disabled={isLoading}
+            isLoading={create.isLoading || edit.isLoading}
           >
             {data && (
               <>

@@ -1,4 +1,4 @@
-import { useAuth } from '@/stores/useAuth'
+import { useAuthStore } from '@/stores/useAuthStore'
 import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 
@@ -28,7 +28,7 @@ const setup = () => {
    * in the request header
    */
   api.interceptors.request.use((config) => {
-    const token = useAuth.getState().token
+    const token = useAuthStore.getState().token
     const lang = localStorage.getItem('lang') ?? 'en-US'
 
     if (token) {
