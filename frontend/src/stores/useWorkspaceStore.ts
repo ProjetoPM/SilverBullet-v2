@@ -22,7 +22,7 @@ export const useWorkspaceStore = create<State & Actions>()(
         open: (workspace: WorkspaceData) => {
           set({ workspace })
           setDataHiddenProjects(false)
-          toast.success(replaceHtmlTags(workspace.name))
+          toast.success(replaceHtmlTags(workspace?.name))
         },
         close: () => ({ workspace: null })
       }),

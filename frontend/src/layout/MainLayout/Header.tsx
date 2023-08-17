@@ -6,6 +6,7 @@ import { Dropdown as ConfigDropdown } from '@/layout/MainLayout/Dropdown'
 import { useSidebarStore } from '@/stores/useSidebarStore'
 import { Menu } from 'lucide-react'
 import { CommandMenu } from '../CommandMenu'
+import { Notifications } from './Notifications'
 import { Sidebar } from './Sidebar'
 
 const Header = () => {
@@ -26,6 +27,7 @@ const Header = () => {
           </div>
         </div>
         <div className="flex gap-2">
+          <Notifications />
           <CommandMenu />
           <LocaleSwitch />
           <ThemeSwitch />

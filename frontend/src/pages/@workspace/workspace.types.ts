@@ -1,6 +1,20 @@
 import { z } from 'zod'
 import { WorkspaceSchema } from './workspace.schema'
 
+export type Workspace = {
+  tenant: {
+    _id: string
+    name: string
+    planStatus: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+
+export type WorkspaceList = {
+  tenants: Workspace[]
+}
+
 export type WorkspaceData = z.infer<typeof WorkspaceSchema> & {
   _id?: string
   planStatus: string

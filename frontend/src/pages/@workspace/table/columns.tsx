@@ -3,10 +3,10 @@ import { Checkbox } from '@/components/ui'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
-import { WorkspaceData } from '../workspace.types'
+import { Workspace } from '../workspace.types'
 import { WorkspaceActions } from './workspace.actions'
 
-const helper = createColumnHelper<WorkspaceData>()
+const helper = createColumnHelper<Workspace>()
 
 export const columns = [
   /**
@@ -34,7 +34,7 @@ export const columns = [
   /**
    * Name
    */
-  helper.accessor((row) => row.name, {
+  helper.accessor((row) => row.tenant.name, {
     id: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -53,7 +53,7 @@ export const columns = [
   /**
    * Plan Status
    */
-  helper.accessor((row) => row.planStatus, {
+  helper.accessor((row) => row.tenant.planStatus, {
     id: 'planStatus',
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -75,7 +75,7 @@ export const columns = [
   /**
    * Created At
    */
-  helper.accessor((row) => row.createdAt, {
+  helper.accessor((row) => row.tenant.createdAt, {
     id: 'createdAt',
     header: ({ column }) => (
       <DataTableColumnHeader

@@ -1,7 +1,7 @@
 import { api } from '@/services/api'
-import { WorkspaceData } from '@/services/modules/WorkspaceService'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+import { WorkspaceData } from '../workspace.types'
 
 export const useEdit = () => {
   const { id } = useParams()

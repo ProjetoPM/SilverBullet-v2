@@ -1,9 +1,9 @@
 export const replaceHtmlTags = (html: string) => {
-  return html.replace(/<[^>]+>/g, ' ')
+  return html?.replace(/<[^>]+>/g, ' ')
 }
 
 export const removeHtmlEscapeCodes = (html: string) => {
-  return html.replace(/&[a-zA-Z]+;/g, '')
+  return html?.replace(/&[a-zA-Z]+;/g, '')
 }
 
 export const params = (key: string, number?: number) => {
@@ -15,7 +15,7 @@ export const params = (key: string, number?: number) => {
 
 export const html = (html: string, number: number, type: '<=' | '>=') => {
   const text = html
-    .replace(/<[^>]+>/g, '')
+    ?.replace(/<[^>]+>/g, '')
     .replace(/&[a-zA-Z]+;/g, '')
     .trim()
 

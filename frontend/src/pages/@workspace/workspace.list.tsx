@@ -20,7 +20,7 @@ const WorkspaceListPage = () => {
         <DataTable
           isLoading={isLoading}
           columns={columns}
-          data={data?.rows ?? []}
+          data={data?.tenants ?? []}
         />
       </div>
     </PageLayout>

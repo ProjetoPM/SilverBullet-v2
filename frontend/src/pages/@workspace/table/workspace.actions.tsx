@@ -9,7 +9,7 @@ import { WorkspaceData } from '../workspace.types'
 
 type WorkspaceActionsProps = {
   id: string
-  data: WorkspaceData
+  data: { tenant: WorkspaceData }
 }
 
 const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
@@ -19,11 +19,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { _delete } = useWorkspace()
 
   const handleDelete = async () => {
-    await _delete.mutateAsync(data)
+    await _delete.mutateAsync({ _id: data.tenant._id })
   }
 
   const handleOpen = () => {
-    open(data)
+    open(data.tenant)
     navigate(routes.projects.index)
   }
 
@@ -46,7 +46,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/workspaces/${data._id}/edit`} id={`edit-${id}`}>
+          <Link to={`/workspaces/${data.tenant._id}/edit`} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -63,7 +63,9 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id ?? 'error')}
+            onClick={() =>
+              navigator.clipboard.writeText(data.tenant._id ?? 'error')
+            }
             className="flex gap-3"
             id={`copy-${id}`}
           >

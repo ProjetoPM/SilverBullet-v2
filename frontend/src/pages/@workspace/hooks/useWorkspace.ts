@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 import {
   DeleteWorkspace,
   FormWorkspace,
-  WorkspaceData
+  WorkspaceList
 } from '../workspace.types'
 
 export const useWorkspace = () => {
@@ -114,9 +114,15 @@ export const useWorkspace = () => {
  */
 export const useWorkspaceList = () => {
   const list = async () => {
-    return await api.get('/tenant').then((res) => res.data)
+    return await api.get('/auth/me').then((res) => {
+      return {
+        tenants: res.data.tenants.filter(
+          (tenant: any) => tenant.status === 'active'
+        )
+      }
+    })
   }
 
-  const { ...props } = useQuery<{ rows: WorkspaceData[] }>('workspaces', list)
+  const { ...props } = useQuery<WorkspaceList>('workspaces', list)
   return { ...props }
 }
