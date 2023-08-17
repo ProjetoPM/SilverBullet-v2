@@ -81,16 +81,16 @@ export const useWorkspace = () => {
     },
     {
       onSuccess: (response, data) => {
-        /**
-         * Esconde o `projects` do sidebar caso o usuário exclua
-         * o workspace em que ele se encontra.
-         */
-        if (workspace?._id === data._id) {
-          setDataHiddenProjects(true)
-        }
-
         switch (response.status) {
           case StatusCodes.OK:
+            /**
+             * Esconde o `projects` do sidebar caso o usuário exclua
+             * o workspace em que ele se encontra.
+             */
+            if (workspace?._id === data._id) {
+              setDataHiddenProjects(true)
+            }
+
             toast.success(t('deleted_successfully'))
             queryClient.invalidateQueries('workspaces')
             break
