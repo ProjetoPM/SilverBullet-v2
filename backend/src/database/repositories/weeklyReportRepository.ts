@@ -6,7 +6,10 @@ import WeeklyReport from '../models/weeklyReport';
 import Error404 from '../../errors/Error404';
 import Error400 from '../../errors/Error400';
 import { IRepositoryOptions } from './IRepositoryOptions';
-import { IProcessReport, IWeeklyReport } from '../../interfaces';
+import {
+  IProcessReport,
+  IWeeklyReport,
+} from '../../interfaces';
 import { RequestWeeklyReport } from '../../services/weeklyReport/createService';
 
 class WeeklyReportRepository {
@@ -176,7 +179,6 @@ class WeeklyReportRepository {
   }
 
   static async getSubmissionsByTenant(options) {
-
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
@@ -187,32 +189,31 @@ class WeeklyReportRepository {
     ];
     const criteria = { $and: criteriaAnd };
 
-    const rows:Array<IWeeklyReport> = await WeeklyReport(options.database)
+    let newData: IWeeklyReport[] = [];
+    let rows = await WeeklyReport(options.database)
       .find(criteria)
       .populate('weeklyEvaluation');
 
-    let newData:Array<IWeeklyReport> = [];
-
     for (let index = 0; index < rows.length; index++) {
-      let weeklyReport = rows[index];
-      const {_id} = weeklyReport;
+      const { _id } = rows[index]._doc;
 
-      
-      const {rows: processes}: {rows: Array<IProcessReport>} =
-      await ProcessReportRepository.getSubmissionsByWeeklyReportId(
-        _id!,
-        options,
+      const weeklyReport: IWeeklyReport = {
+        ...rows[index]._doc
+      };
+
+      const {
+        rows: processes,
+      }: { rows: IProcessReport[] } =
+        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+          _id!,
+          options,
         );
-        console.log('processes');
-        console.log(processes);
-        
-        weeklyReport.processes = processes;
 
-        console.log('weeklyReport');
-        console.log(weeklyReport);
-        
-        newData.push(weeklyReport);
-    }    
+      weeklyReport.processes = processes;
+      newData.push(weeklyReport);
+    }
+
+    console.log(newData);
 
     const count = await WeeklyReport(
       options.database,

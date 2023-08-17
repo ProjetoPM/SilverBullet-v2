@@ -127,8 +127,7 @@ class ProcessReportRepository {
     id: Object,
     options,
   ) {
-    console.log(id);
-
+    
     const criteriaAnd: any = [
       {
         weeklyReport: id,

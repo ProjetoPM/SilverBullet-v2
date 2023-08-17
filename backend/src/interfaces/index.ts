@@ -13,7 +13,7 @@ export interface IWeeklyEvaluation {
   type: string;
   startDate: Date | string;
   endDate: Date | string;
-  metrics: Array<IMetric>;
+  metrics: IMetric[];
 }
 
 export interface IWeeklyReport {
@@ -23,7 +23,7 @@ export interface IWeeklyReport {
   endDate: Date | string;
   score?: IMetricGroup;
   weeklyEvaluation: string;
-  processes: Array<IProcessReport>;
+  processes: IProcessReport[];
   tenant: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -32,29 +32,30 @@ export interface IWeeklyReport {
 export interface IProcessReport {
   _id?: Object | string;
   id?: Object | string;
+  __v: number;
   group: string;
   name: string;
   description: string;
   content: IContent;
   weeklyReport: string | null;
+  createdBy?: Object | string;
+  updatedBy?: Object | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 }
 
 export type IContent = {
+  id?: Object | string;
+  _id?: Object | string;
   folder: string;
-  files: Array<IFile>;
+  files: IFile[];
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 
 export interface IFile {
   name: string;
-  path: string;
-  size: number;
-  type: string;
-  lastModified: number;
-  lastModifiedDate: object;
-  webkitRelativePath: string;
 }
 
 export interface IMetricGroup {
