@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { WorkspaceSchema } from './workspace.schema'
 
 export type Workspace = {
+  roles: string[]
   tenant: {
     _id: string
     name: string

@@ -5,11 +5,11 @@ import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useWorkspace } from '../hooks/useWorkspace'
-import { WorkspaceData } from '../workspace.types'
+import { Workspace } from '../workspace.types'
 
 type WorkspaceActionsProps = {
   id: string
-  data: { tenant: WorkspaceData }
+  data: Workspace
 }
 
 const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
@@ -46,21 +46,25 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/workspaces/${data.tenant._id}/edit`} id={`edit-${id}`}>
-            <DropdownMenu.Item className="flex gap-3">
-              <Pencil size={18} />
-              {t('default:btn.edit')}
+          {data.roles?.some((role) => role === 'admin') && (
+            <Link to={`/workspaces/${data.tenant._id}/edit`} id={`edit-${id}`}>
+              <DropdownMenu.Item className="flex gap-3">
+                <Pencil size={18} />
+                {t('default:btn.edit')}
+              </DropdownMenu.Item>
+            </Link>
+          )}
+          {data.roles?.some((role) => role === 'admin') && (
+            <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
+              <Dialog.Trigger
+                className="flex w-full gap-3 px-2 py-1.5"
+                id={`delete-${id}`}
+              >
+                <Trash2 size={18} />
+                {t('default:btn.delete')}
+              </Dialog.Trigger>
             </DropdownMenu.Item>
-          </Link>
-          <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
-            <Dialog.Trigger
-              className="flex w-full gap-3 px-2 py-1.5"
-              id={`delete-${id}`}
-            >
-              <Trash2 size={18} />
-              {t('default:btn.delete')}
-            </Dialog.Trigger>
-          </DropdownMenu.Item>
+          )}
           <DropdownMenu.Separator />
           <DropdownMenu.Item
             onClick={() =>
