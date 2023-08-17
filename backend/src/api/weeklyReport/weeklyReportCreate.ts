@@ -6,17 +6,13 @@ import WeeklyReportCreateService from '../../services/weeklyReport/createService
 
 export default async (req, res, next) => {
   try {
-
-    console.log("body");
-    
-    console.log(JSON.stringify(req.body));
     
     if (!req.currentUser || !req.currentUser.id) {
       throw new Error403(req.language);
     }
-    // new PermissionChecker(req).validateHas(
-    //   Permissions.values.tenantEdit,
-    // );
+    new PermissionChecker(req).validateHas(
+      Permissions.values.tenantEdit,
+    );
 
     const payload = await new WeeklyReportCreateService(req).create(
       req.body.data, req.language, req.params.tenantId

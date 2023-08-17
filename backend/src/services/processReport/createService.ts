@@ -51,16 +51,10 @@ export default class ProcessReportCreateService {
           continue;
         }
 
-        console.log('process.files');
-        console.log(process.files);
-        
-        const files = await AWSStorage.saveWeeklyReportFiles(process.files!, tenantId);
 
-        delete process.files;
         let record = await ProcessReportRepository.create(
-          weeklyReportId,
           process,
-          files,
+          weeklyReportId,
           {
             ...this.options,
             session,

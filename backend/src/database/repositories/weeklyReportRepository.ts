@@ -1,11 +1,12 @@
 import MongooseRepository from './mongooseRepository';
 import MongooseQueryUtils from '../utils/mongooseQueryUtils';
 import AuditLogRepository from './auditLogRepository';
+import ProcessReportRepository from './processReportRepository';
 import WeeklyReport from '../models/weeklyReport';
 import Error404 from '../../errors/Error404';
 import Error400 from '../../errors/Error400';
 import { IRepositoryOptions } from './IRepositoryOptions';
-import { IWeeklyReport } from '../../interfaces';
+import { IProcessReport, IWeeklyReport } from '../../interfaces';
 import { RequestWeeklyReport } from '../../services/weeklyReport/createService';
 
 class WeeklyReportRepository {
@@ -172,6 +173,52 @@ class WeeklyReportRepository {
       : record;
 
     return output;
+  }
+
+  static async getSubmissionsByTenant(options) {
+
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    const criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+    ];
+    const criteria = { $and: criteriaAnd };
+
+    const rows:Array<IWeeklyReport> = await WeeklyReport(options.database)
+      .find(criteria)
+      .populate('weeklyEvaluation');
+
+    let newData:Array<IWeeklyReport> = [];
+
+    for (let index = 0; index < rows.length; index++) {
+      let weeklyReport = rows[index];
+      const {_id} = weeklyReport;
+
+      
+      const {rows: processes}: {rows: Array<IProcessReport>} =
+      await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        _id!,
+        options,
+        );
+        console.log('processes');
+        console.log(processes);
+        
+        weeklyReport.processes = processes;
+
+        console.log('weeklyReport');
+        console.log(weeklyReport);
+        
+        newData.push(weeklyReport);
+    }    
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows: newData, count };
   }
 
   static async findAndCountAll(

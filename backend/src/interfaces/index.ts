@@ -35,11 +35,17 @@ export interface IProcessReport {
   group: string;
   name: string;
   description: string;
-  files: Array<any>;
+  content: IContent;
   weeklyReport: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 }
+
+export type IContent = {
+  folder: string;
+  files: Array<IFile>;
+};
+
 
 export interface IFile {
   name: string;

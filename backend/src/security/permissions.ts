@@ -45,9 +45,36 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      weeklyEvaluationCreate: {
+        id: 'weeklyEvaluationCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       availableEvaluations: {
         id: 'availableEvaluations',
         allowedRoles: [roles.admin, roles.custom],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyReportCreate: {
+        id: 'weeklyReportCreate',
+        allowedRoles: [roles.custom],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyReportSubmissionsRead: {
+        id: 'weeklyReportSubmissionsRead',
+        allowedRoles: [roles.admin],
         allowedPlans: [
           plans.free,
           plans.growth,

@@ -10,9 +10,17 @@ import ProcessReportCreateService from '../processReport/createService';
 export type Process = {
   group: string;
   name: string;
-  description: string;
-  files?: File[];
+  content: IContent;
 };
+
+export type IContent = {
+  folder: string;
+  files: Array<IFile>;
+};
+
+export type IFile = {
+  name: string;
+}
 
 export type RequestWeeklyReport = {
   weeklyEvaluationId: string;
@@ -35,19 +43,16 @@ export default class WeeklyReportCreateService {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
-
-    console.log('data');
-    console.log(data);
     
     try {
       const date = Date.now();
-
-      if (!data.weeklyEvaluationId) throw new Error400();
+      const {weeklyEvaluationId, processes} = data;
+      if (weeklyEvaluationId) throw new Error400();
 
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
-          data.weeklyEvaluationId,
+          weeklyEvaluationId,
           this.options,
         );
 
@@ -67,12 +72,12 @@ export default class WeeklyReportCreateService {
 
       if (!record) throw new Error400();
 
-      if (data.processes) {
+      if (processes) {
         record.processes =
           await new ProcessReportCreateService(
             this.options,
           ).create(
-            { processes: data.processes },
+            { processes },
             record.id,
             language,
             tenantId,

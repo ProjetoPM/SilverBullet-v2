@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import FileSchema from './schemas/fileSchema';
+import WeeklyReportContentSchema from './schemas/weeklyReportContentSchema';
 
 const Schema = mongoose.Schema;
 
@@ -24,7 +24,7 @@ export default (database) => {
         type: String,
         maxlength: 2000,
       },
-      files: [FileSchema],
+      content: WeeklyReportContentSchema,
       weeklyReport: {
         type: Schema.Types.ObjectId,
         ref: 'weeklyReport',

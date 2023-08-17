@@ -9,9 +9,8 @@ import MongooseRepository from './mongooseRepository';
 
 class ProcessReportRepository {
   static async create(
-    weeklyReportId: string,
     process: Process,
-    files: Array<any>,
+    weeklyReportId: string,
     options: IRepositoryOptions,
   ) {
     const currentTenant =
@@ -30,7 +29,6 @@ class ProcessReportRepository {
       [
         {
           ...process,
-          files,
           weeklyReport: weeklyReportId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
@@ -123,6 +121,30 @@ class ProcessReportRepository {
       record,
       options,
     );
+  }
+
+  static async getSubmissionsByWeeklyReportId(
+    id: Object,
+    options,
+  ) {
+    console.log(id);
+
+    const criteriaAnd: any = [
+      {
+        weeklyReport: id,
+      },
+    ];
+    const criteria = { $and: criteriaAnd };
+
+    const rows = await ProcessReport(options.database).find(
+      criteria,
+    );
+
+    const count = await ProcessReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows, count };
   }
 
   static async destroyAll(
