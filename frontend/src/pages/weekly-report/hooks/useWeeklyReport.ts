@@ -3,38 +3,33 @@ import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { StatusCodes } from 'http-status-codes'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 import { create } from 'zustand'
 import { WeeklyReportSchema } from '../weekly-report.schema'
 
-export const useFileList = create<{
+type FileUpload = {
   files: File[]
   setFiles: (files: File[]) => void
-  resetFiles: () => void
-}>()((set, get) => ({
+}
+
+export const useFileList = create<FileUpload>()((set) => ({
   files: [],
-  setFiles: (files: File[]) => {
-    set({ files })
-    console.log(get().files)
-  },
-  resetFiles: () => set({ files: undefined })
+  setFiles: (files: File[]) => set({ files })
 }))
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
 export const useWeeklyReport = () => {
   const files = useFileList((state) => state.files)
-  const [isLoading, setLoading] = useState(false)
   const { t } = useTranslation('weekly-report')
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const create = async (data: FormWeeklyReport) => {
-    setLoading(true)
-
+  const uploadFiles = async (data: FormWeeklyReport) => {
     if (data.processes && files) {
       for (const process of data.processes) {
         const { content } = process
@@ -46,58 +41,49 @@ export const useWeeklyReport = () => {
             const matchingFile = files.find((file) => file.name === local.name)
 
             if (matchingFile) {
-              const { error } = await supabase.storage
+              await supabase.storage
                 .from('weekly-report')
                 .upload(
                   `/processes/${folder}/${matchingFile.name}`,
                   matchingFile,
                   { upsert: true }
                 )
-
-              if (error) {
-                toast.error(t('error_creating_wr'))
-                setLoading(false)
-                return
-              }
             }
           }
         }
       }
     }
+  }
 
-    const response = await api
-      .post(`/tenant/${getWorkspaceId()}/weekly-report/create`, {
-        data: { ...data }
-      })
-      .catch(async () => {
-        const processes = data.processes
-
-        processes?.forEach(async (process) => {
-          if (process.content) {
-            const { folder } = process.content
-            const deleteFiles = new Array<string>()
-
-            for (const file of process.content.files) {
-              deleteFiles.push(`processes/${folder}/${file.name}`)
-            }
-            await supabase.storage.from('weekly-report').remove(deleteFiles)
-          }
+  /**
+   * Cria um weekly-report e logo em seguida invalida o cache.
+   * Os arquivos serão enviadas somente após receber uma resposta
+   * do servidor.
+   */
+  const create = useMutation(
+    async (data: FormWeeklyReport) => {
+      return await api
+        .post(`/tenant/${getWorkspaceId()}/weekly-report/create`, {
+          data: { ...data }
         })
-      })
-
-    switch (response?.status) {
-      case StatusCodes.OK:
-        toast.success(t('created_successfully'))
-        navigate(routes.weekly_report.index)
-        break
-      default:
+        .catch((err) => err.response)
+    },
+    {
+      onSuccess: async (response, data) => {
+        switch (response.status) {
+          case StatusCodes.OK:
+            await uploadFiles(data)
+            toast.success(t('created_successfully'))
+            queryClient.invalidateQueries('weekly-reports')
+            navigate(routes.weekly_report.index)
+            break
+        }
+      },
+      onError: () => {
         toast.error(t('error_creating_wr'))
+      }
     }
-    setLoading(false)
-  }
+  )
 
-  return {
-    create,
-    isLoading
-  }
+  return { create }
 }
