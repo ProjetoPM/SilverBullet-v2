@@ -47,7 +47,7 @@ export default (database) => {
   );
 
   WeeklyReportSchema.index(
-    { createdBy: 1, weeklyEvaluation: 1 },
+    { weeklyEvaluation: 1, createdBy: 1 },
     {
       unique: true,
     },

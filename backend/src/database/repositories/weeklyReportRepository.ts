@@ -34,6 +34,7 @@ class WeeklyReportRepository {
         {
           ...data,
           weeklyEvaluation: data.weeklyEvaluationId,
+          project: data.projectId,
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,

@@ -97,7 +97,7 @@ export default class WeeklyReportCreateService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'activityDurationEstimates',
+        'tenant.weeklyReport',
       );
 
       throw error;

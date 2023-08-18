@@ -48,6 +48,9 @@ const en = {
         rangeDateError: 'This weekly evaluation is not available to be submitted',
         missingWeeklyEvaluationId: 'You need to choose a weekly evaluation',
         missingProjectId: 'You need to choose a project',
+        unique: {
+          weeklyEvaluation: 'You can\'t submit more than one report per evaluation'
+        }
       }
     },
     exists:
