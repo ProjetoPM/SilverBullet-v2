@@ -8,8 +8,7 @@ const WeeklyReportContentSchema = new Schema(
       type: String,
       maxlength: 21845,
       required: true,
-    },
-    files: [WeeklyReportFileSchema]
+    }
   },
   { timestamps: true },
 );
