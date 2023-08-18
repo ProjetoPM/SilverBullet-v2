@@ -171,11 +171,68 @@ class WeeklyReportRepository {
       return record;
     }
 
-    const output = record.toObject
+    const output: IWeeklyReport = record.toObject
       ? record.toObject()
       : record;
 
+    const { rows: processes }: { rows: IProcessReport[] } =
+      await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        id!,
+        options,
+      );
+
+    output.processes = processes;
+
+    console.log(output);
+
     return output;
+  }
+
+  static async getWeeklyReport(id: string, options) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    const criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+      {
+        _id: id,
+      },
+    ];
+    const criteria = { $and: criteriaAnd };
+
+    let newData: IWeeklyReport[] = [];
+    let rows = await WeeklyReport(options.database)
+      .find(criteria)
+      .populate('weeklyEvaluation');
+
+    for (let index = 0; index < rows.length; index++) {
+      const { _id } = rows[index]._doc;
+
+      const weeklyReport: IWeeklyReport = {
+        ...rows[index]._doc,
+      };
+
+      const {
+        rows: processes,
+      }: { rows: IProcessReport[] } =
+        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+          _id!,
+          options,
+        );
+
+      weeklyReport.processes = processes;
+      newData.push(weeklyReport);
+    }
+
+    console.log(newData);
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows: newData, count };
   }
 
   static async getSubmissionsByTenant(options) {
@@ -198,7 +255,7 @@ class WeeklyReportRepository {
       const { _id } = rows[index]._doc;
 
       const weeklyReport: IWeeklyReport = {
-        ...rows[index]._doc
+        ...rows[index]._doc,
       };
 
       const {
