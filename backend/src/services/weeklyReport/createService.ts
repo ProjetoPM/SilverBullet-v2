@@ -12,6 +12,7 @@ import { IProject } from '../../interfaces';
 export type Process = {
   group: string;
   name: string;
+  description?: string;
   filesFolder: string;
 };
 
