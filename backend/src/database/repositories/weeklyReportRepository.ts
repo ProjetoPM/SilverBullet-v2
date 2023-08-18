@@ -183,7 +183,7 @@ class WeeklyReportRepository {
 
     output.processes = processes;
 
-    console.log(output);
+
 
     return output;
   }
@@ -225,8 +225,6 @@ class WeeklyReportRepository {
       weeklyReport.processes = processes;
       newData.push(weeklyReport);
     }
-
-    console.log(newData);
 
     const count = await WeeklyReport(
       options.database,
@@ -270,7 +268,6 @@ class WeeklyReportRepository {
       newData.push(weeklyReport);
     }
 
-    console.log(newData);
 
     const count = await WeeklyReport(
       options.database,
