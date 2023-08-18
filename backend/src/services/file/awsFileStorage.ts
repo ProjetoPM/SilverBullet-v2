@@ -1,5 +1,4 @@
 import { getConfig } from '../../config';
-import { IFile } from '../../interfaces';
 import { v4 } from 'uuid';
 import {
   PutObjectCommand,
@@ -49,34 +48,5 @@ export default class AWSStorage {
     return await this.create(s3Params);
   }
 
-  static async saveWeeklyReportFiles(
-    files: File[],
-    tenantId: string,
-  ) {
 
-    let filesToReturn: any = [];
-
-
-    const arr = Array.from(files);
-
-    arr.forEach(file => console.log(file.name));
-
-    
-    Array.from(files).map((file) => {
-
-
-      const fileKey = v4();
-
-      this.saveFileS3(file, fileKey);
-
-      // filesToReturn.push({
-      //   name: file.name,
-      //   sizeInBytes: file.size,
-      //   privateUrl: fileKey,
-      //   tenant: tenantId,
-      // });
-    });
-
-    return filesToReturn;
-  }
 }
