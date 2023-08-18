@@ -36,7 +36,7 @@ export interface IProcessReport {
   group: string;
   name: string;
   description: string;
-  content: IContent;
+  filesFolder: string;
   weeklyReport: string | null;
   createdBy?: Object | string;
   updatedBy?: Object | string;
@@ -44,19 +44,9 @@ export interface IProcessReport {
   updatedAt?: Date | string;
 }
 
-export type IContent = {
-  id?: Object | string;
-  _id?: Object | string;
-  folder: string;
-  files: IFile[];
-  createdAt?: Date | string;
-  updatedAt?: Date | string;
-};
 
 
-export interface IFile {
-  name: string;
-}
+
 
 export interface IMetricGroup {
   id: string;

@@ -24,7 +24,10 @@ export default (database) => {
         type: String,
         maxlength: 2000,
       },
-      content: WeeklyReportContentSchema,
+      filesFolder: {
+        type: String,
+        required: true
+      },
       weeklyReport: {
         type: Schema.Types.ObjectId,
         ref: 'weeklyReport',
