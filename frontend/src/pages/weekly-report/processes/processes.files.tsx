@@ -14,19 +14,18 @@ export const ViewFileList = ({
   form
 }: Pick<FieldsProcessProps, 'index' | 'form'>) => {
   const { t } = useTranslation(['default', 'weekly-report'])
-  const [files, setFiles] = useState<File[]>()
-  const globalFiles = useFileList((state) => state.files)
-  const setGlobalFiles = useFileList((state) => state.setFiles)
+  const [files, setFiles] = useState<FileList>()
+  const content = useFileList((state) => state.content)
 
   const folder = useMemo(() => {
-    const uuid = form.getValues(`processes.${index}.content.folder`)
+    const uuid = form.getValues(`processes.${index}.filesFolder`)
     return uuid ?? crypto.randomUUID()
   }, [])
 
   const { data: cloudFiles } = useQuery<FileObject[]>(
     [`files-${folder}`, folder],
     async () => {
-      const isEditMode = form.getValues(`processes.${index}.content.folder`)
+      const isEditMode = form.getValues(`processes.${index}.filesFolder`)
 
       if (!isEditMode) {
         return []
@@ -52,17 +51,25 @@ export const ViewFileList = ({
   const onRemove = async (fileIndex: number) => {
     if (!files) return
 
-    const updatedFiles = [...files]
+    const updateFiles = new DataTransfer()
 
-    if (fileIndex >= 0 && fileIndex < updatedFiles.length) {
-      updatedFiles.splice(fileIndex, 1)
-      setFiles(updatedFiles)
-    }
+    Array.from(files).filter((file, index) => {
+      if (fileIndex !== index) {
+        updateFiles.items.add(file)
+      }
+    })
+    setFiles(updateFiles.files)
+
+    content.forEach((element) => {
+      if (element.folder === folder) {
+        element.files = updateFiles.files
+      }
+    })
   }
 
   const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const targetFiles = e.target.files
-
+    console.log(content)
     /**
      * Caso tenha cancelado a escolha de novos arquivos,
      * não fazer nada.
@@ -72,40 +79,50 @@ export const ViewFileList = ({
     }
 
     /**
-     * Pegando os nomes dos arquivos já enviados.
-     */
-    const fileNames = Array.from(targetFiles).map((file) => ({
-      name: file.name
-    }))
-
-    /**
-     * Caso ainda não tenha sido adicionado arquivos,
+     * Caso ainda não tenha sido adicionado arquivos no processo,
      * basta colocar os arquivos do target.
      */
     if (!files) {
-      setFiles(Array.from(targetFiles))
-      setGlobalFiles([...globalFiles, ...targetFiles])
-      form.setValue(`processes.${index}.content.folder`, folder)
-      form.setValue(`processes.${index}.content.files`, fileNames)
-      return
+      setFiles(targetFiles)
     }
 
     /**
-     * Caso já tenha arquivos, filtrar para que os nomes
-     * dos arquivos não sejam iguais, isto é, ignorar
-     * os arquivos 'duplicados'.
+     * Percorrer todos os arquivos e ignorar os arquivos com nome
+     * duplicado. Assim, fazendo apenas o `append` de novos arquivos.
      */
-    const target = Array.from(targetFiles).filter((target) => {
-      return !files.some((file) => file.name === target.name)
-    })
-    setFiles([...files, ...target])
+    const filteredFiles = new DataTransfer()
+
+    if (files) {
+      const filesToAdd = Array.from(targetFiles).filter((file) => {
+        return !Array.from(files).some((f) => f.name === file.name)
+      })
+
+      Array.from(files).forEach((file) => filteredFiles.items.add(file))
+      Array.from(filesToAdd).forEach((file) => filteredFiles.items.add(file))
+    }
 
     /**
-     * Adicionar ao estado global de arquivos e ao form.
+     * Caso já exista conteúdo no estado global, percorrer todos os itens
+     * até encontrar a pasta dos arquivos.
      */
-    setGlobalFiles([...globalFiles, ...target])
-    form.setValue(`processes.${index}.content.folder`, folder)
-    form.setValue(`processes.${index}.content.files`, fileNames)
+    let hasFolder = false
+
+    content.forEach((element) => {
+      if (element.folder === folder) {
+        setFiles(filteredFiles.files)
+        element.files = filteredFiles.files
+        hasFolder = true
+      }
+    })
+
+    /**
+     * Caso não encontre a pasta gerada para este processo, é porque ainda
+     * não existe essa pasta. Desta forma, é feito um `push`.
+     */
+    if (!hasFolder) {
+      content.push({ folder: folder, files: targetFiles })
+    }
+    form.setValue(`processes.${index}.filesFolder`, folder)
   }
 
   return (
@@ -151,33 +168,6 @@ export const ViewFileList = ({
           <Label className="text-sm font-medium">
             {t('files_already_uploaded')}
           </Label>
-          {/* <Table.Root>
-            <Table.Header>
-              <Table.Row>
-                <Table.Head className="py-2">File Name</Table.Head>
-                <Table.Head className="py-2">Created At</Table.Head>
-                <Table.Head className="py-2">Actions</Table.Head>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {cloudFiles.map((file, index) => {
-                return (
-                  <Table.Row key={index}>
-                    <Table.Cell className="py-2">{file.name}</Table.Cell>
-                    <Table.Cell className="py-2">{file.created_at}</Table.Cell>
-                    <Table.Cell className="py-2">
-                      <button
-                        className="bg-red-400"
-                        onClick={() => onRemoveFromCloud(file.name)}
-                      >
-                        teste
-                      </button>
-                    </Table.Cell>
-                  </Table.Row>
-                )
-              })}
-            </Table.Body>
-          </Table.Root> */}
           <DataTableProcesses
             data={cloudFiles}
             columns={columns}

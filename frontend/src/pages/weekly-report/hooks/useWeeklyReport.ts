@@ -14,46 +14,49 @@ import { create } from 'zustand'
 import { WeeklyReportSchema } from '../weekly-report.schema'
 import { WeeklyReportList } from '../weekly-report.types'
 
+type Content = {
+  folder: string
+  files: FileList
+}
+
 type FileUpload = {
-  files: File[]
-  setFiles: (files: File[]) => void
+  content: Array<Content>
+  setContent: (content: Array<Content>) => void
 }
 
 export const useFileList = create<FileUpload>()((set) => ({
-  files: [],
-  setFiles: (files: File[]) => set({ files })
+  content: [],
+  setContent: (content: Array<Content>) => set({ content })
 }))
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
 export const useWeeklyReport = () => {
-  const files = useFileList((state) => state.files)
+  const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
   const navigate = useNavigate()
 
+  /**
+   * Realiza (se houver) o upload dos arquivos de cada um
+   * dos processos adicionados.
+   */
   const uploadFiles = async (data: FormWeeklyReport) => {
-    if (data.processes && files) {
-      for (const process of data.processes) {
-        const { content } = process
+    const maybeHasFiles = content.length > 0 && data.processes
 
-        if (content) {
-          const { folder, files: localFiles } = content
+    if (maybeHasFiles) {
+      data.processes!.forEach(async (process) => {
+        const filesToUpload = content.find(
+          (item) => item.folder === process.filesFolder
+        )
 
-          for (const local of localFiles) {
-            const matchingFile = files.find((file) => file.name === local.name)
-
-            if (matchingFile) {
-              await supabase.storage
-                .from('weekly-report')
-                .upload(
-                  `/processes/${folder}/${matchingFile.name}`,
-                  matchingFile,
-                  { upsert: true }
-                )
-            }
+        if (filesToUpload) {
+          for (const file of filesToUpload.files) {
+            await supabase.storage
+              .from('weekly-report')
+              .upload(`processes/${process.filesFolder}/${file.name}`, file)
           }
         }
-      }
+      })
     }
   }
 
@@ -87,7 +90,7 @@ export const useWeeklyReport = () => {
     }
   )
 
-  return { create }
+  return { create, uploadFiles }
 }
 
 /**

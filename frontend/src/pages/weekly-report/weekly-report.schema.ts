@@ -36,16 +36,7 @@ export const WeeklyReportSchema = z.object({
             (value) => html(value, max.processes.description, '<='),
             params('at_most', max.processes.description)
           ),
-        content: z
-          .object({
-            folder: z.string(),
-            files: z.array(
-              z.object({
-                name: z.string()
-              })
-            )
-          })
-          .optional()
+        filesFolder: z.string().optional()
       })
     )
     .optional()
