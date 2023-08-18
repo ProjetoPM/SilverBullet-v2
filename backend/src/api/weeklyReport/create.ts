@@ -15,7 +15,7 @@ export default async (req, res, next) => {
     );
 
     const payload = await new WeeklyReportCreateService(req).create(
-      req.body.data, req.language, req.params.tenantId
+      req.body.data, req.language, req.params.tenantId, req.currentUser.id
     );
 
     await ApiResponseHandler.success(req, res, payload);

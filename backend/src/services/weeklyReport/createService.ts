@@ -5,22 +5,14 @@ import { IServiceOptions } from '../IServiceOptions';
 
 import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvaluationRepository';
 import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
+import UserRepository from '../../database/repositories/userRepository';
 import ProcessReportCreateService from '../processReport/createService';
 
 export type Process = {
   group: string;
   name: string;
-  content: IContent;
+  filesFolder: string;
 };
-
-export type IContent = {
-  folder: string;
-  files: Array<IFile>;
-};
-
-export type IFile = {
-  name: string;
-}
 
 export type RequestWeeklyReport = {
   weeklyEvaluationId: string;
@@ -40,19 +32,35 @@ export default class WeeklyReportCreateService {
     data: RequestWeeklyReport,
     language: string,
     tenantId: string,
+    userId: string,
   ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
-    
+
     try {
       const date = Date.now();
-      const {weeklyEvaluationId, projectId, processes} = data;
-      if (!weeklyEvaluationId) throw new Error400(language, 'tenant.weeklyReport.errors.missingWeeklyEvaluationId');
-      if (!projectId) throw new Error400(language, 'tenant.weeklyReport.errors.missingProjectId');
-      
-      // @Not implemented yet
-      // check if user is in project
+      const { weeklyEvaluationId, projectId, processes } =
+        data;
+      if (!weeklyEvaluationId)
+        throw new Error400(
+          language,
+          'tenant.weeklyReport.errors.missingWeeklyEvaluationId',
+        );
+      if (!projectId)
+        throw new Error400(
+          language,
+          'tenant.weeklyReport.errors.missingProjectId',
+        );
+
+      const user = await UserRepository.findById(
+        userId,
+        this.options,
+      );
+      const { projects } = user;
+
+      const projectFound = projects.find(({id}) => projectId == id);
+      if(!projectFound) throw new Error400(language, 'tenant.weeklyReport.errors.missingWeeklyEvaluationId')
 
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
@@ -74,8 +82,6 @@ export default class WeeklyReportCreateService {
           session,
         },
       );
-
-      
 
       if (!record) throw new Error400();
 

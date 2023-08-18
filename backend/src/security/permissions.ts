@@ -72,6 +72,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      weeklyReportUpdate: {
+        id: 'weeklyReportUpdate',
+        allowedRoles: [roles.custom],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       weeklyReportSubmissionsRead: {
         id: 'weeklyReportSubmissionsRead',
         allowedRoles: [roles.admin],

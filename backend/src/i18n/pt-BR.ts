@@ -46,6 +46,7 @@ const ptBR = {
         rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',
         missingWeeklyEvaluationId: 'É necessário escolher uma avaliação semanal',
         missingProjectId: 'É necessário escolher um projeto',
+        notInProject: 'Não é possível realizar a submissão, pois você não pertence ao projeto informado',
         unique: {
           weeklyEvaluation: 'Não é possível submeter mais de um relatório por avaliação semanal',
         }
