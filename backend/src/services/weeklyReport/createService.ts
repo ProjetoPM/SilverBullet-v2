@@ -24,6 +24,7 @@ export type IFile = {
 
 export type RequestWeeklyReport = {
   weeklyEvaluationId: string;
+  projectId: string;
   toolEvaluation: string;
   processes?: Process[];
 };
@@ -46,8 +47,12 @@ export default class WeeklyReportCreateService {
     
     try {
       const date = Date.now();
-      const {weeklyEvaluationId, processes} = data;
-      if (weeklyEvaluationId) throw new Error400();
+      const {weeklyEvaluationId, projectId, processes} = data;
+      if (!weeklyEvaluationId) throw new Error400(language, 'tenant.weeklyReport.errors.missingWeeklyEvaluationId');
+      if (!projectId) throw new Error400(language, 'tenant.weeklyReport.errors.missingProjectId');
+      
+      // @Not implemented yet
+      // check if user is in project
 
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
@@ -70,6 +75,8 @@ export default class WeeklyReportCreateService {
         },
       );
 
+      
+
       if (!record) throw new Error400();
 
       if (processes) {
@@ -87,6 +94,12 @@ export default class WeeklyReportCreateService {
       await MongooseRepository.commitTransaction(session);
       return record;
     } catch (error: any) {
+      MongooseRepository.handleUniqueFieldError(
+        error,
+        this.options.language,
+        'activityDurationEstimates',
+      );
+
       throw error;
     } finally {
       await MongooseRepository.abortTransaction(session);

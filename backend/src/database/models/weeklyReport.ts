@@ -23,6 +23,11 @@ export default (database) => {
         ref: 'weeklyEvaluation',
         required: true,
       },
+      project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project',
+        required: true,
+      },
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
