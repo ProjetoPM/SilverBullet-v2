@@ -40,7 +40,6 @@ export default class AWSStorage {
       ContentEncoding: '',
     };
 
-    console.log(file.type);
 
     if (file.type === 'pdf') {
       s3Params.ContentType = 'application/pdf';
@@ -54,18 +53,17 @@ export default class AWSStorage {
     files: File[],
     tenantId: string,
   ) {
-    console.log('saveWeeklyReportFiles');
+
     let filesToReturn: any = [];
-    console.log(files["0"]);
+
 
     const arr = Array.from(files);
 
     arr.forEach(file => console.log(file.name));
-    console.log(JSON.stringify(arr));
+
     
     Array.from(files).map((file) => {
-      console.log(file.type);
-      console.log(file.name);
+
 
       const fileKey = v4();
 
