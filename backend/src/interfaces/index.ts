@@ -3,6 +3,7 @@ export interface IProject {
   id: Object | null;
   project: Object | null;
   name: string;
+  tenant: Object | string;
   description: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;

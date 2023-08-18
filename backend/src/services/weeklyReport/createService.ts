@@ -7,6 +7,7 @@ import WeeklyEvaluationRepository from '../../database/repositories/weeklyEvalua
 import WeeklyReportRepository from '../../database/repositories/weeklyReportRepository';
 import UserRepository from '../../database/repositories/userRepository';
 import ProcessReportCreateService from '../processReport/createService';
+import { IProject } from '../../interfaces';
 
 export type Process = {
   group: string;
@@ -59,9 +60,21 @@ export default class WeeklyReportCreateService {
       );
       const { projects } = user;
 
-      const projectFound = projects.find(({id}) => projectId == id);
-      if(!projectFound) throw new Error400(language, 'tenant.weeklyReport.errors.missingWeeklyEvaluationId')
-
+      const projectFound: IProject = projects.find(
+        ({ id }) => projectId == id,
+      );
+      if (!projectFound)
+        throw new Error400(
+          language,
+          'tenant.weeklyReport.errors.notInProject',
+        );
+      const projectInTenant =
+        projectFound.tenant == tenantId;
+      if (!projectInTenant)
+        throw new Error400(
+          language,
+          'tenant.weeklyReport.errors.notInProject',
+        );
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,

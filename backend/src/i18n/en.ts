@@ -49,6 +49,7 @@ const en = {
         missingWeeklyEvaluationId: 'You need to choose a weekly evaluation',
         missingProjectId: 'You need to choose a project',
         notInProject: 'You can\'t submit it because you are not in this project',
+        projectNotInTenant: 'The chosen project does not belong to this workspace',
         unique: {
           weeklyEvaluation: 'You can\'t submit more than one report per evaluation'
         }

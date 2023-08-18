@@ -47,6 +47,7 @@ const ptBR = {
         missingWeeklyEvaluationId: 'É necessário escolher uma avaliação semanal',
         missingProjectId: 'É necessário escolher um projeto',
         notInProject: 'Não é possível realizar a submissão, pois você não pertence ao projeto informado',
+        projectNotInTenant: 'O projeto informado não pertence a esta área de trabalho',
         unique: {
           weeklyEvaluation: 'Não é possível submeter mais de um relatório por avaliação semanal',
         }
