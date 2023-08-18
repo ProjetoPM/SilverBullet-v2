@@ -35,7 +35,7 @@ export function DataTableHeader<TData>({
             onChange={(value) => setGlobalFilter(String(value))}
             placeholder={t('label.search_by')}
             debounce={100}
-            className="lg:min-w-[300px]"
+            className="sm:min-w-[300px]"
           />
         )}
         {type === 'first' && (
@@ -45,7 +45,7 @@ export function DataTableHeader<TData>({
             onChange={(event) =>
               getFirstColumn?.setFilterValue(event.target.value)
             }
-            className="lg:min-w-[300px]"
+            className="sm:min-w-[300px]"
           />
         )}
         <DropdownMenu.Root>

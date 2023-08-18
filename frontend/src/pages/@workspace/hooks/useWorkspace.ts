@@ -1,6 +1,9 @@
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import {
+  resetWorkspaceStore,
+  useWorkspaceStore
+} from '@/stores/useWorkspaceStore'
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
@@ -25,9 +28,7 @@ export const useWorkspace = () => {
    */
   const create = useMutation(
     async (data: FormWorkspace) => {
-      return await api
-        .post('/tenant', { data: { ...data } })
-        .catch((err) => err.response)
+      return await api.post('/tenant', { data: { ...data } })
     },
     {
       onSuccess: (response) => {
@@ -50,9 +51,7 @@ export const useWorkspace = () => {
    */
   const edit = useMutation(
     async (data: FormWorkspace) => {
-      return await api
-        .put(`/tenant/${data._id}`, { data: { ...data } })
-        .catch((err) => err.response)
+      return await api.put(`/tenant/${data._id}`, { data: { ...data } })
     },
     {
       onSuccess: (response) => {
@@ -75,9 +74,7 @@ export const useWorkspace = () => {
    */
   const _delete = useMutation(
     async (data: DeleteWorkspace) => {
-      return await api
-        .delete('/tenant', { params: { ids: [data._id] } })
-        .catch((err) => err.response)
+      return await api.delete('/tenant', { params: { ids: [data._id] } })
     },
     {
       onSuccess: (response, data) => {
@@ -85,10 +82,11 @@ export const useWorkspace = () => {
           case StatusCodes.OK:
             /**
              * Esconde o `projects` do sidebar caso o usuário exclua
-             * o workspace em que ele se encontra.
+             * o workspace em que ele se encontra e reseta a store.
              */
             if (workspace?._id === data._id) {
               setDataHiddenProjects(true)
+              resetWorkspaceStore()
             }
 
             toast.success(t('deleted_successfully'))

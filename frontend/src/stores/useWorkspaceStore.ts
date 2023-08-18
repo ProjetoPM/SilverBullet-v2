@@ -5,26 +5,41 @@ import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
+type OpenProject = {
+  _id: string
+  name: string
+}
+
 type State = {
   workspace: WorkspaceData | null
+  project: OpenProject | null
 }
 
 type Actions = {
   open: (workspace: WorkspaceData) => void
+  openProject: (project: OpenProject) => void
   close: () => void
+}
+
+const initialState: State = {
+  workspace: null,
+  project: null
 }
 
 export const useWorkspaceStore = create<State & Actions>()(
   devtools(
     persist(
       (set) => ({
-        workspace: null,
+        ...initialState,
         open: (workspace: WorkspaceData) => {
-          set({ workspace })
+          set({ workspace, project: null })
           setDataHiddenProjects(false)
           toast.success(replaceHtmlTags(workspace?.name))
         },
-        close: () => ({ workspace: null })
+        openProject: (project: OpenProject) => {
+          set({ project })
+        },
+        close: () => ({ ...initialState })
       }),
       {
         name: 'workspace',
@@ -35,5 +50,9 @@ export const useWorkspaceStore = create<State & Actions>()(
 )
 
 export const getWorkspaceId = () => {
-  return useWorkspaceStore.getState().workspace?._id ?? 'null'
+  return useWorkspaceStore.getState().workspace?._id
+}
+
+export const resetWorkspaceStore = () => {
+  return useWorkspaceStore.setState({ ...initialState })
 }

@@ -8,7 +8,7 @@ import WeeklyReportForm from './weekly-report.form'
 const WeeklyReportPage = () => {
   const { t } = useTranslation('weekly-report')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
-  const { id, mockData, isLoading, isError } = useEdit()
+  const { id, data, isLoading, isError } = useEdit()
 
   if (isLoading) {
     return <Loading size={32} />
@@ -23,7 +23,7 @@ const WeeklyReportPage = () => {
       title={t(`${id ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
-      <WeeklyReportForm />
+      <WeeklyReportForm data={data} />
     </PageLayout>
   )
 }

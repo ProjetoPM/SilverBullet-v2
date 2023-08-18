@@ -1,3 +1,4 @@
+import { useRedirect } from '@/hooks/useRedirect'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { getWorkspaceId } from '@/stores/useWorkspaceStore'
@@ -19,11 +20,9 @@ export const useProjects = () => {
    */
   const create = useMutation(
     async (data: FormProject) => {
-      return await api
-        .post(`/tenant/${getWorkspaceId()}/project/create`, {
-          data: { ...data }
-        })
-        .catch((err) => err.response)
+      return await api.post(`/tenant/${getWorkspaceId()}/project/create`, {
+        data: { ...data }
+      })
     },
     {
       onSuccess: (response) => {
@@ -50,11 +49,9 @@ export const useProjects = () => {
    */
   const edit = useMutation(
     async (data: FormProject) => {
-      return await api
-        .put(`/tenant/${getWorkspaceId()}/project/${data._id}`, {
-          data: { ...data }
-        })
-        .catch((err) => err.response)
+      return await api.put(`/tenant/${getWorkspaceId()}/project/${data._id}`, {
+        data: { ...data }
+      })
     },
     {
       onSuccess: (response) => {
@@ -77,11 +74,9 @@ export const useProjects = () => {
    */
   const _delete = useMutation(
     async (data: DeleteProject) => {
-      return await api
-        .delete(`/tenant/${getWorkspaceId()}/project`, {
-          params: { ids: [data._id] }
-        })
-        .catch((err) => err.response)
+      return await api.delete(`/tenant/${getWorkspaceId()}/project`, {
+        params: { ids: [data._id] }
+      })
     },
     {
       onSuccess: (response) => {
@@ -106,20 +101,23 @@ export const useProjects = () => {
  * atual.
  */
 export const useProjectList = () => {
-  const navigate = useNavigate()
+  const { redirect } = useRedirect()
 
   const list = async () => {
-    const response = await api
+    const workspace = getWorkspaceId()
+
+    if (!workspace) {
+      redirect()
+      return
+    }
+
+    return await api
       .get(`/tenant/${getWorkspaceId()}/project-list`)
       .then((res) => res.data)
-      .catch((err) => err.response)
-
-    if (!response) {
-      navigate(routes.workspaces.index)
-    }
-    return response
   }
 
-  const { ...props } = useQuery<{ rows: ProjectData[] }>('projects', list)
+  const { ...props } = useQuery<{ rows: ProjectData[] }>('projects', list, {
+    onError: redirect
+  })
   return { ...props }
 }

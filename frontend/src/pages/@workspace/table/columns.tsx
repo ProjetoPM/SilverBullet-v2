@@ -2,7 +2,7 @@ import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHea
 import { Checkbox } from '@/components/ui'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
-import i18next from 'i18next'
+import i18next, { t } from 'i18next'
 import { Workspace } from '../workspace.types'
 import { WorkspaceActions } from './workspace.actions'
 
@@ -18,14 +18,14 @@ export const columns = [
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label={i18next.t('select_all')}
+        aria-label={t('select_all')}
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label={i18next.t('select_row')}
+        aria-label={t('select_row')}
       />
     ),
     enableSorting: false,
@@ -37,10 +37,7 @@ export const columns = [
   helper.accessor((row) => row.tenant.name, {
     id: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={i18next.t('data-table:name')}
-      />
+      <DataTableColumnHeader column={column} header={t('data-table:name')} />
     ),
     cell: ({ row }) => (
       <div id={`name-${row.index}`}>
@@ -58,18 +55,18 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:plan_status')}
+        header={t('data-table:plan_status')}
       />
     ),
     cell: ({ row }) => {
       const planStatus =
         row.getValue('planStatus') === 'active'
-          ? i18next.t('workspace:label.active')
-          : i18next.t('workspace:label.inactive')
+          ? t('workspace:label.active')
+          : t('workspace:label.inactive')
 
       return <div id={`plan-status-${row.index}`}>{planStatus}</div>
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true
   }),
   /**
@@ -80,7 +77,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:created_at')}
+        header={t('data-table:created_at')}
       />
     ),
     cell: ({ row }) => {
@@ -100,9 +97,12 @@ export const columns = [
    */
   helper.display({
     id: 'actions',
-    header: () => i18next.t('data-table:actions'),
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} header={t('data-table:actions')} />
+    ),
     cell: ({ row }) => {
       return <WorkspaceActions id={row.index.toString()} data={row.original} />
-    }
+    },
+    enableHiding: true
   })
 ]

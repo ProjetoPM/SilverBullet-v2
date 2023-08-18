@@ -10,9 +10,7 @@ export const useNotifications = () => {
 
   const acceptInvite = useMutation(
     async (token: string) => {
-      return await api
-        .post(`/tenant/invitation/${token}/accept`)
-        .catch((err) => err.response)
+      return await api.post(`/tenant/invitation/${token}/accept`)
     },
     {
       onSuccess: (response) => {

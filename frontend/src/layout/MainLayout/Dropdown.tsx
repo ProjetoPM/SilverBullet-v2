@@ -18,7 +18,7 @@ const Dropdown = () => {
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="w-56">
-        <DropdownMenu.Label>{t('my_account')}</DropdownMenu.Label>
+        <DropdownMenu.Label>{t('default:my_account')}</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <DropdownMenu.Group>
           <DropdownMenu.Item>
@@ -43,7 +43,7 @@ const Dropdown = () => {
         <DropdownMenu.Separator />
         <DropdownMenu.Item onClick={signOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{t('log_out')}</span>
+          <span>{t('default:log_out')}</span>
           <DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>
         </DropdownMenu.Item>
       </DropdownMenu.Content>

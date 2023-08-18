@@ -108,8 +108,6 @@ export const ViewFileList = ({
     form.setValue(`processes.${index}.content.files`, fileNames)
   }
 
-  console.log(cloudFiles)
-
   return (
     <div className="flex flex-col gap-3">
       {/**

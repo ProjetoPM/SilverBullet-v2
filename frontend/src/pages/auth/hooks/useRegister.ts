@@ -1,7 +1,7 @@
-import { useLoading } from '@/hooks/useLoading'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { StatusCodes } from 'http-status-codes'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -11,13 +11,11 @@ import { RegisterSchema } from '../register/register.schema'
 type CreateAccount = z.infer<typeof RegisterSchema>
 
 export const useRegister = () => {
-  const { isLoading, setLoading } = useLoading()
   const { t } = useTranslation(['default', 'auth'])
+  const [isLoading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const create = async (data: CreateAccount) => {
-    setLoading(true)
-
     const response = await api
       .post('/auth/sign-up', data)
       .catch((err) => err.response)

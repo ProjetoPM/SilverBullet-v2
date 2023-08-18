@@ -1,7 +1,6 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
 import { cn } from '@/lib/utils'
-import { WeeklyReportData } from '@/services/modules/WeeklyReportService'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
 import { useState } from 'react'
@@ -18,15 +17,14 @@ import {
 } from './weekly-report.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyReportData
+  data?: WeeklyReport
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const [open, setOpen] = useState(false)
   const { data: weList } = useWeeklyEvaluation()
-  const { create, isLoading } = useWeeklyReport()
-  const [output, setOutput] = useState('')
+  const { create } = useWeeklyReport()
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -35,8 +33,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReport) => {
-    setOutput(JSON.stringify(form, null, 2))
-    await create(form)
+    await create.mutateAsync(form)
   }
 
   return (
@@ -147,12 +144,11 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           )}
         />
         <Processes form={form} control={form.control} />
-        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            isLoading={isLoading}
+            isLoading={create.isLoading}
           >
             {data && (
               <>

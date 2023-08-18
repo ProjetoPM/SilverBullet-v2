@@ -1,5 +1,7 @@
 import { Translate } from '@/components/Utils/Translate'
-import { FolderOpen, Folders, PanelTop } from 'lucide-react'
+import { routes } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { FolderOpen, Folders } from 'lucide-react'
 
 type SidebarItem = {
   id: string
@@ -13,8 +15,8 @@ type SidebarItem = {
   }[]
 }
 
-const getWorkspace = () => {
-  return localStorage.getItem('workspace')
+const setHidden = () => {
+  return useWorkspaceStore.getState().workspace === null
 }
 
 export const sidebar: SidebarItem[] = [
@@ -26,26 +28,14 @@ export const sidebar: SidebarItem[] = [
         id: 'workspaces',
         title: <Translate text="workspaces" />,
         icon: <Folders size={22} />,
-        link: '/workspaces'
+        link: routes.workspaces.index
       },
       {
         id: 'projects',
         title: <Translate text="projects" />,
         icon: <FolderOpen size={22} />,
-        link: '/projects',
-        isHidden: getWorkspace() === null
-      }
-    ]
-  },
-  {
-    id: '_other',
-    label: 'Other',
-    children: [
-      {
-        id: 'other',
-        title: <Translate text="menu" />,
-        icon: <PanelTop size={22} />,
-        link: '/menu'
+        link: routes.projects.index,
+        isHidden: setHidden()
       }
     ]
   }

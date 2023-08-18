@@ -53,47 +53,45 @@ export const Notifications = () => {
             {data && data.tenants.length > 0 ? (
               data.tenants.map((notification, index) => {
                 return (
-                  notification.status === 'invited' && (
-                    <React.Fragment key={notification.tenant._id}>
-                      <div className="flex gap-2 items-center">
-                        <span className="flex flex-col gap-2 text-sm">
-                          {t('invite_workspace')}{' '}
-                          <div className="font-bold text-green-600 indent-4">
-                            {replaceHtmlTags(notification.tenant.name)}
-                          </div>
-                        </span>
-                        <div className="flex gap-1">
-                          <Button
-                            variant="accept"
-                            size="icon"
-                            className="rounded-full"
-                            onClick={async () =>
-                              await acceptInvite.mutateAsync(
-                                notification.invitationToken
-                              )
-                            }
-                          >
-                            <Check className="w-5 h-5" />
-                          </Button>
-                          <Button
-                            variant="decline"
-                            size="icon"
-                            className="rounded-full"
-                            onClick={async () =>
-                              await declineInvite.mutateAsync(
-                                notification.invitationToken
-                              )
-                            }
-                          >
-                            <X className="w-5 h-5" />
-                          </Button>
+                  <React.Fragment key={notification.tenant._id}>
+                    <div className="flex gap-2 items-center">
+                      <span className="flex flex-col gap-2 text-sm">
+                        {t('invite_workspace')}{' '}
+                        <div className="font-bold text-green-600 indent-4">
+                          {replaceHtmlTags(notification.tenant.name)}
                         </div>
+                      </span>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="accept"
+                          size="icon"
+                          className="rounded-full"
+                          onClick={async () =>
+                            await acceptInvite.mutateAsync(
+                              notification.invitationToken
+                            )
+                          }
+                        >
+                          <Check className="w-5 h-5" />
+                        </Button>
+                        <Button
+                          variant="decline"
+                          size="icon"
+                          className="rounded-full"
+                          onClick={async () =>
+                            await declineInvite.mutateAsync(
+                              notification.invitationToken
+                            )
+                          }
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
                       </div>
-                      {index !== data.tenants.length - 1 && (
-                        <DropdownMenu.Separator className="my-3" />
-                      )}
-                    </React.Fragment>
-                  )
+                    </div>
+                    {index !== data.tenants.length - 1 && (
+                      <DropdownMenu.Separator className="my-3" />
+                    )}
+                  </React.Fragment>
                 )
               })
             ) : (

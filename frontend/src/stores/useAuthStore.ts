@@ -5,6 +5,7 @@ import i18next from 'i18next'
 import { toast } from 'react-toastify'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+import { useWorkspaceStore } from './useWorkspaceStore'
 
 type AuthCredentials = {
   email: string
@@ -55,14 +56,13 @@ export const useAuthStore = create<State & Actions>()(
 
           if (response.status === StatusCodes.OK) {
             set({ token: response.data, isAuthenticating: false })
-            toast.success(i18next.t('success.sign_in'), {
-              position: 'bottom-right'
-            })
+            toast.success(i18next.t('success.sign_in'))
             history.pushState(null, '', routes.workspaces.index)
           }
         },
         signOut: () => {
           set({ token: null })
+          useWorkspaceStore.setState({ workspace: null })
           toast.info(i18next.t('info.sign_out'))
           history.pushState(null, '', routes.auth.index)
         }

@@ -1,30 +1,23 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { useCommandMenuStore } from '@/layout/CommandMenu'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useProjects } from '../hooks/useProjects'
-import { ProjectData } from '../projects.types'
+import { WeeklyReport } from '../weekly-report.types'
 
 type ProjectActionsProps = {
   id: string
-  data: ProjectData
+  data: WeeklyReport
 }
 
-const ProjectActions = ({ id, data }: ProjectActionsProps) => {
+export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { _delete } = useProjects()
-  const openMenu = useCommandMenuStore((state) => state.toggleMenu)
-  const openProject = useWorkspaceStore((state) => state.openProject)
 
   const handleDelete = async () => {
-    await _delete.mutateAsync(data)
+    // TODO
   }
 
   const handleOpen = () => {
-    openProject({ _id: data._id!, name: data.name })
-    openMenu()
+    // TODO
   }
 
   return (
@@ -87,7 +80,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <Button
               variant="delete"
               onClick={() => handleDelete()}
-              isLoading={_delete.isLoading}
+              // isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>
@@ -97,5 +90,3 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
     </Dialog.Root>
   )
 }
-
-export { ProjectActions }

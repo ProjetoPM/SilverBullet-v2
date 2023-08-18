@@ -1,8 +1,8 @@
 import { api } from '@/services/api'
-import { ProjectData } from '@/services/modules/ProjectService'
 import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+import { ProjectData } from '../projects.types'
 
 export const useEdit = () => {
   const { id } = useParams()
