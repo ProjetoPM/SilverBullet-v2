@@ -27,43 +27,6 @@ class Permissions {
           plans.enterprise,
         ],
       },
-      projectRead: {
-        id: 'projectRead',
-        allowedRoles: [roles.admin, roles.custom],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
-      projectCreate: {
-        id: 'projectCreate',
-        allowedRoles: [roles.admin, roles.custom],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
-      projectEdit: {
-        id: 'projectEdit',
-        allowedRoles: [roles.admin, roles.custom],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
-      projectDestroy: {
-        id: 'projectDestroy',
-        allowedRoles: [roles.admin, roles.custom],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
-
       planEdit: {
         id: 'planEdit',
         allowedRoles: [roles.admin],
@@ -82,6 +45,97 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      weeklyEvaluationCreate: {
+        id: 'weeklyEvaluationCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      availableEvaluations: {
+        id: 'availableEvaluations',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyReportCreate: {
+        id: 'weeklyReportCreate',
+        allowedRoles: [roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyReportUpdate: {
+        id: 'weeklyReportUpdate',
+        allowedRoles: [roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyReportSubmissionsRead: {
+        id: 'weeklyReportSubmissionsRead',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      getWeeklyReport: {
+        id: 'getWeeklyReport',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      projectRead: {
+        id: 'projectRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      projectCreate: {
+        id: 'projectCreate',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      projectEdit: {
+        id: 'projectEdit',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      projectDestroy: {
+        id: 'projectDestroy',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+
       userEdit: {
         id: 'userEdit',
         allowedRoles: [roles.admin],
@@ -129,7 +183,7 @@ class Permissions {
       },
       userAutocomplete: {
         id: 'userAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [
           plans.free,
           plans.growth,
@@ -189,12 +243,12 @@ class Permissions {
       },
       projectCharterRead: {
         id: 'projectCharterRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       projectCharterAutocomplete: {
         id: 'projectCharterAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -229,12 +283,12 @@ class Permissions {
       },
       businessCaseRead: {
         id: 'businessCaseRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       businessCaseAutocomplete: {
         id: 'businessCaseAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -269,12 +323,12 @@ class Permissions {
       },
       benefitsManagementPlanRead: {
         id: 'benefitsManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       benefitsManagementPlanAutocomplete: {
         id: 'benefitsManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -309,12 +363,12 @@ class Permissions {
       },
       assumptionLogRead: {
         id: 'assumptionLogRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       assumptionLogAutocomplete: {
         id: 'assumptionLogAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -349,12 +403,12 @@ class Permissions {
       },
       stakeholderRegistrationRead: {
         id: 'stakeholderRegistrationRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       stakeholderRegistrationAutocomplete: {
         id: 'stakeholderRegistrationAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -389,12 +443,12 @@ class Permissions {
       },
       projectManagementPlanRead: {
         id: 'projectManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       projectManagementPlanAutocomplete: {
         id: 'projectManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -429,12 +483,12 @@ class Permissions {
       },
       requirementsManagementPlanRead: {
         id: 'requirementsManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       requirementsManagementPlanAutocomplete: {
         id: 'requirementsManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -469,12 +523,12 @@ class Permissions {
       },
       requirementDocumentationRead: {
         id: 'requirementDocumentationRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       requirementDocumentationAutocomplete: {
         id: 'requirementDocumentationAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -509,12 +563,12 @@ class Permissions {
       },
       scopeManagementPlanRead: {
         id: 'scopeManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       scopeManagementPlanAutocomplete: {
         id: 'scopeManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -549,12 +603,12 @@ class Permissions {
       },
       scheduleManagementPlanRead: {
         id: 'scheduleManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       scheduleManagementPlanAutocomplete: {
         id: 'scheduleManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -589,12 +643,12 @@ class Permissions {
       },
       projectScopeStatementRead: {
         id: 'projectScopeStatementRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       projectScopeStatementAutocomplete: {
         id: 'projectScopeStatementAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -629,12 +683,12 @@ class Permissions {
       },
       workbreakdownStructureRead: {
         id: 'workbreakdownStructureRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       workbreakdownStructureAutocomplete: {
         id: 'workbreakdownStructureAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -669,12 +723,12 @@ class Permissions {
       },
       scheduleNetworkDiagramRead: {
         id: 'scheduleNetworkDiagramRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       scheduleNetworkDiagramAutocomplete: {
         id: 'scheduleNetworkDiagramAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -709,12 +763,12 @@ class Permissions {
       },
       activityListRead: {
         id: 'activityListRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       activityListAutocomplete: {
         id: 'activityListAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -749,12 +803,12 @@ class Permissions {
       },
       resourceRead: {
         id: 'resourceRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       resourceAutocomplete: {
         id: 'resourceAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -789,12 +843,12 @@ class Permissions {
       },
       resourceRequirementsRead: {
         id: 'resourceRequirementsRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       resourceRequirementsAutocomplete: {
         id: 'resourceRequirementsAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -829,12 +883,12 @@ class Permissions {
       },
       activityDurationEstimatesRead: {
         id: 'activityDurationEstimatesRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       activityDurationEstimatesAutocomplete: {
         id: 'activityDurationEstimatesAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -869,12 +923,12 @@ class Permissions {
       },
       stakeholderCalendarsRead: {
         id: 'stakeholderCalendarsRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       stakeholderCalendarsAutocomplete: {
         id: 'stakeholderCalendarsAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -909,12 +963,12 @@ class Permissions {
       },
       costManagementPlanRead: {
         id: 'costManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       costManagementPlanAutocomplete: {
         id: 'costManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -949,12 +1003,12 @@ class Permissions {
       },
       costEstimatesRead: {
         id: 'costEstimatesRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       costEstimatesAutocomplete: {
         id: 'costEstimatesAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -989,12 +1043,12 @@ class Permissions {
       },
       qualityManagementPlanRead: {
         id: 'qualityManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       qualityManagementPlanAutocomplete: {
         id: 'qualityManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -1029,12 +1083,12 @@ class Permissions {
       },
       resourceManagementPlanRead: {
         id: 'resourceManagementPlanRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       resourceManagementPlanAutocomplete: {
         id: 'resourceManagementPlanAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
 
@@ -1069,12 +1123,12 @@ class Permissions {
       },
       resourceBreakdownStructureRead: {
         id: 'resourceBreakdownStructureRead',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       resourceBreakdownStructureAutocomplete: {
         id: 'resourceBreakdownStructureAutocomplete',
-        allowedRoles: [roles.admin, roles.custom],
+        allowedRoles: [roles.admin, roles.student],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       communicationsManagementPlanImport: {
@@ -1676,6 +1730,605 @@ class Permissions {
         allowedRoles: [roles.admin, roles.custom],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },      
+      communicationsManagementPlanImport: {
+        id: 'communicationsManagementPlanImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      communicationsManagementPlanCreate: {
+        id: 'communicationsManagementPlanCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      communicationsManagementPlanEdit: {
+        id: 'communicationsManagementPlanEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      communicationsManagementPlanDestroy: {
+        id: 'communicationsManagementPlanDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      communicationsManagementPlanRead: {
+        id: 'communicationsManagementPlanRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      communicationsManagementPlanAutocomplete: {
+        id: 'communicationsManagementPlanAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      riskManagementPlanImport: {
+        id: 'riskManagementPlanImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      riskManagementPlanCreate: {
+        id: 'riskManagementPlanCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskManagementPlanEdit: {
+        id: 'riskManagementPlanEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskManagementPlanDestroy: {
+        id: 'riskManagementPlanDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskManagementPlanRead: {
+        id: 'riskManagementPlanRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      riskManagementPlanAutocomplete: {
+        id: 'riskManagementPlanAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      riskRegistrationImport: {
+        id: 'riskRegistrationImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      riskRegistrationCreate: {
+        id: 'riskRegistrationCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskRegistrationEdit: {
+        id: 'riskRegistrationEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskRegistrationDestroy: {
+        id: 'riskRegistrationDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      riskRegistrationRead: {
+        id: 'riskRegistrationRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      riskRegistrationAutocomplete: {
+        id: 'riskRegistrationAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      procurementManagementPlanImport: {
+        id: 'procurementManagementPlanImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      procurementManagementPlanCreate: {
+        id: 'procurementManagementPlanCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementManagementPlanEdit: {
+        id: 'procurementManagementPlanEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementManagementPlanDestroy: {
+        id: 'procurementManagementPlanDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementManagementPlanRead: {
+        id: 'procurementManagementPlanRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      procurementManagementPlanAutocomplete: {
+        id: 'procurementManagementPlanAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      procurementStatementWorkRegisterImport: {
+        id: 'procurementStatementWorkRegisterImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      procurementStatementWorkRegisterCreate: {
+        id: 'procurementStatementWorkRegisterCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementStatementWorkRegisterEdit: {
+        id: 'procurementStatementWorkRegisterEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementStatementWorkRegisterDestroy: {
+        id: 'procurementStatementWorkRegisterDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      procurementStatementWorkRegisterRead: {
+        id: 'procurementStatementWorkRegisterRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      procurementStatementWorkRegisterAutocomplete: {
+        id: 'procurementStatementWorkRegisterAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      projectPerformanceMonitoringReportImport: {
+        id: 'projectPerformanceMonitoringReportImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      projectPerformanceMonitoringReportCreate: {
+        id: 'projectPerformanceMonitoringReportCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectPerformanceMonitoringReportEdit: {
+        id: 'projectPerformanceMonitoringReportEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectPerformanceMonitoringReportDestroy: {
+        id: 'projectPerformanceMonitoringReportDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectPerformanceMonitoringReportRead: {
+        id: 'projectPerformanceMonitoringReportRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      projectPerformanceMonitoringReportAutocomplete: {
+        id: 'projectPerformanceMonitoringReportAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      workPerformanceReportsImport: {
+        id: 'workPerformanceReportsImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      workPerformanceReportsCreate: {
+        id: 'workPerformanceReportsCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      workPerformanceReportsEdit: {
+        id: 'workPerformanceReportsEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      workPerformanceReportsDestroy: {
+        id: 'workPerformanceReportsDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      workPerformanceReportsRead: {
+        id: 'workPerformanceReportsRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      workPerformanceReportsAutocomplete: {
+        id: 'workPerformanceReportsAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      issueLogImport: {
+        id: 'issueLogImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      issueLogCreate: {
+        id: 'issueLogCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      issueLogEdit: {
+        id: 'issueLogEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      issueLogDestroy: {
+        id: 'issueLogDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      issueLogRead: {
+        id: 'issueLogRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      issueLogAutocomplete: {
+        id: 'issueLogAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      lessonLearnedRegisterImport: {
+        id: 'lessonLearnedRegisterImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      lessonLearnedRegisterCreate: {
+        id: 'lessonLearnedRegisterCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      lessonLearnedRegisterEdit: {
+        id: 'lessonLearnedRegisterEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      lessonLearnedRegisterDestroy: {
+        id: 'lessonLearnedRegisterDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      lessonLearnedRegisterRead: {
+        id: 'lessonLearnedRegisterRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      lessonLearnedRegisterAutocomplete: {
+        id: 'lessonLearnedRegisterAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      qualityChecklistImport: {
+        id: 'qualityChecklistImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      qualityChecklistCreate: {
+        id: 'qualityChecklistCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      qualityChecklistEdit: {
+        id: 'qualityChecklistEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      qualityChecklistDestroy: {
+        id: 'qualityChecklistDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      qualityChecklistRead: {
+        id: 'qualityChecklistRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      qualityChecklistAutocomplete: {
+        id: 'qualityChecklistAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      teamPerformanceEvaluationImport: {
+        id: 'teamPerformanceEvaluationImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      teamPerformanceEvaluationCreate: {
+        id: 'teamPerformanceEvaluationCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      teamPerformanceEvaluationEdit: {
+        id: 'teamPerformanceEvaluationEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      teamPerformanceEvaluationDestroy: {
+        id: 'teamPerformanceEvaluationDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      teamPerformanceEvaluationRead: {
+        id: 'teamPerformanceEvaluationRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      teamPerformanceEvaluationAutocomplete: {
+        id: 'teamPerformanceEvaluationAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      changeRequestImport: {
+        id: 'changeRequestImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      changeRequestCreate: {
+        id: 'changeRequestCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      changeRequestEdit: {
+        id: 'changeRequestEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      changeRequestDestroy: {
+        id: 'changeRequestDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      changeRequestRead: {
+        id: 'changeRequestRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      changeRequestAutocomplete: {
+        id: 'changeRequestAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      projectClosureImport: {
+        id: 'projectClosureImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      projectClosureCreate: {
+        id: 'projectClosureCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectClosureEdit: {
+        id: 'projectClosureEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectClosureDestroy: {
+        id: 'projectClosureDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      projectClosureRead: {
+        id: 'projectClosureRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      projectClosureAutocomplete: {
+        id: 'projectClosureAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      closedProcurementDocumentationImport: {
+        id: 'closedProcurementDocumentationImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      closedProcurementDocumentationCreate: {
+        id: 'closedProcurementDocumentationCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      closedProcurementDocumentationEdit: {
+        id: 'closedProcurementDocumentationEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      closedProcurementDocumentationDestroy: {
+        id: 'closedProcurementDocumentationDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      closedProcurementDocumentationRead: {
+        id: 'closedProcurementDocumentationRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      closedProcurementDocumentationAutocomplete: {
+        id: 'closedProcurementDocumentationAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+
+      finalReportImport: {
+        id: 'finalReportImport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      finalReportCreate: {
+        id: 'finalReportCreate',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      finalReportEdit: {
+        id: 'finalReportEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      finalReportDestroy: {
+        id: 'finalReportDestroy',
+        allowedRoles: [roles.admin],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+        allowedStorage: [
+
+        ],
+      },
+      finalReportRead: {
+        id: 'finalReportRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
+      finalReportAutocomplete: {
+        id: 'finalReportAutocomplete',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      },
     };
   }
 

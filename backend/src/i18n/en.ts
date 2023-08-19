@@ -42,6 +42,20 @@ const en = {
   },
 
   tenant: {
+
+    weeklyReport: {
+      errors: {
+        rangeDateError: 'This weekly evaluation is not available to be submitted',
+        missingWeeklyEvaluationId: 'You need to choose a weekly evaluation',
+        missingProjectId: 'You need to choose a project',
+        notInProject: 'You can\'t submit it because you are not in this project',
+        projectNotInTenant: 'The chosen project does not belong to this workspace',
+        notSameUser: 'You cannot update a weekly report created by other user',
+        unique: {
+          weeklyEvaluation: 'You can\'t submit more than one report per evaluation'
+        }
+      }
+    },
     exists:
       'There is already a workspace on this application.',
     url: {
@@ -53,6 +67,7 @@ const en = {
     planActive: `There is a plan active for this workspace. Please cancel the plan first.`,
     stripeNotConfigured: 'Stripe is not configured.',
   },
+
 
   importer: {
     errors: {
