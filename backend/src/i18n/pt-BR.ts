@@ -41,6 +41,16 @@ const ptBR = {
   },
 
   tenant: {
+    
+    weeklyEvaluation: {
+
+    errors: {
+      nullStartDate: "Data de início não informada",
+      nullEndDate: "Data de fim não informada",
+      invalidMetricGroup: "Grupo de métricas inválido",
+      startDateGreaterThanEndDate: "Data de início maior que data de fim"
+    }
+  },
     weeklyReport: {
       errors: {
         rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',

@@ -2,7 +2,7 @@ import PermissionChecker from '../../services/user/permissionChecker';
 import ApiResponseHandler from '../apiResponseHandler';
 import Permissions from '../../security/permissions';
 import Error403 from '../../errors/Error403';
-import WeeklyEvaluationCreateService from '../../services/weeklyEvaluation/createService';
+import WeeklyEvaluationEditService from '../../services/weeklyEvaluation/editService';
 
 export default async (req, res, next) => {
   try {
@@ -13,9 +13,9 @@ export default async (req, res, next) => {
       Permissions.values.weeklyEvaluationCreate,
     );
 
-    const payload = await new WeeklyEvaluationCreateService(
+    const payload = await new WeeklyEvaluationEditService(
       req,
-    ).create(req.body.data);
+    ).handle({data: req.body.data, weeklyEvaluationId: req.params.id});
 
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {

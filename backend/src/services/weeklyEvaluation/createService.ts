@@ -33,13 +33,17 @@ export default class WeeklyEvaluationCreateService {
       this.options.database,
     );
 
-    if (!startDate || !endDate) throw new Error400();
+    if (!startDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullStartDate');
+    if (!endDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullEndDate');
 
+    const startDateObject = new Date(startDate);
+    const endDateObject = new Date(endDate);
+    if(endDateObject.getTime() < startDateObject.getTime()) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.startDateGreaterThanEndDate');
     const metricGroup = metricGroups.find(
       (metric) => metric.id === metricGroupId,
     );
 
-    if (!metricGroup) throw new Error400();
+    if (!metricGroup) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.invalidMetricGroup');
 
     const data = {
       name,

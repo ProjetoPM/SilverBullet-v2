@@ -42,19 +42,34 @@ const en = {
   },
 
   tenant: {
+    weeklyEvaluation: {
+      errors: {
+        nullStartDate: 'Invalid start date',
+        nullEndDate: 'Invalid end date',
+        invalidMetricGroup: 'Invalid metric group',
+        startDateGreaterThanEndDate:
+          'Start date greater than end date',
+      },
+    },
 
     weeklyReport: {
       errors: {
-        rangeDateError: 'This weekly evaluation is not available to be submitted',
-        missingWeeklyEvaluationId: 'You need to choose a weekly evaluation',
+        rangeDateError:
+          'This weekly evaluation is not available to be submitted',
+        missingWeeklyEvaluationId:
+          'You need to choose a weekly evaluation',
         missingProjectId: 'You need to choose a project',
-        notInProject: 'You can\'t submit it because you are not in this project',
-        projectNotInTenant: 'The chosen project does not belong to this workspace',
-        notSameUser: 'You cannot update a weekly report created by other user',
+        notInProject:
+          "You can't submit it because you are not in this project",
+        projectNotInTenant:
+          'The chosen project does not belong to this workspace',
+        notSameUser:
+          'You cannot update a weekly report created by other user',
         unique: {
-          weeklyEvaluation: 'You can\'t submit more than one report per evaluation'
-        }
-      }
+          weeklyEvaluation:
+            "You can't submit more than one report per evaluation",
+        },
+      },
     },
     exists:
       'There is already a workspace on this application.',
@@ -67,7 +82,6 @@ const en = {
     planActive: `There is a plan active for this workspace. Please cancel the plan first.`,
     stripeNotConfigured: 'Stripe is not configured.',
   },
-
 
   importer: {
     errors: {
@@ -105,166 +119,120 @@ const en = {
   entities: {
     projectCharter: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     businessCase: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     benefitsManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     assumptionLog: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     stakeholderRegistration: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     projectManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     requirementsManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     requirementDocumentation: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scopeManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scheduleManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     projectScopeStatement: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     workbreakdownStructure: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scheduleNetworkDiagram: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     activityList: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resource: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceRequirements: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     activityDurationEstimates: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     stakeholderCalendars: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     costManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     costEstimates: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     qualityManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceBreakdownStructure: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
-  }
+  },
 };
 
 export default en;
