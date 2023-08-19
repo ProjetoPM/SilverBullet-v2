@@ -48,6 +48,7 @@ const ptBR = {
         missingProjectId: 'É necessário escolher um projeto',
         notInProject: 'Não é possível realizar a submissão, pois você não pertence ao projeto informado',
         projectNotInTenant: 'O projeto informado não pertence a esta área de trabalho',
+        notSameUser: 'Não é possível editar um relatório criado por outro usuário',
         unique: {
           weeklyEvaluation: 'Não é possível submeter mais de um relatório por avaliação semanal',
         }

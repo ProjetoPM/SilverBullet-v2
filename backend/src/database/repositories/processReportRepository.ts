@@ -2,6 +2,7 @@ import Error400 from '../../errors/Error400';
 import Error404 from '../../errors/Error404';
 import { IProcessReport } from '../../interfaces';
 import { Process } from '../../services/weeklyReport/createService';
+import { ProcessToDelete, UpdateProcess } from '../../services/weeklyReport/updateService';
 import ProcessReport from '../models/processReport';
 import { IRepositoryOptions } from './IRepositoryOptions';
 import AuditLogRepository from './auditLogRepository';
@@ -53,11 +54,14 @@ class ProcessReportRepository {
   }
 
   static async update(
-    id,
-    data,
+    id: string,
+    data: UpdateProcess,
     options: IRepositoryOptions,
   ) {
-    const record = await this.findById(id, options);
+    const record: IProcessReport = await this.findById(
+      id,
+      options,
+    );
     if (!record) {
       throw new Error404();
     }
@@ -82,7 +86,10 @@ class ProcessReportRepository {
     return await this.findById(id, options);
   }
 
-  static async findById(id, options: IRepositoryOptions) {
+  static async findById(
+    id,
+    options: IRepositoryOptions,
+  ): Promise<IProcessReport> {
     const record =
       await MongooseRepository.wrapWithSessionIfExists(
         ProcessReport(options.database).findById(id),
@@ -101,7 +108,7 @@ class ProcessReportRepository {
   }
 
   static async destroy(
-    id: Object,
+    id: string,
     options: IRepositoryOptions,
   ) {
     let record =
@@ -127,7 +134,6 @@ class ProcessReportRepository {
     id: Object,
     options,
   ) {
-    
     const criteriaAnd: any = [
       {
         weeklyReport: id,
@@ -147,11 +153,11 @@ class ProcessReportRepository {
   }
 
   static async destroyAll(
-    WeeklyReports: Array<IProcessReport>,
+    processes: Array<ProcessToDelete>,
     options: IRepositoryOptions,
   ) {
-    for (const WeeklyReport of WeeklyReports) {
-      this.destroy(WeeklyReport.id!, options);
+    for (const process of processes) {
+      this.destroy(process.id!, options);
     }
   }
 

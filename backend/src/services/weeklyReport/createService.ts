@@ -59,6 +59,8 @@ export default class WeeklyReportCreateService {
         userId,
         this.options,
       );
+      console.log(user);
+      
       const { projects } = user;
 
       const projectFound: IProject = projects.find(
@@ -76,13 +78,15 @@ export default class WeeklyReportCreateService {
           language,
           'tenant.weeklyReport.errors.notInProject',
         );
-      const isInRange =
+        
+        const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
           weeklyEvaluationId,
           this.options,
-        );
-
+          );
+          
+          console.log(isInRange);
       if (!isInRange)
         throw new Error400(
           language,

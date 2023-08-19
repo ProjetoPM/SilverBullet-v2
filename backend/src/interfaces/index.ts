@@ -19,7 +19,7 @@ export interface IWeeklyEvaluation {
 
 export interface IWeeklyReport {
   _id: Object | null;
-  id: Object | null;
+  id?: Object | string;
   name: string;
   endDate: Date | string;
   score?: IMetricGroup;
@@ -33,12 +33,12 @@ export interface IWeeklyReport {
 export interface IProcessReport {
   _id?: Object | string;
   id?: Object | string;
-  __v: number;
+  __v?: number;
   group: string;
   name: string;
-  description: string;
+  description?: string;
   filesFolder: string;
-  weeklyReport: string | null;
+  weeklyReport?: string | null;
   createdBy?: Object | string;
   updatedBy?: Object | string;
   createdAt?: Date | string;

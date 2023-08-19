@@ -217,6 +217,10 @@ class WeeklyEvaluationRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+      console.log('tenant');
+      
+      console.log(currentTenant.id);
+      
     const criteriaAnd: any = [
       {
         tenant: currentTenant.id

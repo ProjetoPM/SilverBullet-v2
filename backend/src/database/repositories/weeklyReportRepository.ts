@@ -11,6 +11,7 @@ import {
   IWeeklyReport,
 } from '../../interfaces';
 import { RequestWeeklyReport } from '../../services/weeklyReport/createService';
+import { RequestUpdateWeeklyReport } from '../../services/weeklyReport/updateService';
 
 class WeeklyReportRepository {
   static async create(
@@ -59,14 +60,22 @@ class WeeklyReportRepository {
   }
 
   static async update(
-    id,
-    data,
+    id: string,
+    language: string,
+    data: RequestUpdateWeeklyReport,
     options: IRepositoryOptions,
   ) {
+
+    const currentUser = await MongooseRepository.getCurrentUser(options);
+
     const record = await this.findById(id, options);
     if (!record) {
       throw new Error404();
     }
+
+    const isSameUser = record.createdBy == currentUser.id;
+    if(!isSameUser) throw new Error400(language, '');
+
 
     await WeeklyReport(options.database).updateOne(
       { _id: id },
