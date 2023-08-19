@@ -13,7 +13,7 @@ import ProcessReportRepository from '../../database/repositories/processReportRe
 
 
 
-export type RequestWeeklyReport = {
+export type UpdateRequestWeeklyReport = {
   toolEvaluation?: string;
   processes?: UpdateProcess[];
 };
@@ -41,7 +41,7 @@ export default class WeeklyReportUpdateService {
 
   async update(
     weeklyReportId: string,
-    data: RequestWeeklyReport,
+    data: UpdateRequestWeeklyReport,
     language: string,
     tenantId: string,
   ) {

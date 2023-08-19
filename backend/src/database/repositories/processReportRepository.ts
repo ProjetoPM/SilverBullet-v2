@@ -153,11 +153,11 @@ class ProcessReportRepository {
   }
 
   static async destroyAll(
-    processes: Array<ProcessToDelete>,
+    processes: Array<string>,
     options: IRepositoryOptions,
   ) {
-    for (const process of processes) {
-      this.destroy(process.id!, options);
+    for (const id of processes) {
+      this.destroy(id, options);
     }
   }
 

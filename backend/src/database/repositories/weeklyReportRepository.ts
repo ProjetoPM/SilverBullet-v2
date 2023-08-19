@@ -11,7 +11,7 @@ import {
   IWeeklyReport,
 } from '../../interfaces';
 import { RequestWeeklyReport } from '../../services/weeklyReport/createService';
-import { RequestUpdateWeeklyReport } from '../../services/weeklyReport/updateService';
+import { UpdateRequestWeeklyReport } from '../../services/weeklyReport/updateService';
 
 class WeeklyReportRepository {
   static async create(
@@ -62,7 +62,7 @@ class WeeklyReportRepository {
   static async update(
     id: string,
     language: string,
-    data: RequestUpdateWeeklyReport,
+    data: UpdateRequestWeeklyReport,
     options: IRepositoryOptions,
   ) {
 
