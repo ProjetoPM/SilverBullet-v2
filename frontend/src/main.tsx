@@ -23,20 +23,18 @@ export const App = () => {
 
   return (
     <React.StrictMode>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<Loading size={32} />}>
-            <RouterProvider router={router} />
-          </Suspense>
-        </QueryClientProvider>
-      </HelmetProvider>
-      {theme && (
-        <ToastContainer
-          position="bottom-right"
-          autoClose={2250}
-          theme={theme}
-        />
-      )}
+      <>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={<Loading size={32} />}>
+              <RouterProvider router={router} />
+            </Suspense>
+          </QueryClientProvider>
+        </HelmetProvider>
+        {theme && (
+          <ToastContainer position="top-right" autoClose={2250} theme={theme} />
+        )}
+      </>
     </React.StrictMode>
   )
 }

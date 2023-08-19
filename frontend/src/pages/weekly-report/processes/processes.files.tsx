@@ -36,10 +36,13 @@ export const ViewFileList = ({
         .list(`processes/${folder}`)
 
       if (error) {
-        console.error(error)
         return []
       }
 
+      /**
+       * Adicionando a pasta explicitamente aos arquivos para poder ser feita
+       * a deleção pela data-table, onde passo adiante a pasta para as actions.
+       */
       const filesWithFolder = data.map((file) => ({
         ...file,
         folder: folder
@@ -69,7 +72,7 @@ export const ViewFileList = ({
 
   const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const targetFiles = e.target.files
-    console.log(content)
+
     /**
      * Caso tenha cancelado a escolha de novos arquivos,
      * não fazer nada.
@@ -149,7 +152,7 @@ export const ViewFileList = ({
               return (
                 <span
                   key={index}
-                  className="flex items-center border border-foreground/10 dark:border-accent rounded-full px-2 py-1 gap-1"
+                  className="flex items-center border border-foreground/10 dark:border-accent rounded-md px-2 py-1 gap-1"
                 >
                   <span className="text-sm">{file.name}</span>
                   <XCircle

@@ -1,6 +1,8 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { useCommandMenuStore } from '@/layout/CommandMenu'
+import { routes } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/replace-params'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -46,7 +48,10 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/projects/${data._id}/edit`} id={`edit-${id}`}>
+          <Link
+            to={replaceParams(routes.projects.edit, data._id ?? '')}
+            id={`edit-${id}`}
+          >
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}

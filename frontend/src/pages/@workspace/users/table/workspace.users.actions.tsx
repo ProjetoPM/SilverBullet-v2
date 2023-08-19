@@ -1,38 +1,22 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import { getWorkspaceId, useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
-import {
-  Copy,
-  FolderOpen,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Users2
-} from 'lucide-react'
+import { Copy, MoreHorizontal, Pencil, Trash2, Users2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
-import { useWorkspace } from '../hooks/useWorkspace'
-import { Workspace } from '../workspace.types'
+import { Link } from 'react-router-dom'
+import { WorkspaceUsers } from './columns'
 
-type WorkspaceActionsProps = {
+type WorkspaceUsersActions = {
   id: string
-  data: Workspace
+  data: WorkspaceUsers
 }
 
-const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
+export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
   const { t } = useTranslation(['default', 'workspace'])
-  const navigate = useNavigate()
-  const open = useWorkspaceStore((state) => state.open)
-  const { _delete } = useWorkspace()
 
-  const handleDelete = async () => {
-    await _delete.mutateAsync({ _id: data.tenant._id })
-  }
-
-  const handleOpen = () => {
-    open(data.tenant)
-    navigate(routes.projects.index)
+  const handleDelete = () => {
+    console.log('delete')
   }
 
   return (
@@ -46,17 +30,9 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          <DropdownMenu.Item
-            className="flex gap-3"
-            id={`open-${id}`}
-            onClick={handleOpen}
-          >
-            <FolderOpen size={18} />
-            {t('default:btn.open')}
-          </DropdownMenu.Item>
           {data.roles?.some((role) => role === 'admin') && (
             <Link
-              to={replaceParams(routes.workspaces.edit, data.tenant._id)}
+              to={replaceParams(routes.workspaces.edit, data._id)}
               id={`edit-${id}`}
             >
               <DropdownMenu.Item className="flex gap-3">
@@ -77,7 +53,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             </DropdownMenu.Item>
           )}
           <DropdownMenu.Separator />
-          {data.tenant._id === getWorkspaceId() && (
+          {data._id === getWorkspaceId() && (
             <>
               <Link
                 to={replaceParams(
@@ -94,9 +70,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             </>
           )}
           <DropdownMenu.Item
-            onClick={() =>
-              navigator.clipboard.writeText(data.tenant._id ?? 'error')
-            }
+            onClick={() => navigator.clipboard.writeText(data._id ?? data.id)}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -117,11 +91,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <Button variant="ghost">{t('default:btn.cancel')}</Button>
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
-            <Button
-              variant="delete"
-              onClick={() => handleDelete()}
-              isLoading={_delete.isLoading}
-            >
+            <Button variant="delete" onClick={handleDelete}>
               {t('default:btn.confirm')}
             </Button>
           </Dialog.Trigger>
@@ -130,5 +100,3 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
     </Dialog.Root>
   )
 }
-
-export { WorkspaceActions }

@@ -34,6 +34,7 @@ type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 export const useWeeklyReport = () => {
   const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
+  const { redirect } = useRedirect()
   const navigate = useNavigate()
 
   /**
@@ -83,10 +84,7 @@ export const useWeeklyReport = () => {
             break
         }
       },
-      onError: () => {
-        toast.error(t('error_creating_wr'))
-        navigate(routes.weekly_report.index)
-      }
+      onError: redirect
     }
   )
 
@@ -101,12 +99,6 @@ export const useWeeklyReportList = () => {
   const { redirect } = useRedirect()
 
   const list = async () => {
-    const workspaceId = getWorkspaceId()
-
-    if (!workspaceId) {
-      redirect()
-    }
-
     return await api
       .get(`/tenant/${getWorkspaceId()}/weekly-report/submissions`)
       .then((res) => res.data)

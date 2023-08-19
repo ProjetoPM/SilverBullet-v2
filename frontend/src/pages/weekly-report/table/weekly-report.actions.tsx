@@ -39,7 +39,7 @@ export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/projects/${data._id}/edit`} id={`edit-${id}`}>
+          <Link to={'#'} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}

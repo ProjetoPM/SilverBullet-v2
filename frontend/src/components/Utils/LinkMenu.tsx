@@ -15,7 +15,7 @@ const LinkMenu = ({ to, children, className, ...props }: LinkMenuProps) => {
         'flex items-center gap-3 py-2 px-10 mx-4 hover:bg-muted data-[active=true]:bg-stone-200/50 dark:data-[active=true]:bg-muted/50 dark:hover:bg-muted/50 rounded-lg data-[hidden=true]:hidden',
         className
       )}
-      data-active={location.pathname === to}
+      data-active={location.pathname.includes(to.toString())}
       {...props}
     >
       {children}
