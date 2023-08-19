@@ -1,5 +1,5 @@
 import { api } from '@/services/api'
-import { getWorkspaceId } from '@/stores/useWorkspace'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { useQuery } from 'react-query'
 
 type SelectWeeklyEvaluation = {

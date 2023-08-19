@@ -36,9 +36,7 @@ export const WeeklyReportSchema = z.object({
             (value) => html(value, max.processes.description, '<='),
             params('at_most', max.processes.description)
           ),
-        files: z
-          .instanceof(FileList)
-          .transform((value) => (value.length === 0 ? undefined : value))
+        filesFolder: z.string().optional()
       })
     )
     .optional()

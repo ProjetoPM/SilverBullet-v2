@@ -1,5 +1,5 @@
 import { Button, Checkbox, Form, Input } from '@/components/ui'
-import { useAuth } from '@/stores/useAuth'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -8,8 +8,8 @@ import { Login, LoginSchema, defaultValues } from './login.schema'
 
 export const LoginForm = () => {
   const { t } = useTranslation('auth')
-  const signIn = useAuth((state) => state.signIn)
-  const isAuthenticating = useAuth((state) => state.isAuthenticating)
+  const signIn = useAuthStore((state) => state.signIn)
+  const isAuthenticating = useAuthStore((state) => state.isAuthenticating)
 
   const form = useForm<Login>({
     mode: 'all',

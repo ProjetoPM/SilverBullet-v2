@@ -13,7 +13,7 @@ import {
 
 import { Table } from '@/components/ui'
 import i18next from 'i18next'
-import { useState } from 'react'
+import { ComponentProps, useState } from 'react'
 import { Loading } from '../Loading'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
@@ -23,7 +23,9 @@ interface FetchingProps {
   isError?: boolean
 }
 
-interface DataTableProps<TData, TValue> extends FetchingProps {
+interface DataTableProps<TData, TValue>
+  extends FetchingProps,
+    ComponentProps<'div'> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
@@ -32,7 +34,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isError = false,
-  isLoading = false
+  isLoading = false,
+  ...props
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -71,7 +74,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <>
+    <div {...props}>
       <DataTableHeader
         table={table}
         globalFilter={globalFilter}
@@ -134,6 +137,6 @@ export function DataTable<TData, TValue>({
         </Table.Root>
       </div>
       <DataTablePagination table={table} />
-    </>
+    </div>
   )
 }

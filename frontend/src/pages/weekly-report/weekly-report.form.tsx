@@ -1,16 +1,15 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
+import { useRedirect } from '@/hooks/useRedirect'
 import { cn } from '@/lib/utils'
-import WeeklyReportService, {
-  WeeklyReportData
-} from '@/services/modules/WeeklyReportService'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AxiosResponse } from 'axios'
 import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
+import { useWeeklyReport } from './hooks/useWeeklyReport'
 import { Processes } from './processes/processes'
 import {
   WeeklyReport,
@@ -20,15 +19,15 @@ import {
 } from './weekly-report.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyReportData
+  data?: WeeklyReport
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const [open, setOpen] = useState(false)
   const { data: weList } = useWeeklyEvaluation()
-  // const navigate = useNavigate()
-  const [output, setOutput] = useState('')
+  const { create } = useWeeklyReport()
+  const { redirect } = useRedirect()
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -37,21 +36,14 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReport) => {
-    let response: AxiosResponse | undefined
-
-    setOutput(JSON.stringify(form, null, 2))
-
-    if (data) {
-      // response = await WeeklyReportService.edit(data._id, form) // TODO
-    } else {
-      response = await WeeklyReportService.create(form)
-    }
-
-    // if (response?.status === StatusCodes.OK) {
-    //   navigate(routes.weekly_report.index)
-    // }
-    console.table(form.processes)
+    await create.mutateAsync(form)
   }
+
+  useEffect(() => {
+    if (!getWorkspaceId()) {
+      redirect()
+    }
+  }, [])
 
   return (
     <Form.Root {...form}>
@@ -69,7 +61,11 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
               </Form.Label>
               <div className="flex flex-col gap-1">
                 <Popover.Root open={open} onOpenChange={setOpen}>
-                  <Popover.Trigger asChild>
+                  <Popover.Trigger
+                    asChild
+                    disabled={!!data}
+                    aria-disabled={!!data}
+                  >
                     <Form.Control>
                       <Button
                         variant="outline"
@@ -157,9 +153,12 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           )}
         />
         <Processes form={form} control={form.control} />
-        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
-          <Button type="submit" className="w-30 gap-1 font-medium">
+          <Button
+            type="submit"
+            className="w-30 gap-1 font-medium"
+            isLoading={create.isLoading}
+          >
             {data && (
               <>
                 <Edit size={20} />

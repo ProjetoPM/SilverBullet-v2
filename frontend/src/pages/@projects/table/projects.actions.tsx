@@ -1,9 +1,13 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import ProjectService, { ProjectData } from '@/services/modules/ProjectService'
+import { useCommandMenuStore } from '@/layout/CommandMenu'
+import { routes } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/replace-params'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useProjects } from '../hooks/useProjects'
+import { ProjectData } from '../projects.types'
 
 type ProjectActionsProps = {
   id: string
@@ -12,16 +16,17 @@ type ProjectActionsProps = {
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const [isLoading, setLoading] = useState(false)
+  const { _delete } = useProjects()
+  const openMenu = useCommandMenuStore((state) => state.toggleMenu)
+  const openProject = useWorkspaceStore((state) => state.openProject)
 
   const handleDelete = async () => {
-    setLoading(true)
-    await ProjectService.delete(data)
-    setLoading(false)
+    await _delete.mutateAsync(data)
   }
 
   const handleOpen = () => {
-    console.log('abriu!')
+    openProject({ _id: data._id!, name: data.name })
+    openMenu()
   }
 
   return (
@@ -43,7 +48,10 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/projects/${data._id}/edit`} id={`edit-${id}`}>
+          <Link
+            to={replaceParams(routes.projects.edit, data._id ?? '')}
+            id={`edit-${id}`}
+          >
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -60,7 +68,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
+            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -84,7 +92,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <Button
               variant="delete"
               onClick={() => handleDelete()}
-              disabled={isLoading}
+              isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>

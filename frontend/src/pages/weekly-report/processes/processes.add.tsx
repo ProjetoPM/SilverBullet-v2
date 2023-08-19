@@ -6,12 +6,12 @@ import { WeeklyReportSchema } from '../weekly-report.schema'
 
 type AddProcessProps = {
   title: string
-  append: UseFieldArrayAppend<z.infer<typeof WeeklyReportSchema>>
+  append: UseFieldArrayAppend<z.infer<typeof WeeklyReportSchema>, 'processes'>
 }
 
 const AddProcess = ({ title, append }: AddProcessProps) => {
   const addProcess = () => {
-    append({ group: '', name: '', description: '', files: undefined })
+    append({ group: '', name: '', description: '', content: undefined })
   }
 
   return (

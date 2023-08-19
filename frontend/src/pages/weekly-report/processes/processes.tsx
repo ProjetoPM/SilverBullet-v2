@@ -17,7 +17,7 @@ type ProcessesProps = {
 }
 
 const Processes = ({ form, control }: ProcessesProps) => {
-  const [order, setOrder] = useState('desc')
+  const [order, setOrder] = useState('asc')
   const length = useLength((state) => state.length)
 
   const { fields, append, remove } = useFieldArray({
@@ -78,7 +78,7 @@ const Processes = ({ form, control }: ProcessesProps) => {
               }}
               key={field.id}
               className={cn(
-                'relative gap-2 border border-dashed rounded-md px-5 pt-11 pb-8',
+                'relative gap-3 border border-dashed rounded-md px-5 pt-11 pb-8',
                 {
                   'border-blue-800/60 dark:bg-gray-900/5 border-solid':
                     length > index

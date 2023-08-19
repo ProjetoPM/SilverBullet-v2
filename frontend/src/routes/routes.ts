@@ -6,7 +6,11 @@ export const routes = {
   workspaces: {
     index: '/workspaces',
     new: '/workspaces/new',
-    edit: '/workspaces/:id/edit'
+    edit: '/workspaces/:id/edit',
+    users: {
+      index: '/workspaces/:id/users',
+      new: '/workspaces/:id/users/new'
+    }
   },
   projects: {
     index: '/projects',

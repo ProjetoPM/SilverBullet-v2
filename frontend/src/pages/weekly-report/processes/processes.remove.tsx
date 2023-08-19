@@ -1,25 +1,23 @@
 import { Button, Dialog } from '@/components/ui'
 import { t } from 'i18next'
 import { Trash2 } from 'lucide-react'
-import { UseFieldArrayRemove } from 'react-hook-form'
 import { useLength } from '../hooks/useLength'
+import { FieldsProcessProps } from './processes.items'
 
-type RemoveProcessProps = {
-  index: number
-  remove: UseFieldArrayRemove
-}
-
-export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
+export const RemoveProcess = ({
+  index,
+  remove
+}: Pick<FieldsProcessProps, 'index' | 'remove'>) => {
   const length = useLength((state) => state.length)
+
+  const handleRemove = () => {
+    remove(index)
+  }
 
   return (
     <>
       <Dialog.Root>
-        <Dialog.Trigger
-          className="flex gap-3 px-2 py-1.5"
-          type="button"
-          asChild
-        >
+        <Dialog.Trigger className="flex gap-3 py-1.5" type="button" asChild>
           <Button size={'icon'} variant={'destructive'}>
             <Trash2 className="w-5 h-5" />
           </Button>
@@ -40,7 +38,7 @@ export const RemoveProcess = ({ index, remove }: RemoveProcessProps) => {
               <Button variant="ghost">{t('default:btn.cancel')}</Button>
             </Dialog.Trigger>
             <Dialog.Trigger asChild>
-              <Button variant="delete" onClick={() => remove(index)}>
+              <Button variant="delete" onClick={handleRemove}>
                 {t('default:btn.confirm')}
               </Button>
             </Dialog.Trigger>

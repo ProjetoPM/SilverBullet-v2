@@ -1,9 +1,9 @@
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Checkbox } from '@/components/ui'
-import { ProjectData } from '@/services/modules/ProjectService'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
-import i18next from 'i18next'
+import i18next, { t } from 'i18next'
+import { ProjectData } from '../projects.types'
 import { ProjectActions } from './projects.actions'
 
 const helper = createColumnHelper<ProjectData>()
@@ -18,14 +18,14 @@ export const columns = [
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label={i18next.t('select_all')}
+        aria-label={t('select_all')}
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label={i18next.t('select_row')}
+        aria-label={t('select_row')}
       />
     ),
     enableSorting: false,
@@ -37,10 +37,7 @@ export const columns = [
   helper.accessor((row) => row.name, {
     id: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        header={i18next.t('data-table:name')}
-      />
+      <DataTableColumnHeader column={column} header={t('data-table:name')} />
     ),
     cell: ({ row }) => (
       <div id={`name-${row.index}`}>
@@ -58,17 +55,17 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:description')}
+        header={t('data-table:description')}
       />
     ),
     cell: ({ row }) => {
       return (
-        <div id={`description-${row.index}`}>
+        <div id={`description-${row.index}`} className="line-clamp-1 max-w-lg">
           {replaceHtmlTags(row.getValue('description'))}
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true
   }),
   /**
@@ -79,7 +76,7 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:created_at')}
+        header={t('data-table:created_at')}
       />
     ),
     cell: ({ row }) => {
@@ -99,7 +96,9 @@ export const columns = [
    */
   helper.display({
     id: 'actions',
-    header: () => i18next.t('data-table:actions'),
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} header={t('data-table:actions')} />
+    ),
     cell: ({ row }) => {
       return <ProjectActions id={row.index.toString()} data={row.original} />
     }

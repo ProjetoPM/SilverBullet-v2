@@ -5,18 +5,27 @@ import i18next from 'i18next'
 import { MenuSquare, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { create } from 'zustand'
+import { combine } from 'zustand/middleware'
 import { items } from '../../constants/menu-items'
+
+export const useCommandMenuStore = create(
+  combine({ open: false }, (set) => ({
+    toggleMenu: () => set((state) => ({ open: !state.open }))
+  }))
+)
 
 export const CommandMenu = () => {
   const { t } = useTranslation(['areas', 'phases', 'menu', 'description'])
   const [search, setSearch] = useState('')
-  const [open, setOpen] = useState(false)
+  const open = useCommandMenuStore((state) => state.open)
+  const toggleMenu = useCommandMenuStore((state) => state.toggleMenu)
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        setOpen((open) => !open)
+        toggleMenu()
       }
     }
 
@@ -46,7 +55,7 @@ export const CommandMenu = () => {
       <Button
         className="px-0 xs:px-3 items-center xs:justify-between max-xs:h-10 max-xs:w-10"
         variant="outline"
-        onClick={() => setOpen(true)}
+        onClick={() => toggleMenu()}
       >
         <p className="text-sm items-center text-muted-foreground bg-outline rounded-lg">
           <span className="mr-4 max-xs:hidden">Menu</span>
@@ -58,7 +67,7 @@ export const CommandMenu = () => {
       </Button>
       <CommandDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={toggleMenu}
         className="max-w-[1095px] max-h-screen lg:max-h-[772px] lg:min-h-[772px] overflow-y-auto"
       >
         <div className="flex items-center border-b px-3">

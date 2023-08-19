@@ -1,20 +1,14 @@
 import { PasswordChecker } from '@/components/PasswordChecker'
 import { Button, Form, Input } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import AuthService from '@/services/modules/AuthService'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { StatusCodes } from 'http-status-codes'
-import { Loader } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useRegister } from '../hooks/useRegister'
 import { Register, RegisterSchema, defaultValues } from './register.schema'
 
 export const RegisterForm = () => {
   const { t } = useTranslation('auth')
-  const navigate = useNavigate()
-  const [isLoading, setLoading] = useState(false)
+  const { create, isLoading } = useRegister()
 
   const form = useForm<Register>({
     mode: 'all',
@@ -23,13 +17,7 @@ export const RegisterForm = () => {
   })
 
   const onSubmit = async (data: Register) => {
-    setLoading(true)
-    const response = await AuthService.create(data)
-
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.auth.index)
-    }
-    setLoading(false)
+    await create(data)
   }
 
   return (
@@ -72,9 +60,8 @@ export const RegisterForm = () => {
         />
         <PasswordChecker password={form.watch('password')} />
         <div>
-          <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
-            {!isLoading && t('btn.sign_up')}
-            {isLoading && <Loader className="animate-spin" />}
+          <Button type="submit" className="mt-3 w-full" isLoading={isLoading}>
+            {t('btn.sign_up')}
           </Button>
         </div>
       </form>

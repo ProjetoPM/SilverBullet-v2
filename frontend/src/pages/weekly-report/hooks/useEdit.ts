@@ -1,5 +1,4 @@
-import { api } from '@/services/api'
-import { WeeklyReportData } from '@/services/modules/WeeklyReportService'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { useLength } from './useLength'
@@ -9,18 +8,20 @@ export const useEdit = () => {
   const setLength = useLength((state) => state.setLength)
 
   const getData = async (id?: string) => {
-    // TODO weekly-report fetch (new/edit)
-    const url = `/tenant/${id}`
+    const url = `/tenant/${getWorkspaceId()}/weekly-report/:id`
 
-    if (id) {
-      return api.get(url).then((res) => res.data)
-    }
+    // const data = api.get(url).then((res) => res.data)
+
+    // console.log(data)
+
+    // // if (id) {
+    // //   return api.get(url).then((res) => res.data)
+    // // }
     return null
   }
 
-  const { data, ...props } = useQuery<WeeklyReportData>(
-    [`wr-${id}`, id],
-    async () => getData(id)
+  const { data, ...props } = useQuery<any>([`wr-${id}`, id], async () =>
+    getData(id)
   )
 
   setLength(0)

@@ -1,6 +1,5 @@
 import { Editor } from '@/components/Editor/Editor'
-import { Button, Form } from '@/components/ui'
-import { Label } from '@radix-ui/react-label'
+import { Button, Form, Label } from '@/components/ui'
 import { Upload } from 'lucide-react'
 import { Control, UseFieldArrayRemove, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -21,12 +20,12 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
   const { t } = useTranslation('weekly-report')
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SelectProcess index={index} form={form} control={control} />
       </div>
-      <div className="grid grid-cols-1 gap-2 md:grid-cols-6 md:gap-4">
-        <div className="col-span-5">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1 max-w-full md:max-w-[calc(100%-6.50rem)]">
           <Form.Field
             control={form.control}
             name={`processes.${index}.description`}
@@ -48,9 +47,9 @@ export const Items = ({ index, form, control, remove }: FieldsProcessProps) => {
             )}
           />
         </div>
-        <div>
-          <Label className="text-sm font-medium">{t('default:actions')}</Label>
-          <div className="flex flex-wrap gap-2 mt-1">
+        <div className="flex flex-col gap-2">
+          <Label>{t('default:actions')}</Label>
+          <div className="flex gap-2">
             <Button
               type="button"
               variant={'outline'}

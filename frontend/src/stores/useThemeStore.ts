@@ -6,7 +6,7 @@ type ThemeProps = {
   setTheme: (theme: 'light' | 'dark') => void
 }
 
-const useTheme = create<ThemeProps>()(
+export const useThemeStore = create<ThemeProps>()(
   devtools(
     persist(
       (set) => ({
@@ -19,5 +19,3 @@ const useTheme = create<ThemeProps>()(
     )
   )
 )
-
-export { useTheme }
