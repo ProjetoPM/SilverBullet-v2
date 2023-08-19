@@ -1,38 +1,23 @@
+import { PasswordChecker } from '@/components/PasswordChecker'
 import { Button, Form, Input } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { z } from 'zod'
-import { RegisterSchema, defaultValues } from './register.schema'
-import { PasswordChecker } from '@/components/PasswordChecker'
-import AuthService from '@/services/modules/AuthService'
-import { useNavigate } from 'react-router-dom'
-import { routes } from '@/routes/routes'
-import { StatusCodes } from 'http-status-codes'
+import { useRegister } from '../hooks/useRegister'
+import { Register, RegisterSchema, defaultValues } from './register.schema'
 
-type Form = z.infer<typeof RegisterSchema>
-
-const RegisterForm = () => {
+export const RegisterForm = () => {
   const { t } = useTranslation('auth')
-  const navigate = useNavigate()
-  const [isLoading, setLoading] = useState(false)
+  const { create, isLoading } = useRegister()
 
-  const form = useForm<Form>({
+  const form = useForm<Register>({
     mode: 'all',
     resolver: zodResolver(RegisterSchema),
     defaultValues: defaultValues
   })
 
-  const onSubmit = async (data: Form) => {
-    setLoading(true)
-    const response = await AuthService.create(data)
-
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.auth.index)
-    }
-    setLoading(false)
+  const onSubmit = async (data: Register) => {
+    await create(data)
   }
 
   return (
@@ -43,7 +28,7 @@ const RegisterForm = () => {
           name="email"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('email.label')}</Form.Label>
+              <Form.Label required>{t('email.label')}</Form.Label>
               <Form.Control>
                 <Input
                   placeholder={t('email.placeholder')}
@@ -60,7 +45,7 @@ const RegisterForm = () => {
           name="password"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('password.label')}</Form.Label>
+              <Form.Label required>{t('password.label')}</Form.Label>
               <Form.Control>
                 <Input
                   type="password"
@@ -75,14 +60,11 @@ const RegisterForm = () => {
         />
         <PasswordChecker password={form.watch('password')} />
         <div>
-          <Button type="submit" className="mt-3 w-full" disabled={isLoading}>
-            {!isLoading && t('btn.sign_up')}
-            {isLoading && <Loader className="animate-spin" />}
+          <Button type="submit" className="mt-3 w-full" isLoading={isLoading}>
+            {t('btn.sign_up')}
           </Button>
         </div>
       </form>
     </Form.Root>
   )
 }
-
-export { RegisterForm }

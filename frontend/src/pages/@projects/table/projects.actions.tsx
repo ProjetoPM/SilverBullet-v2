@@ -1,39 +1,39 @@
-import { Project } from '@/@types/Project'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import ProjectService from '@/services/modules/ProjectService'
+import { useCommandMenuStore } from '@/layout/CommandMenu'
+import { routes } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/replace-params'
 import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useProjects } from '../hooks/useProjects'
+import { ProjectData } from '../projects.types'
 
 type ProjectActionsProps = {
   id: string
-  data: Project
+  data: ProjectData
 }
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const [isLoading, setLoading] = useState(false)
+  const { _delete } = useProjects()
+  const openMenu = useCommandMenuStore((state) => state.toggleMenu)
+  const openProject = useWorkspaceStore((state) => state.openProject)
 
   const handleDelete = async () => {
-    setLoading(true)
-    await ProjectService.delete(data)
-    setLoading(false)
+    await _delete.mutateAsync(data)
   }
 
   const handleOpen = () => {
-    console.log('abriu!')
+    openProject({ _id: data._id!, name: data.name })
+    openMenu()
   }
 
   return (
     <Dialog.Root>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <Button
-            id={id}
-            variant="ghost"
-            className="h-8 w-8 p-0"
-          >
+          <Button id={id} variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">{t('open_menu')}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -49,7 +49,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             {t('default:btn.open')}
           </DropdownMenu.Item>
           <Link
-            to={`/projects/${data._id}/edit`}
+            to={replaceParams(routes.projects.edit, data._id ?? '')}
             id={`edit-${id}`}
           >
             <DropdownMenu.Item className="flex gap-3">
@@ -68,7 +68,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
+            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -90,8 +90,9 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
             <Button
+              variant="delete"
               onClick={() => handleDelete()}
-              disabled={isLoading}
+              isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>

@@ -1,10 +1,10 @@
 import { Button, DropdownMenu } from '@/components/ui'
-import { useTheme } from '@/stores/useTheme'
+import { useThemeStore } from '@/stores/useThemeStore'
 import { Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const ThemeSwitch = () => {
-  const setTheme = useTheme((state) => state.setTheme)
+  const setTheme = useThemeStore((state) => state.setTheme)
   const { t } = useTranslation()
 
   return (

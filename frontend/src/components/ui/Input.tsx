@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { Eye, EyeOff } from 'lucide-react'
-import { Button } from '.'
 import { forwardRef, useState } from 'react'
+import { Button } from '.'
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -11,7 +11,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const [showPassword, setShowPassword] = useState(false)
 
     return (
-      <div className="relative flex items-center">
+      <div className="relative flex flex-grow items-center">
         <input
           id={id}
           type={showPassword ? 'text' : type}

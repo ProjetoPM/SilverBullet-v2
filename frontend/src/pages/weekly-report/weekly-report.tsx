@@ -1,54 +1,29 @@
-import { DataTable } from '@/components/DataTable/DataTable'
-import { Separator } from '@/components/ui'
+import { Loading } from '@/components/Loading'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import { columns } from './table/columns'
-
-const data = [
-  {
-    id: 1,
-    user: {
-      name: 'John Doe'
-    },
-    evaluationName: 'Evaluation 1',
-    score: 100
-  },
-  {
-    id: 2,
-    user: {
-      name: 'John Doe'
-    },
-    evaluationName: 'Evaluation 2',
-    score: 100
-  },
-  {
-    id: 3,
-    user: {
-      name: 'John Doe'
-    },
-    evaluationName: 'Evaluation 3',
-    score: 100
-  }
-]
+import { useEdit } from './hooks/useEdit'
+import WeeklyReportForm from './weekly-report.form'
 
 const WeeklyReportPage = () => {
   const { t } = useTranslation('weekly-report')
-  const breadcrumb = [['Home', routes.weekly_report.index], [t('title')]]
+  const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
+  const { id, data, isLoading, isError } = useEdit()
+
+  if (isLoading) {
+    return <Loading size={32} />
+  }
+
+  if (isError) {
+    return <div>Something went wrong!</div>
+  }
 
   return (
     <PageLayout
-      title={t('title')}
+      title={t(`${id ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
-      <div className="min-h-screen">
-        <Separator className="my-5" />
-        <DataTable
-          isLoading={false}
-          columns={columns}
-          data={data}
-        />
-      </div>
+      <WeeklyReportForm data={data} />
     </PageLayout>
   )
 }

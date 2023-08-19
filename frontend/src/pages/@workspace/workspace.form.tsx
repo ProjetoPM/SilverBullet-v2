@@ -1,45 +1,37 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import WorkspaceService from '@/services/modules/WorkspaceService'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AxiosResponse } from 'axios'
-import { StatusCodes } from 'http-status-codes'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import { z } from 'zod'
-import { Workspace } from '@/@types/Workspace'
-import { WorkspaceSchema, defaultValues, max } from './workspace.schema'
+import { useWorkspace } from './hooks/useWorkspace'
+import {
+  Workspace,
+  WorkspaceSchema,
+  defaultValues,
+  max
+} from './workspace.schema'
+import { WorkspaceData } from './workspace.types'
 
-type Form = z.infer<typeof WorkspaceSchema>
-
-interface WorkspaceFormProps {
-  data?: Pick<Workspace, '_id' | 'name'>
+interface WorkspaceFormPageProps {
+  data?: WorkspaceData
 }
 
-const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
+export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   const { t } = useTranslation('workspace')
-  const navigate = useNavigate()
+  const { create, edit } = useWorkspace()
 
-  const form = useForm<Form>({
+  const form = useForm<Workspace>({
     mode: 'all',
     resolver: zodResolver(WorkspaceSchema),
     defaultValues: data ?? defaultValues
   })
 
-  const onSubmit = async (form: Form) => {
-    let response: AxiosResponse | undefined
-
+  const onSubmit = async (form: Workspace) => {
     if (data) {
-      response = await WorkspaceService.edit(data._id, form)
+      await edit.mutateAsync({ _id: data._id, ...form })
     } else {
-      response = await WorkspaceService.create(form)
-    }
-
-    if (response?.status === StatusCodes.OK) {
-      navigate(routes.workspaces.index)
+      await create.mutateAsync(form)
     }
   }
 
@@ -54,11 +46,10 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           name="name"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>{t('edit.name')}</Form.Label>
+              <Form.Label required>{t('edit.name')}</Form.Label>
               <Form.Control>
                 <Editor
                   limit={max.name}
-                  content={data?.name}
                   placeholder={t('name.placeholder')}
                   {...field}
                 />
@@ -71,6 +62,7 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
+            isLoading={create.isLoading || edit.isLoading}
           >
             {data && (
               <>
@@ -98,5 +90,3 @@ const WorkspaceForm = ({ data }: WorkspaceFormProps) => {
     </Form.Root>
   )
 }
-
-export default WorkspaceForm

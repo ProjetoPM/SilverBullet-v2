@@ -1,6 +1,6 @@
 import { Loading } from '@/components/Loading'
 import { routes } from '@/routes/routes'
-import { useAuth } from '@/stores/useAuth'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ type AuthGuardProps = {
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const [mounted, setMounted] = useState(false)
-  const token = useAuth((state) => state.token)
+  const token = useAuthStore((state) => state.token)
   const navigate = useNavigate()
 
   useEffect(() => {

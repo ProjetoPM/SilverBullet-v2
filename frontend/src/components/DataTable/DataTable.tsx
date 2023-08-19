@@ -13,7 +13,7 @@ import {
 
 import { Table } from '@/components/ui'
 import i18next from 'i18next'
-import { useState } from 'react'
+import { ComponentProps, useState } from 'react'
 import { Loading } from '../Loading'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
@@ -23,7 +23,9 @@ interface FetchingProps {
   isError?: boolean
 }
 
-interface DataTableProps<TData, TValue> extends FetchingProps {
+interface DataTableProps<TData, TValue>
+  extends FetchingProps,
+    ComponentProps<'div'> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
@@ -32,28 +34,32 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isError = false,
-  isLoading = false
+  isLoading = false,
+  ...props
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
+  const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      globalFilter,
       rowSelection
     }
   })
@@ -68,8 +74,12 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <>
-      <DataTableHeader table={table} />
+    <div {...props}>
+      <DataTableHeader
+        table={table}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
       <div className="rounded-md border">
         <Table.Root>
           <Table.Header>
@@ -127,6 +137,6 @@ export function DataTable<TData, TValue>({
         </Table.Root>
       </div>
       <DataTablePagination table={table} />
-    </>
+    </div>
   )
 }

@@ -36,7 +36,7 @@ const ButtonGroup = ({ editor, isFixed, setFixed }: ButtonGroupProps) => {
           data-first={!isFixed}
           data-first-fixed={isFixed}
         >
-          <Heading1 className="w-5 h-5" />
+          <Heading1 className="w-4 h-4" />
         </BubbleButton>
         <BubbleButton
           onClick={() =>
@@ -44,7 +44,7 @@ const ButtonGroup = ({ editor, isFixed, setFixed }: ButtonGroupProps) => {
           }
           data-active={editor.isActive('heading', { level: 2 })}
         >
-          <Heading2 className="w-5 h-5" />
+          <Heading2 className="w-4 h-4" />
         </BubbleButton>
       </div>
       <div className="flex items-center">

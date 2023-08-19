@@ -1,4 +1,7 @@
 {
   "at_least": "String must contain at least {{value}} character(s)",
-  "at_most": "String must contain at most {{value}} character(s)"
+  "at_most": "String must contain at most {{value}} character(s)",
+  "select_process_group": "Select the process group",
+  "select_process_name": "Select the process name",
+  "select_weekly_evaluation": "Select the weekly evaluation"
 }

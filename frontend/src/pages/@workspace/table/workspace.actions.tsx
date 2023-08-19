@@ -1,12 +1,19 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import WorkspaceService from '@/services/modules/WorkspaceService'
-import { useWorkspace } from '@/stores/useWorkspace'
-import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { getWorkspaceId, useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { replaceParams } from '@/utils/replace-params'
+import {
+  Copy,
+  FolderOpen,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Users2
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { Workspace } from '../../../@types/Workspace'
+import { useWorkspace } from '../hooks/useWorkspace'
+import { Workspace } from '../workspace.types'
 
 type WorkspaceActionsProps = {
   id: string
@@ -16,17 +23,15 @@ type WorkspaceActionsProps = {
 const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspace'])
   const navigate = useNavigate()
-  const open = useWorkspace((state) => state.open)
-  const [isLoading, setLoading] = useState(false)
+  const open = useWorkspaceStore((state) => state.open)
+  const { _delete } = useWorkspace()
 
   const handleDelete = async () => {
-    setLoading(true)
-    await WorkspaceService.delete(data)
-    setLoading(false)
+    await _delete.mutateAsync({ _id: data.tenant._id })
   }
 
   const handleOpen = () => {
-    open(data)
+    open(data.tenant)
     navigate(routes.projects.index)
   }
 
@@ -39,7 +44,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content align="end">
+        <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
           <DropdownMenu.Item
             className="flex gap-3"
@@ -49,24 +54,49 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link to={`/workspaces/${data._id}/edit`} id={`edit-${id}`}>
-            <DropdownMenu.Item className="flex gap-3">
-              <Pencil size={18} />
-              {t('default:btn.edit')}
-            </DropdownMenu.Item>
-          </Link>
-          <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
-            <Dialog.Trigger
-              className="flex w-full gap-3 px-2 py-1.5"
-              id={`delete-${id}`}
+          {data.roles?.some((role) => role === 'admin') && (
+            <Link
+              to={replaceParams(routes.workspaces.edit, data.tenant._id)}
+              id={`edit-${id}`}
             >
-              <Trash2 size={18} />
-              {t('default:btn.delete')}
-            </Dialog.Trigger>
-          </DropdownMenu.Item>
+              <DropdownMenu.Item className="flex gap-3">
+                <Pencil size={18} />
+                {t('default:btn.edit')}
+              </DropdownMenu.Item>
+            </Link>
+          )}
+          {data.roles?.some((role) => role === 'admin') && (
+            <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
+              <Dialog.Trigger
+                className="flex w-full gap-3 px-2 py-1.5"
+                id={`delete-${id}`}
+              >
+                <Trash2 size={18} />
+                {t('default:btn.delete')}
+              </Dialog.Trigger>
+            </DropdownMenu.Item>
+          )}
           <DropdownMenu.Separator />
+          {data.tenant._id === getWorkspaceId() && (
+            <>
+              <Link
+                to={replaceParams(
+                  routes.workspaces.users.index,
+                  getWorkspaceId()!
+                )}
+              >
+                <DropdownMenu.Item className="flex gap-3" id={`open-${id}`}>
+                  <Users2 size={18} />
+                  Manage Users
+                </DropdownMenu.Item>
+              </Link>
+              <DropdownMenu.Separator />
+            </>
+          )}
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id)}
+            onClick={() =>
+              navigator.clipboard.writeText(data.tenant._id ?? 'error')
+            }
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -87,7 +117,11 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             <Button variant="ghost">{t('default:btn.cancel')}</Button>
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
-            <Button onClick={() => handleDelete()} disabled={isLoading}>
+            <Button
+              variant="delete"
+              onClick={() => handleDelete()}
+              isLoading={_delete.isLoading}
+            >
               {t('default:btn.confirm')}
             </Button>
           </Dialog.Trigger>

@@ -1,10 +1,11 @@
 import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
-
-import WeeklyReportPage from '@/pages/weekly-report/weekly-report'
 import { AuthGuard } from '@/utils/guard'
 import { routes } from '../routes'
+
+import WeeklyReportList from '@/pages/weekly-report/weekly-report.list'
+import WeeklyReportPage from '@/pages/weekly-report/weekly-report'
 
 export const WeeklyReportRoutes: RouteObject = {
   path: '/',
@@ -19,7 +20,7 @@ export const WeeklyReportRoutes: RouteObject = {
       children: [
         {
           path: routes.weekly_report.index,
-          element: <WeeklyReportPage />
+          element: <WeeklyReportList />
         },
         {
           path: routes.weekly_report.new,

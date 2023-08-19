@@ -11,10 +11,10 @@ import { ToastContainer } from 'react-toastify'
 import { Loading } from './components/Loading'
 import { router } from './routes'
 import { queryClient } from './services/react-query'
-import { useTheme } from './stores/useTheme'
+import { useThemeStore } from './stores/useThemeStore'
 
 export const App = () => {
-  const theme = useTheme((state) => state.theme)
+  const theme = useThemeStore((state) => state.theme)
 
   useEffect(() => {
     document.body.removeAttribute('class')
@@ -23,16 +23,18 @@ export const App = () => {
 
   return (
     <React.StrictMode>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<Loading size={32} />}>
-            <RouterProvider router={router} />
-          </Suspense>
-        </QueryClientProvider>
-      </HelmetProvider>
-      {theme && (
-        <ToastContainer position="top-right" autoClose={2250} theme={theme} />
-      )}
+      <>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={<Loading size={32} />}>
+              <RouterProvider router={router} />
+            </Suspense>
+          </QueryClientProvider>
+        </HelmetProvider>
+        {theme && (
+          <ToastContainer position="top-right" autoClose={2250} theme={theme} />
+        )}
+      </>
     </React.StrictMode>
   )
 }

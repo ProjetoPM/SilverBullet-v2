@@ -90,7 +90,7 @@ input::-ms-clear {
 }
 
 ::-webkit-scrollbar {
-  @apply w-2;
+  @apply w-2 h-1.5;
 }
 
 ::-webkit-scrollbar-track {
