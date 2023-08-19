@@ -198,6 +198,35 @@ class WeeklyReportRepository {
     return output;
   }
 
+  static async findByUserId(options) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    const currentUser = MongooseRepository.getCurrentUser(options);
+
+    const criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+      {
+        createdBy: currentUser.id
+      }
+    ];
+    const criteria = { $and: criteriaAnd };
+
+    let rows = await WeeklyReport(options.database)
+      .find(criteria)
+      .populate('weeklyEvaluation');
+
+ 
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows, count };
+  }
+
   static async getWeeklyReport(id: string, options) {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
