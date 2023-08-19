@@ -50,11 +50,13 @@ export const InviteUsers = () => {
     if (file) {
       Papa.parse(file, {
         complete: (result) => {
-          console.log(result)
           const data = result.data.slice(0) as Invites[]
 
           if (data && data.length > 0) {
-            setInvites(data)
+            const uniqueEmails = data.filter(
+              (email) => !invites.some((invite) => invite.email === email.email)
+            )
+            setInvites([...invites, ...uniqueEmails])
           }
         },
         header: true
