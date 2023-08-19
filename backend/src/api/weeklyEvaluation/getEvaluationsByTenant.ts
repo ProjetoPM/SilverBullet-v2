@@ -1,5 +1,5 @@
 import ApiResponseHandler from '../apiResponseHandler';
-import GetAvailableWeeklyEvaluationsService from '../../services/weeklyEvaluation/getAvailableWeeklyEvaluationsService';
+import GetEvaluationsByTenantService from '../../services/weeklyEvaluation/getEvaluationsByTenantService';
 import PermissionChecker from '../../services/user/permissionChecker';
 import Permissions from '../../security/permissions';
 
@@ -11,7 +11,7 @@ export default async (req, res, next) => {
     );
     
     const payload =
-      await new GetAvailableWeeklyEvaluationsService(req).getAvailableWeeklyEvaluations();
+      await new GetEvaluationsByTenantService(req).handle();
 
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {

@@ -209,6 +209,30 @@ class WeeklyEvaluationRepository {
 
     return {rows, count};
   }
+  static async getAllEvaluationsByTenant(
+    options,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    const criteriaAnd: any = [
+      {
+        tenant: currentTenant.id
+      }
+    ];
+    const criteria = { $and: criteriaAnd };
+    
+    const rows = await WeeklyEvaluation(
+      options.database,
+    ).find(criteria);
+
+    const count = await WeeklyEvaluation(
+      options.database,
+    ).countDocuments(criteria);
+
+    return {rows, count};
+  }
+
   static async verifySubmitDateRange(
     date: any,
     id: string,
