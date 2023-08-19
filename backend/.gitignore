@@ -1,3 +1,6 @@
 node_modules/
 /data
 dist/
+
+.env.local
+.env
