@@ -17,9 +17,9 @@ export const useWorkspaceInvites = () => {
    * Envia os convites para os usuários.
    */
   const create = useMutation(
-    async (data: Invites) => {
-      return await api.post(`/tenant/${getWorkspaceId()}/create`, {
-        data: { data }
+    async (data: Invites[]) => {
+      return await api.post(`/tenant/${getWorkspaceId()}/user`, {
+        data: { emails: data }
       })
     },
     {
@@ -53,7 +53,6 @@ export const useWorkspaceUsersList = () => {
     }
 
     return await api.get(`/tenant/${workspace}/user`).then((res) => {
-      console.log(res.data)
       return res.data
     })
   }

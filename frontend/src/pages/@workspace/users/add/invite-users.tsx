@@ -13,6 +13,7 @@ import Papa from 'papaparse'
 import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { useWorkspaceInvites } from '../../hooks/users/useWorkspaceUsers'
 import { template } from './template'
 
 export interface Invites {
@@ -20,11 +21,17 @@ export interface Invites {
   role: string
 }
 
-export const InviteUsers = () => {
+type InviteUsersProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const { t } = useTranslation('workspace')
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('student')
   const [emailInput, setEmailInput] = useState('')
+  const { create } = useWorkspaceInvites()
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {
@@ -87,13 +94,14 @@ export const InviteUsers = () => {
     setInvites([])
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     if (invites.length === 0) {
       toast.info(t('insert_at_least_one_email'))
       return
     }
+    await create.mutateAsync(invites)
   }
 
   return (
@@ -113,7 +121,7 @@ export const InviteUsers = () => {
         accept=".csv"
         onChange={handleFileUpload}
       />
-      <div className="flex gap-2">
+      <div className="flex flex-col xs:flex-row gap-2">
         <Button
           className="flex flex-grow gap-2"
           variant={'secondary'}
@@ -147,7 +155,7 @@ export const InviteUsers = () => {
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger asChild>
                   <Button size={'icon'} variant={'outline'} onClick={resetAll}>
-                    <ListRestart />
+                    <ListRestart className="w-5 h-5" />
                   </Button>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
@@ -169,7 +177,6 @@ export const InviteUsers = () => {
             <Select.Content>
               <Select.Group>
                 <Select.Item value="student">{t('student')}</Select.Item>
-                <Select.Item value="professor">{t('professor')}</Select.Item>
                 <Select.Item value="admin">{t('admin')}</Select.Item>
               </Select.Group>
             </Select.Content>
@@ -197,9 +204,6 @@ export const InviteUsers = () => {
                             invite.role === 'student'
                         },
                         {
-                          'border-sky-800/80': invite.role === 'professor'
-                        },
-                        {
                           'border-red-900/80': invite.role === 'admin'
                         }
                       )}
@@ -219,7 +223,9 @@ export const InviteUsers = () => {
         </div>
       </div>
       <form className="flex" onSubmit={handleSubmit}>
-        <Button className="flex-grow">{t('btn_invite')}</Button>
+        <Button className="flex-grow" onClick={() => onOpenChange(false)}>
+          {t('btn_invite')}
+        </Button>
       </form>
     </>
   )

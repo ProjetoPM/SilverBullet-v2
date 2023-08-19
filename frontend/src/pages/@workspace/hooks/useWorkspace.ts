@@ -1,5 +1,6 @@
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
+import { queryClient } from '@/services/react-query'
 import {
   resetWorkspaceStore,
   useWorkspaceStore
@@ -7,7 +8,7 @@ import {
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
@@ -18,7 +19,6 @@ import {
 
 export const useWorkspace = () => {
   const { t } = useTranslation('workspace')
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const workspace = useWorkspaceStore((state) => state.workspace)
 
