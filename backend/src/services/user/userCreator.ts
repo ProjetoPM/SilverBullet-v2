@@ -65,12 +65,14 @@ export default class UserCreator {
 
   get _emails() {
     if (
-      this.data.emails &&
-      !Array.isArray(this.data.emails)
+      this.data &&
+      !Array.isArray(this.data)
     ) {
-      this.emails = [this.data.emails];
+      this.data = [this.data];
     } else {
-      const uniqueEmails = this.data.emails.filter(
+      console.log(this.data);
+      
+      const uniqueEmails = this.data.filter(
         (item, index, array) => {
           return (
             array.findIndex(
@@ -79,10 +81,14 @@ export default class UserCreator {
           );
         },
       );
-      this.emails = uniqueEmails;
+
+      console.log('uniqueEmails');
+      console.log(uniqueEmails);
+      
+      this.data = uniqueEmails;
     }
 
-    return this.emails.map(({email}) => email.trim());
+    return this.data.map(({email}) => email.trim());
   }
 
   /**
