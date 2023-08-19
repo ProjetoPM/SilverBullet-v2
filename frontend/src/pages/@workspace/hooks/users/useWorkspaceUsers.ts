@@ -26,7 +26,7 @@ export const useWorkspaceInvites = () => {
       onSuccess: (response) => {
         switch (response.status) {
           case StatusCodes.OK:
-            toast.success(t('users_has_been_invited'))
+            toast.success(t('users_invited'))
             queryClient.invalidateQueries('workspace-users')
             break
         }
