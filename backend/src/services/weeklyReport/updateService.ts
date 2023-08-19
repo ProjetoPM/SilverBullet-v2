@@ -8,6 +8,7 @@ import WeeklyReportRepository from '../../database/repositories/weeklyReportRepo
 import ProcessReportUpdateService from '../processReport/updateService';
 import ProcessReportCreateService from '../processReport/createService';
 import { IProcessReport } from '../../interfaces';
+import { supabase } from '../supabase';
 import ProcessReportRepository from '../../database/repositories/processReportRepository';
 
 
@@ -104,6 +105,17 @@ export default class WeeklyReportUpdateService {
 
       for (const dbProcess of dbProcesses) {
         await ProcessReportRepository.destroy(dbProcess.id, this.options);
+        const { filesFolder } = dbProcess;
+
+        const {data: files, } = await supabase.storage.from('weekly-report').list(dbProcess.filesFolder);
+        if(!files) break;
+        const filesWithFolder:string[] = [];
+
+        files.map(file => {
+          filesWithFolder.push(`${filesFolder}/${file.name}`);
+        });
+
+        const { data, error } = await supabase.storage.from ('weekly-report').remove (filesWithFolder);
       }
       
 
