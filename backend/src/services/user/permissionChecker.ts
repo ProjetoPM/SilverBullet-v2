@@ -6,6 +6,13 @@ import EmailSender from '../emailSender';
 
 const plans = Plans.values;
 
+export type IPermission = {
+  id: string;
+  allowedRoles: string[];
+  allowedProjectRoles?: string[];
+  allowedPlans: string[];
+};
+
 /**
  * Checks the Permission of the User on a Tenant.
  */
@@ -15,7 +22,12 @@ export default class PermissionChecker {
   currentUser;
   currentProject;
 
-  constructor({ currentTenant, language, currentUser, currentProject = null }) {
+  constructor({
+    currentTenant,
+    language,
+    currentUser,
+    currentProject = null,
+  }) {
     this.currentTenant = currentTenant;
     this.language = language;
     this.currentUser = currentUser;
@@ -24,9 +36,9 @@ export default class PermissionChecker {
 
   /**
    * Validates if the user has a specific permission
-   * and throws a Error403 if it doesn't.   
+   * and throws a Error403 if it doesn't.
    */
-  validateHas(permission) {
+  validateHas(permission: IPermission) {
     if (!this.has(permission)) {
       throw new Error403(this.language);
     }
@@ -46,7 +58,13 @@ export default class PermissionChecker {
       return false;
     }
 
-    return this.hasRolePermission(permission);
+    if(this.hasRolePermission(permission)){
+      return true;
+    } 
+    
+    return this.hasProjectRolePermission(permission);
+    
+
   }
 
   /**
@@ -73,6 +91,17 @@ export default class PermissionChecker {
   hasRolePermission(permission) {
     return this.currentUserRolesIds.some((role) =>
       permission.allowedRoles.some(
+        (allowedRole) => allowedRole === role,
+      ),
+    );
+  }
+
+  /**
+   * Checks if the current user roles allows the permission.
+   */
+  hasProjectRolePermission(permission) {
+    return this.currentProject.some((role) =>
+      permission.allowedProjectRoles.some(
         (allowedRole) => allowedRole === role,
       ),
     );
@@ -122,6 +151,31 @@ export default class PermissionChecker {
     }
 
     return tenant.roles;
+  }
+
+  /**
+   * Returns the Current User Project Roles.
+   */
+  get currentUserProjectRolesIds() {
+    if (!this.currentUser || !this.currentUser.projects) {
+      return [];
+    }
+
+    const project = this.currentUser.projects
+      .filter(
+        (projectUser) => projectUser.status === 'active',
+      )
+      .find((projectUser) => {
+        return (
+          projectUser.project.id === this.currentProject.id
+        );
+      });
+
+    if (!project) {
+      return [];
+    }
+
+    return project.roles;
   }
 
   /**
