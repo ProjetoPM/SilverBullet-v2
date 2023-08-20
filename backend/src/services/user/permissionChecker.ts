@@ -13,11 +13,13 @@ export default class PermissionChecker {
   currentTenant;
   language;
   currentUser;
+  currentProject;
 
-  constructor({ currentTenant, language, currentUser }) {
+  constructor({ currentTenant, language, currentUser, currentProject = null }) {
     this.currentTenant = currentTenant;
     this.language = language;
     this.currentUser = currentUser;
+    this.currentProject = currentProject;
   }
 
   /**
