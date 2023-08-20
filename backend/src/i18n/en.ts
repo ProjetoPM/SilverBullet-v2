@@ -42,7 +42,11 @@ const en = {
   },
 
   tenant: {
-
+    project: {
+      errors: {
+        projectWithSameName: "A project with the same name already exists in this workspace"
+      }
+    },
     weeklyReport: {
       errors: {
         rangeDateError: 'This weekly evaluation is not available to be submitted',

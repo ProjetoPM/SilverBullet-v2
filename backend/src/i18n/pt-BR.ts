@@ -41,6 +41,11 @@ const ptBR = {
   },
 
   tenant: {
+    project: {
+      errors: {
+        projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
+      }
+    },
     weeklyReport: {
       errors: {
         rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',
