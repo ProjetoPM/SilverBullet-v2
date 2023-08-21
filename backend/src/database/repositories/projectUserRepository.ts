@@ -48,6 +48,8 @@ export default class ProjectUserRepository {
 
   static async findProjectsByUser(options){
     const currentUser = await MongooseRepository.getCurrentUser(options);
+
+    const {id} = await MongooseRepository.getCurrentTenant(options);
     
     const user = await MongooseRepository.wrapWithSessionIfExists(
       User(options.database)
@@ -55,6 +57,14 @@ export default class ProjectUserRepository {
         .populate('projects.project'),
       options,
     );
+    
+    const filteredProjects = user.projects.filter(project => {
+      if(project.project.tenant == id && project.status == 'active'){
+        return project;
+      }
+    })
+    user.projects = filteredProjects;
+    console.log(user.projects.length);
     
     return user;
   }
