@@ -139,7 +139,7 @@ class Permissions {
       projectInviteUsers: {
         id: 'projectInviteUsers',
         allowedRoles: [roles.admin],
-        allowedProjectRoles: [projectRoles.projectAdmin],
+        allowedProjectRoles: [projectRoles.admin],
         allowedPlans: [
           plans.free,
           plans.growth,
@@ -150,11 +150,11 @@ class Permissions {
         id: 'acceptOrDeclineProjectInvitation',
         allowedRoles: [roles.admin, roles.student],
         allowedProjectRoles: [
-          projectRoles.projectAdmin,
-          projectRoles.projectDeveloper,
-          projectRoles.projectManager,
-          projectRoles.projectProfessor,
-          projectRoles.projectStakeholder,
+          projectRoles.admin,
+          projectRoles.developer,
+          projectRoles.manager,
+          projectRoles.professor,
+          projectRoles.stakeholder,
         ],
         allowedPlans: [
           plans.free,

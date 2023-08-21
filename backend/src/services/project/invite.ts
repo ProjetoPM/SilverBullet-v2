@@ -66,7 +66,7 @@ export default class ProjectInviteService {
   }
 
   async addUserToProjectOrUpdate({ email, role }: IEmail) {
-    const allowedRoles = ['projectAdmin', 'projectManager', 'projectDeveloper', 'projectStakeholder', 'projectProfessor']
+    const allowedRoles = ['admin', 'manager', 'developer', 'stakeholder', 'professor']
     if(!allowedRoles.includes(role)) {
       return {
         email,

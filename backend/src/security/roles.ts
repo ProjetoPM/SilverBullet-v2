@@ -8,11 +8,11 @@ class Roles {
 
   static get projectValues(){
     return {
-      projectAdmin: 'projectAdmin',
-      projectManager: 'projectManager',
-      projectDeveloper: 'projectDeveloper',
-      projectStakeholder: 'projectStakeholder',
-      projectProfessor: 'projectProfessor'
+      admin: 'Admin',
+      manager: 'Manager',
+      developer: 'Developer',
+      stakeholder: 'Stakeholder',
+      professor: 'Professor'
     }
   }
 }

@@ -46,6 +46,19 @@ export default class ProjectUserRepository {
     );
   }
 
+  static async findProjectsByUser(options){
+    const currentUser = await MongooseRepository.getCurrentUser(options);
+    
+    const user = await MongooseRepository.wrapWithSessionIfExists(
+      User(options.database)
+        .findById(currentUser.id)
+        .populate('projects.project'),
+      options,
+    );
+    
+    return user;
+  }
+
   static async findByInvitationToken(
     invitationToken: string,
     options: IRepositoryOptions,
