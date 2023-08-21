@@ -19,10 +19,10 @@ export default (database) => {
         minlength: 5,
         maxlength: 2000,
       },
-      startdate: {
+      startDate: {
         type: String,
       },
-      enddate: {
+      endDate: {
         type: String,
       },
       projectPurpose: {
@@ -68,6 +68,7 @@ export default (database) => {
         type: String,
         maxlength: 2000,
       },
+      signed: Boolean,
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
