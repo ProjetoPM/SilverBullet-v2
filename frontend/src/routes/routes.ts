@@ -8,14 +8,16 @@ export const routes = {
     new: '/workspaces/new',
     edit: '/workspaces/:id/edit',
     users: {
-      index: '/workspaces/:id/users',
-      new: '/workspaces/:id/users/new'
+      index: '/workspaces/:id/users'
     }
   },
   projects: {
     index: '/projects',
     new: '/projects/new',
-    edit: '/projects/:id/edit'
+    edit: '/projects/:id/edit',
+    users: {
+      index: '/projects/:id/users'
+    }
   },
   weekly_report: {
     index: '/weekly-report',

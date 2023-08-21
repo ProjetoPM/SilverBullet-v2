@@ -14,7 +14,7 @@ import Papa from 'papaparse'
 import React, { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
+import { useProjectsInvites } from '../../hooks/useProjectInvites'
 import { template } from './template'
 
 export interface Invites {
@@ -31,7 +31,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const { create } = useWorkspaceInvites({})
+  const { create } = useProjectsInvites({})
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {
@@ -169,7 +169,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
         <div className="space-y-1">
           <Label htmlFor="roles">{t('role')}</Label>
           <Select.Root
-            defaultValue="student"
+            defaultValue="manager"
             onValueChange={(e) => setRoles(e)}
           >
             <Select.Trigger id="roles" className="flex-grow">
@@ -177,7 +177,13 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
             </Select.Trigger>
             <Select.Content>
               <Select.Group>
-                {['student', 'admin'].map((role) => (
+                {[
+                  'manager',
+                  'developer',
+                  'stakeholder',
+                  'professor',
+                  'admin'
+                ].map((role) => (
                   <React.Fragment key={role}>
                     <Select.Item value={role}>
                       {t(`role_${transformViewName(role)}`)}
@@ -207,7 +213,19 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
                         'flex items-center border rounded-md px-2 py-1 gap-1',
                         {
                           'border-foreground/10 dark:border-accent':
-                            invite.role === 'student'
+                            invite.role === 'manager'
+                        },
+                        {
+                          'border-sky-700/70 dark:border-sky-800/70':
+                            invite.role === 'developer'
+                        },
+                        {
+                          'border-green-600/70 dark:border-green-700/70':
+                            invite.role === 'stakeholder'
+                        },
+                        {
+                          'border-orange-700/70 dark:border-orange-800/70':
+                            invite.role === 'professor'
                         },
                         {
                           'border-red-900/80': invite.role === 'admin'

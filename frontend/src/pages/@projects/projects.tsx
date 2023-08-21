@@ -3,7 +3,7 @@ import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useProjects } from './hooks/useProjects'
+import { useProjects } from './hooks/useProject'
 import { ProjectForm } from './projects.form'
 
 const ProjectPage = () => {

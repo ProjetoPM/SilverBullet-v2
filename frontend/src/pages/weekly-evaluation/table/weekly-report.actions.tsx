@@ -1,39 +1,22 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { useCommandMenuStore } from '@/layout/CommandMenu'
-import { routes } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
-import { replaceParams } from '@/utils/replace-params'
-import {
-  Copy,
-  FolderOpen,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Users2
-} from 'lucide-react'
+import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useProjects } from '../hooks/useProject'
-import { ProjectData } from '../projects.types'
 
 type ProjectActionsProps = {
   id: string
-  data: ProjectData
+  data: any
 }
 
-const ProjectActions = ({ id, data }: ProjectActionsProps) => {
+export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { _delete } = useProjects({})
-  const openMenu = useCommandMenuStore((state) => state.toggleMenu)
-  const openProject = useWorkspaceStore((state) => state.openProject)
 
   const handleDelete = async () => {
-    await _delete.mutateAsync(data)
+    // TODO
   }
 
   const handleOpen = () => {
-    openProject({ _id: data._id!, name: data.name })
-    openMenu()
+    // TODO
   }
 
   return (
@@ -55,10 +38,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <FolderOpen size={18} />
             {t('default:btn.open')}
           </DropdownMenu.Item>
-          <Link
-            to={replaceParams(routes.projects.edit, data._id ?? '')}
-            id={`edit-${id}`}
-          >
+          <Link to={'#'} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -74,20 +54,8 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             </Dialog.Trigger>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
-          {/**
-           * // TODO Atribuir roles
-           */}
-          <>
-            <Link to={replaceParams(routes.projects.users.index, data._id!)}>
-              <DropdownMenu.Item className="flex gap-3" id={`users-${id}`}>
-                <Users2 size={18} />
-                Users
-              </DropdownMenu.Item>
-            </Link>
-            <DropdownMenu.Separator />
-          </>
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id!)}
+            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -111,7 +79,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <Button
               variant="delete"
               onClick={() => handleDelete()}
-              isLoading={_delete.isLoading}
+              // isLoading={_delete.isLoading}
             >
               {t('default:btn.confirm')}
             </Button>
@@ -121,5 +89,3 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
     </Dialog.Root>
   )
 }
-
-export { ProjectActions }

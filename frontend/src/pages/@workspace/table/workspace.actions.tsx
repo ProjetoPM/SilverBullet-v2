@@ -85,7 +85,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
                   data.tenant._id
                 )}
               >
-                <DropdownMenu.Item className="flex gap-3" id={`open-${id}`}>
+                <DropdownMenu.Item className="flex gap-3" id={`users-${id}`}>
                   <Users2 size={18} />
                   Users
                 </DropdownMenu.Item>

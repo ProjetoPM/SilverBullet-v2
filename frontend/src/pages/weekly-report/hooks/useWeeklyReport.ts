@@ -1,3 +1,4 @@
+import { Props } from '@/@types/generic'
 import { useRedirect } from '@/hooks/useRedirect'
 import { supabase } from '@/lib/supabase'
 import { routes } from '@/routes/routes'
@@ -31,12 +32,10 @@ export const useFileList = create<FileUpload>()((set) => ({
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
-type Props = {
-  useList?: boolean
-  useEdit?: boolean
-}
-
-export const useWeeklyReport = ({ useList = false }: Props) => {
+export const useWeeklyReport = ({
+  useList = false,
+  useEdit = undefined
+}: Props) => {
   const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
   const { redirect } = useRedirect()
@@ -115,5 +114,28 @@ export const useWeeklyReport = ({ useList = false }: Props) => {
     }
   )
 
-  return { list, create, uploadFiles }
+  const _edit = async () => {
+    const response = await api
+      .get(`/tenant/${workspaceId}/weekly-report/${useEdit}`)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+
+    if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+      redirect(undefined, 'unknown_error')
+    }
+    return response
+  }
+
+  /**
+   * Recupera os dados de um workspace.
+   */
+  const edit = useQuery<any>('weekly-report-edit', _edit, {
+    enabled: !!useEdit,
+    cacheTime: 0,
+    onError: () => {
+      toast.error(t('default:unknown_error'))
+    }
+  })
+
+  return { list, edit, create, uploadFiles }
 }

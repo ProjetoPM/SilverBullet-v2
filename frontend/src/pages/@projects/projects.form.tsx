@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useProjects } from './hooks/useProjects'
+import { useProjects } from './hooks/useProject'
 import { Project, ProjectSchema, defaultValues, max } from './projects.schema'
 import { ProjectData } from './projects.types'
 

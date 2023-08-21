@@ -1,15 +1,12 @@
+import { Users } from '@/@types/generic'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import { replaceParams } from '@/utils/replace-params'
-import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { Copy, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
-import { WorkspaceUsers } from './columns'
 
 type WorkspaceUsersActions = {
   id: string
-  data: WorkspaceUsers
+  data: Users
 }
 
 export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
@@ -31,7 +28,8 @@ export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          <Link
+          {/* // TODO edit invite workspace */}
+          {/* <Link
             to={replaceParams(routes.workspaces.edit, data._id)}
             id={`edit-${id}`}
           >
@@ -39,7 +37,7 @@ export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
               <Pencil size={18} />
               {t('default:btn.edit')}
             </DropdownMenu.Item>
-          </Link>
+          </Link> */}
           <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
             <Dialog.Trigger
               className="flex w-full gap-3 px-2 py-1.5"

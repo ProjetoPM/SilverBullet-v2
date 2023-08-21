@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-export const useRedirect = () => {
+export const useRedirect = (ns?: string | string[]) => {
   const navigate = useNavigate()
-  const { t } = useTranslation()
+  const { t } = useTranslation(ns)
 
   /**
    * Redireciona o usuário para uma rota padrão ou específica

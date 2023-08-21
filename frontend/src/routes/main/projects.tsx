@@ -2,10 +2,11 @@ import { RouteObject } from 'react-router-dom'
 
 import { ComponentLayout } from '@/layout/ComponentLayout'
 
+import ProjectsPage from '@/pages/@projects/projects'
 import ProjectsListPage from '@/pages/@projects/projects.list'
+import ProjectsUsersPage from '@/pages/@projects/users/projects.users.list'
 import { AuthGuard } from '@/utils/guard'
 import { routes } from '../routes'
-import ProjectsPage from '@/pages/@projects/projects'
 
 export const ProjectsRoutes: RouteObject = {
   path: '/',
@@ -29,6 +30,10 @@ export const ProjectsRoutes: RouteObject = {
         {
           path: routes.projects.edit,
           element: <ProjectsPage />
+        },
+        {
+          path: routes.projects.users.index,
+          element: <ProjectsUsersPage />
         }
       ]
     }

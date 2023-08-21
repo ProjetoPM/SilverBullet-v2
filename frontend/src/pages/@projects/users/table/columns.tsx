@@ -6,7 +6,7 @@ import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import { t } from 'i18next'
 import React from 'react'
-import { WorkspaceUsersActions } from './workspace.users.actions'
+import { ProjectUsersActions } from './projects.users.actions'
 
 const helper = createColumnHelper<Users>()
 
@@ -123,7 +123,7 @@ export const columns = [
       <DataTableColumnHeader column={column} header={t('data-table:actions')} />
     ),
     cell: ({ row }) => {
-      return <WorkspaceUsersActions id="users" data={row.original} />
+      return <ProjectUsersActions id="users" data={row.original} />
     },
     enableHiding: true
   })

@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import { useProjects } from './hooks/useProjects'
+import { useProjects } from './hooks/useProject'
 import { ProjectToolbar } from './projects.toolbar'
 import { columns } from './table/columns'
 
