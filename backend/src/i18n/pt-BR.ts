@@ -41,9 +41,8 @@ const ptBR = {
   },
 
   tenant: {
-    
-    weeklyEvaluation: {
 
+    weeklyEvaluation: {
     errors: {
       nullStartDate: "Data de início não informada",
       nullEndDate: "Data de fim não informada",
@@ -51,6 +50,11 @@ const ptBR = {
       startDateGreaterThanEndDate: "Data de início maior que data de fim"
     }
   },
+    project: {
+      errors: {
+        projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
+      }
+    },
     weeklyReport: {
       errors: {
         rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',

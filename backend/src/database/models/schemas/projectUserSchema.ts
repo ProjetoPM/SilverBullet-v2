@@ -7,7 +7,14 @@ const ProjectUserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'project',
       required: true
-    }
+    },
+    roles: [{ type: String, maxlength: 255 }],
+    invitationToken: { type: String, maxlength: 255 },
+    status: {
+      type: String,
+      required: true,
+      enum: ['active', 'invited'],
+    },
   },
   { timestamps: true },
 );
