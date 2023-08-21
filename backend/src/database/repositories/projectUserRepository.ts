@@ -205,7 +205,7 @@ export default class ProjectUserRepository {
     );
 
     const projectUser = {
-      tenant: invitationProjectUser.project.id,
+      project: invitationProjectUser.project.id,
       invitationToken: null,
       status: selectStatus(
         'active',
