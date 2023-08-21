@@ -3,14 +3,14 @@ import { Separator } from '@/components/ui'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import { useWorkspaceList } from './hooks/useWorkspace'
+import { useWorkspace } from './hooks/useWorkspace'
 import { columns } from './table/columns'
 import { WorkspaceToolbar } from './workspace.toolbar'
 
 const WorkspaceListPage = () => {
   const { t } = useTranslation('workspace')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
-  const { data, isLoading } = useWorkspaceList()
+  const { list, _delete } = useWorkspace({ useList: true })
 
   return (
     <PageLayout title={t('title')} breadcrumb={breadcrumb}>
@@ -18,9 +18,10 @@ const WorkspaceListPage = () => {
         <WorkspaceToolbar />
         <Separator className="my-5" />
         <DataTable
-          isLoading={isLoading}
+          fn={_delete.mutateAsync}
+          isLoading={list.isLoading}
           columns={columns}
-          data={data?.tenants ?? []}
+          data={list.data?.tenants ?? []}
         />
       </div>
     </PageLayout>

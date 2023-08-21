@@ -18,7 +18,7 @@ export const UsersDialog = () => {
           </Button>
         </Dialog.Trigger>
         <Dialog.Content className="w-full md:w-[600px]">
-          <InviteUsers open={open} onOpenChange={onOpenChange} />
+          <InviteUsers onOpenChange={onOpenChange} />
         </Dialog.Content>
       </Dialog.Root>
     </>

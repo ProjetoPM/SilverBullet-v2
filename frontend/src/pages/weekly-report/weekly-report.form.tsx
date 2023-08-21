@@ -1,11 +1,9 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
-import { useRedirect } from '@/hooks/useRedirect'
 import { cn } from '@/lib/utils'
-import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
@@ -26,8 +24,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const [open, setOpen] = useState(false)
   const { data: weList } = useWeeklyEvaluation()
-  const { create } = useWeeklyReport()
-  const { redirect } = useRedirect()
+  const { create } = useWeeklyReport({})
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -38,12 +35,6 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const onSubmit = async (form: WeeklyReport) => {
     await create.mutateAsync(form)
   }
-
-  useEffect(() => {
-    if (!getWorkspaceId()) {
-      redirect()
-    }
-  }, [])
 
   return (
     <Form.Root {...form}>
@@ -88,6 +79,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
                       {weList && weList.count > 0 && (
                         <>
                           <Command.Input
+                            className="w-72 xs:w-80 md:w-96"
                             placeholder={t('search_weekly_evaluation')}
                           />
                           <Command.Empty>

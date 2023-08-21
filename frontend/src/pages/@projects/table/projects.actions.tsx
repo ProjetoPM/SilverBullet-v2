@@ -16,7 +16,7 @@ type ProjectActionsProps = {
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { _delete } = useProjects()
+  const { _delete } = useProjects({})
   const openMenu = useCommandMenuStore((state) => state.toggleMenu)
   const openProject = useWorkspaceStore((state) => state.openProject)
 

@@ -1,6 +1,7 @@
+import { Delete, Props } from '@/@types/generic'
+import { useRedirect } from '@/hooks/useRedirect'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
-import { queryClient } from '@/services/react-query'
 import {
   resetWorkspaceStore,
   useWorkspaceStore
@@ -8,19 +9,80 @@ import {
 import { setDataHiddenProjects } from '@/utils/sidebar-projects'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
-  DeleteWorkspace,
   FormWorkspace,
+  Workspace,
+  WorkspaceData,
   WorkspaceList
 } from '../workspace.types'
 
-export const useWorkspace = () => {
-  const { t } = useTranslation('workspace')
+export const useWorkspace = ({
+  useList = false,
+  useEdit = undefined
+}: Props) => {
+  const { t } = useTranslation(['workspace', 'default'])
   const navigate = useNavigate()
+  const { redirect } = useRedirect()
   const workspace = useWorkspaceStore((state) => state.workspace)
+  const queryClient = useQueryClient()
+
+  /**
+   * Lista todos os Workspaces disponíveis de um
+   * usuário.
+   */
+  const _list = async () => {
+    const response = await api
+      .get('/auth/me')
+      .then((res) => {
+        return {
+          tenants: res.data.tenants
+            .filter((tenant: Workspace) => tenant.status === 'active')
+            .map((tenant: Workspace) => ({
+              deletionId: tenant.tenant._id,
+              ...tenant
+            }))
+        }
+      })
+      .catch((err) => err.response)
+
+    if (response.status !== StatusCodes.OK) {
+      toast.error(response.data)
+    }
+    return response
+  }
+
+  const list = useQuery<WorkspaceList>('workspaces', _list, {
+    enabled: useList,
+    onError: () => {
+      toast.error(t('default:unknown_error'))
+    }
+  })
+
+  const _edit = async () => {
+    const response = await api
+      .get(`/tenant/${useEdit}`)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+
+    if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+      redirect(undefined, 'unknown_error')
+    }
+    return response
+  }
+
+  /**
+   * Recupera os dados de um workspace.
+   */
+  const edit = useQuery<WorkspaceData>('workspace-edit', _edit, {
+    enabled: !!useEdit,
+    cacheTime: 0,
+    onError: () => {
+      toast.error(t('default:unknown_error'))
+    }
+  })
 
   /**
    * Cria um workspace e logo em seguida invalida
@@ -28,14 +90,16 @@ export const useWorkspace = () => {
    */
   const create = useMutation(
     async (data: FormWorkspace) => {
-      return await api.post('/tenant', { data: { ...data } })
+      return await api
+        .post('/tenant', { data: { ...data } })
+        .catch((err) => err.response)
     },
     {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('created_successfully'))
-            queryClient.invalidateQueries('workspaces')
+            await queryClient.invalidateQueries(['workspaces'])
             navigate(routes.workspaces.index)
         }
       },
@@ -46,20 +110,25 @@ export const useWorkspace = () => {
   )
 
   /**
-   * Edita um workspace e assim como o método `create`,
+   * Atualiza os dados de um workspace e assim como o método `create`,
    * invalida o cache anterior.
    */
-  const edit = useMutation(
+  const update = useMutation(
     async (data: FormWorkspace) => {
-      return await api.put(`/tenant/${data._id}`, { data: { ...data } })
+      return await api
+        .put(`/tenant/${data._id}`, { data: { ...data } })
+        .catch((err) => err.response)
     },
     {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('edited_successfully'))
-            queryClient.invalidateQueries('workspaces')
+            await queryClient.invalidateQueries(['workspaces'])
             navigate(routes.workspaces.index)
+            break
+          case StatusCodes.FORBIDDEN:
+            toast.error(response.data)
             break
         }
       },
@@ -73,54 +142,40 @@ export const useWorkspace = () => {
    * Deleta um workspace existente.
    */
   const _delete = useMutation(
-    async (data: DeleteWorkspace) => {
-      return await api.delete('/tenant', { params: { ids: [data._id] } })
+    async (data: Delete) => {
+      const _data = Array.isArray(data) ? data : [data._id]
+      return await api
+        .delete('/tenant', { params: { ids: _data } })
+        .catch((err) => err.response)
     },
     {
-      onSuccess: (response, data) => {
+      onSuccess: async (response, data) => {
         switch (response.status) {
           case StatusCodes.OK:
             /**
              * Esconde o `projects` do sidebar caso o usuário exclua
-             * o workspace em que ele se encontra e reseta a store.
+             * o workspace em que ele se encontra. Também reseta a store.
              */
             if (workspace?._id === data._id) {
               setDataHiddenProjects(true)
               resetWorkspaceStore()
             }
-
             toast.success(t('deleted_successfully'))
-            queryClient.invalidateQueries('workspaces')
+            await queryClient.invalidateQueries(['workspaces'])
             break
           case StatusCodes.UNAUTHORIZED:
+            toast.error(t('no_permission_to_delete'))
+            break
+          case StatusCodes.FORBIDDEN:
             toast.error(t('no_permission_to_delete'))
             break
         }
       },
       onError: () => {
-        toast.error(t('error_deleting_workspace'))
+        toast.error(t('default:unknown_error'))
       }
     }
   )
 
-  return { create, edit, _delete }
-}
-
-/**
- * Lista todos os Workspaces disponíveis de um
- * usuário.
- */
-export const useWorkspaceList = () => {
-  const list = async () => {
-    return await api.get('/auth/me').then((res) => {
-      return {
-        tenants: res.data.tenants.filter(
-          (tenant: any) => tenant.status === 'active'
-        )
-      }
-    })
-  }
-
-  const { ...props } = useQuery<WorkspaceList>('workspaces', list)
-  return { ...props }
+  return { list, edit, create, update, _delete }
 }

@@ -13,7 +13,7 @@ import Papa from 'papaparse'
 import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { useWorkspaceInvites } from '../../hooks/users/useWorkspaceUsers'
+import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
 import { template } from './template'
 
 export interface Invites {
@@ -22,7 +22,6 @@ export interface Invites {
 }
 
 type InviteUsersProps = {
-  open: boolean
   onOpenChange: (open: boolean) => void
 }
 
@@ -31,7 +30,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('student')
   const [emailInput, setEmailInput] = useState('')
-  const { create } = useWorkspaceInvites()
+  const { create } = useWorkspaceInvites({})
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {
@@ -102,6 +101,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
       return
     }
     await create.mutateAsync(invites)
+    onOpenChange(false)
   }
 
   return (

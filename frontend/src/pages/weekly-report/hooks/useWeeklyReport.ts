@@ -31,11 +31,38 @@ export const useFileList = create<FileUpload>()((set) => ({
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
-export const useWeeklyReport = () => {
+type Props = {
+  useList?: boolean
+  useEdit?: boolean
+}
+
+export const useWeeklyReport = ({ useList = false }: Props) => {
   const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
   const { redirect } = useRedirect()
   const navigate = useNavigate()
+  const workspaceId = getWorkspaceId()
+
+  /**
+   * Lista todos os Weekly-Reports disponíveis de um
+   * usuário.
+   */
+  const _list = async () => {
+    const response = await api
+      .get(`/tenant/${workspaceId}/weekly-report/submissions`)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+
+    if (!workspaceId) {
+      redirect()
+    }
+    return response.data
+  }
+
+  const list = useQuery<WeeklyReportList>('weekly-report', _list, {
+    enabled: useList,
+    onError: () => redirect()
+  })
 
   /**
    * Realiza (se houver) o upload dos arquivos de cada um
@@ -84,28 +111,9 @@ export const useWeeklyReport = () => {
             break
         }
       },
-      onError: redirect
+      onError: () => {}
     }
   )
 
-  return { create, uploadFiles }
-}
-
-/**
- * Lista todos os Weekly-Reports disponíveis de um
- * usuário.
- */
-export const useWeeklyReportList = () => {
-  const { redirect } = useRedirect()
-
-  const list = async () => {
-    return await api
-      .get(`/tenant/${getWorkspaceId()}/weekly-report/submissions`)
-      .then((res) => res.data)
-  }
-
-  const { ...props } = useQuery<WeeklyReportList>('workspaces', list, {
-    onError: redirect
-  })
-  return { ...props }
+  return { list, create, uploadFiles }
 }

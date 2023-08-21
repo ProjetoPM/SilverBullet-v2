@@ -73,6 +73,7 @@ export const SelectProcess = memo(
                   <Popover.Content className="p-0">
                     <Command.Root>
                       <Command.Input
+                        className="w-72 xs:w-80 md:w-96"
                         placeholder={t('weekly-report:search_process_group')}
                       />
                       <Command.Empty>
@@ -141,6 +142,7 @@ export const SelectProcess = memo(
                       {group !== '-1' && (
                         <>
                           <Command.Input
+                            className="w-72 xs:w-80 md:w-96"
                             placeholder={t('weekly-report:search_process_name')}
                           />
                           <Command.Empty>

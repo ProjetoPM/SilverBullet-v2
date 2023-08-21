@@ -1,6 +1,6 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { routes } from '@/routes/routes'
-import { getWorkspaceId, useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
 import {
   Copy,
@@ -24,7 +24,7 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
   const { t } = useTranslation(['default', 'workspace'])
   const navigate = useNavigate()
   const open = useWorkspaceStore((state) => state.open)
-  const { _delete } = useWorkspace()
+  const { _delete } = useWorkspace({})
 
   const handleDelete = async () => {
     await _delete.mutateAsync({ _id: data.tenant._id })
@@ -77,17 +77,17 @@ const WorkspaceActions = ({ id, data }: WorkspaceActionsProps) => {
             </DropdownMenu.Item>
           )}
           <DropdownMenu.Separator />
-          {data.tenant._id === getWorkspaceId() && (
+          {data.roles?.some((role) => role === 'admin') && (
             <>
               <Link
                 to={replaceParams(
                   routes.workspaces.users.index,
-                  getWorkspaceId()!
+                  data.tenant._id
                 )}
               >
                 <DropdownMenu.Item className="flex gap-3" id={`open-${id}`}>
                   <Users2 size={18} />
-                  Manage Users
+                  Users
                 </DropdownMenu.Item>
               </Link>
               <DropdownMenu.Separator />
