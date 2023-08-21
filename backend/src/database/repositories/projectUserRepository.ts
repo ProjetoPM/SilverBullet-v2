@@ -55,10 +55,8 @@ export default class ProjectUserRepository {
         .populate('projects.project'),
       options,
     );
-
-    console.log(user);
     
-    return user.projects;
+    return user;
   }
 
   static async findByInvitationToken(
