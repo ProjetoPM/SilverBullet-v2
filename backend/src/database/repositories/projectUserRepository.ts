@@ -46,6 +46,38 @@ export default class ProjectUserRepository {
     );
   }
 
+  static async findByInvitationToken(
+    invitationToken: string,
+    options: IRepositoryOptions,
+  ) {
+    let user = await MongooseRepository.wrapWithSessionIfExists(
+      User(options.database)
+        .findOne({
+          projects: { $elemMatch: { invitationToken } },
+        })
+        .populate('projects.project'),
+      options,
+    );
+
+    if (!user) {
+      return null;
+    }
+
+    user = user.toObject ? user.toObject() : user;
+
+    const projectUser = user.projects.find((userProject) => {
+      return userProject.invitationToken === invitationToken;
+    });
+
+    console.log(projectUser);
+    
+
+    return {
+      ...projectUser,
+      user,
+    };
+  }
+
   static async updateRoles(projectId, id, roles, options) {
     const user = await MongooseRepository.wrapWithSessionIfExists(
       User(options.database)
@@ -131,6 +163,81 @@ export default class ProjectUserRepository {
 
     return projectUser;
   }
+
+  static async acceptInvitation(
+    invitationToken,
+    options: IRepositoryOptions,
+  ) {
+    const currentUser = MongooseRepository.getCurrentUser(
+      options,
+    );
+
+    // This tenant user includes the User data
+    let invitationProjectUser = await this.findByInvitationToken(
+      invitationToken,
+      options,
+    );
+
+    let existingProjectUser = currentUser.projects.find(
+      (userProject) =>
+        String(userProject.project.id) ===
+        String(invitationProjectUser.project.id),
+    );
+
+    // destroys old invite just for sure
+    await this.destroy(
+      invitationProjectUser.project.id,
+      invitationProjectUser.user.id,
+      options,
+    );
+
+    const projectUser = {
+      tenant: invitationProjectUser.project.id,
+      invitationToken: null,
+      status: selectStatus(
+        'active',
+        invitationProjectUser.roles,
+      ),
+      roles: invitationProjectUser.roles,
+    };
+
+    // In case the user is already a member, should merge the roles
+    if (existingProjectUser) {
+      // Merges the roles from the invitation and the current tenant user
+      projectUser.roles = [
+        ...new Set([
+          ...existingProjectUser.roles,
+          ...invitationProjectUser.roles,
+        ]),
+      ];
+    }
+
+    await User(options.database).updateOne(
+      { _id: currentUser.id },
+      {
+ 
+        $push: {
+          projects: projectUser,
+        },
+      },
+      options,
+    );
+
+    await AuditLogRepository.log(
+      {
+        entityName: 'user',
+        entityId: currentUser.id,
+        action: AuditLogRepository.UPDATE,
+        values: {
+          email: currentUser.email,
+          roles: projectUser.roles,
+          status: selectStatus('active', projectUser.roles),
+        },
+      },
+      options,
+    );
+  }
+
 
   static async destroy(
     projectId: String,

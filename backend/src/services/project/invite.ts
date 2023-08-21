@@ -66,16 +66,27 @@ export default class ProjectInviteService {
   }
 
   async addUserToProjectOrUpdate({ email, role }: IEmail) {
-    const userRoles = [role];
-    console.log(role);
-    
+    const allowedRoles = ['projectAdmin', 'projectManager', 'projectDeveloper', 'projectStakeholder', 'projectProfessor']
+    if(!allowedRoles.includes(role)) {
+      return {
+        email,
+        status: 'InvalidRole'
+      }
+    };
 
+    const userRoles = [role];
+    
     let user =
       await UserRepository.findByEmailWithoutAvatar(email, {
         ...this.options,
       });
 
-      if(!user) throw new Error400();
+      if(!user){
+        return {
+          email,
+          status: 'UserNotFound',
+        };
+      };
 
       const isUserAlreadyInTenant = user.tenants.some(
         (userTenant) =>
@@ -86,11 +97,11 @@ export default class ProjectInviteService {
     if (!isUserAlreadyInTenant)
       return {
         email,
-        status: 'Not in tenant',
+        status: 'NotInTenant',
       };
 
     await ProjectUserRepository.updateRoles(
-      this.options.currentTenant.id,
+      this.options.currentProject.id,
       user.id,
       userRoles,
       {
