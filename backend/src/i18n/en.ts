@@ -52,6 +52,11 @@ const en = {
       },
     },
 
+    project: {
+      errors: {
+        projectWithSameName: "A project with the same name already exists in this workspace"
+      }
+    },
     weeklyReport: {
       errors: {
         rangeDateError:
