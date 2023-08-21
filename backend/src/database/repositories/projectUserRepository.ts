@@ -64,7 +64,6 @@ export default class ProjectUserRepository {
       }
     })
     user.projects = filteredProjects;
-    console.log(user.projects.length);
     
     return user;
   }
