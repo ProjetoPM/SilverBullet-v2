@@ -1,22 +1,20 @@
+import { Users } from '@/@types/generic'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { routes } from '@/routes/routes'
-import { getWorkspaceId } from '@/stores/useWorkspaceStore'
-import { replaceParams } from '@/utils/replace-params'
-import { Copy, MoreHorizontal, Pencil, Trash2, Users2 } from 'lucide-react'
+import { Copy, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { WorkspaceUsers } from './columns'
+import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
 
 type WorkspaceUsersActions = {
   id: string
-  data: WorkspaceUsers
+  data: Users
 }
 
 export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
   const { t } = useTranslation(['default', 'workspace'])
+  const { _delete } = useWorkspaceInvites({})
 
-  const handleDelete = () => {
-    console.log('delete')
+  const handleDelete = async () => {
+    await _delete.mutateAsync({ _id: data.id })
   }
 
   return (
@@ -30,45 +28,26 @@ export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          {data.roles?.some((role) => role === 'admin') && (
-            <Link
-              to={replaceParams(routes.workspaces.edit, data._id)}
-              id={`edit-${id}`}
-            >
-              <DropdownMenu.Item className="flex gap-3">
-                <Pencil size={18} />
-                {t('default:btn.edit')}
-              </DropdownMenu.Item>
-            </Link>
-          )}
-          {data.roles?.some((role) => role === 'admin') && (
-            <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
-              <Dialog.Trigger
-                className="flex w-full gap-3 px-2 py-1.5"
-                id={`delete-${id}`}
-              >
-                <Trash2 size={18} />
-                {t('default:btn.delete')}
-              </Dialog.Trigger>
+          {/* // TODO edit invite workspace */}
+          {/* <Link
+            to={replaceParams(routes.workspaces.edit, data._id)}
+            id={`edit-${id}`}
+          >
+            <DropdownMenu.Item className="flex gap-3">
+              <Pencil size={18} />
+              {t('default:btn.edit')}
             </DropdownMenu.Item>
-          )}
+          </Link> */}
+          <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
+            <Dialog.Trigger
+              className="flex w-full gap-3 px-2 py-1.5"
+              id={`delete-${id}`}
+            >
+              <Trash2 size={18} />
+              {t('default:btn.delete')}
+            </Dialog.Trigger>
+          </DropdownMenu.Item>
           <DropdownMenu.Separator />
-          {data._id === getWorkspaceId() && (
-            <>
-              <Link
-                to={replaceParams(
-                  routes.workspaces.users.index,
-                  getWorkspaceId()!
-                )}
-              >
-                <DropdownMenu.Item className="flex gap-3" id={`open-${id}`}>
-                  <Users2 size={18} />
-                  Manage Users
-                </DropdownMenu.Item>
-              </Link>
-              <DropdownMenu.Separator />
-            </>
-          )}
           <DropdownMenu.Item
             onClick={() => navigator.clipboard.writeText(data._id ?? data.id)}
             className="flex gap-3"

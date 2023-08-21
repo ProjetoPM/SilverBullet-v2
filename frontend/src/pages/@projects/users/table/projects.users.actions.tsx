@@ -1,40 +1,17 @@
+import { Users } from '@/@types/generic'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { useCommandMenuStore } from '@/layout/CommandMenu'
-import { routes } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
-import { replaceParams } from '@/utils/replace-params'
-import {
-  Copy,
-  FolderOpen,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Users2
-} from 'lucide-react'
+import { Copy, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { useProjects } from '../hooks/useProject'
-import { ProjectData } from '../projects.types'
 
-type ProjectActionsProps = {
+type WorkspaceUsersActions = {
   id: string
-  data: ProjectData
+  data: Users
 }
 
-const ProjectActions = ({ id, data }: ProjectActionsProps) => {
-  const { t } = useTranslation(['default', 'projects'])
-  const { _delete } = useProjects({})
-  const openMenu = useCommandMenuStore((state) => state.toggleMenu)
-  const openProject = useWorkspaceStore((state) => state.openProject)
+export const ProjectUsersActions = ({ id, data }: WorkspaceUsersActions) => {
+  const { t } = useTranslation()
 
-  const handleDelete = async () => {
-    await _delete.mutateAsync(data)
-  }
-
-  const handleOpen = () => {
-    openProject({ _id: data._id!, name: data.name })
-    openMenu()
-  }
+  const handleDelete = async () => {}
 
   return (
     <Dialog.Root>
@@ -45,25 +22,18 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content align="end">
+        <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          <DropdownMenu.Item
-            className="flex gap-3"
-            id={`open-${id}`}
-            onClick={handleOpen}
-          >
-            <FolderOpen size={18} />
-            {t('default:btn.open')}
-          </DropdownMenu.Item>
-          <Link
-            to={replaceParams(routes.projects.edit, data._id ?? '')}
+          {/* // TODO edit invites project */}
+          {/* <Link
+            to={replaceParams(routes.workspaces.edit, data._id)}
             id={`edit-${id}`}
           >
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
             </DropdownMenu.Item>
-          </Link>
+          </Link> */}
           <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
             <Dialog.Trigger
               className="flex w-full gap-3 px-2 py-1.5"
@@ -74,20 +44,8 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             </Dialog.Trigger>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
-          {/**
-           * // TODO Atribuir roles
-           */}
-          <>
-            <Link to={replaceParams(routes.projects.users.index, data._id!)}>
-              <DropdownMenu.Item className="flex gap-3" id={`users-${id}`}>
-                <Users2 size={18} />
-                Users
-              </DropdownMenu.Item>
-            </Link>
-            <DropdownMenu.Separator />
-          </>
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data._id!)}
+            onClick={() => navigator.clipboard.writeText(data._id ?? data.id)}
             className="flex gap-3"
             id={`copy-${id}`}
           >
@@ -108,11 +66,7 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             <Button variant="ghost">{t('default:btn.cancel')}</Button>
           </Dialog.Trigger>
           <Dialog.Trigger asChild>
-            <Button
-              variant="delete"
-              onClick={() => handleDelete()}
-              isLoading={_delete.isLoading}
-            >
+            <Button variant="delete" onClick={handleDelete}>
               {t('default:btn.confirm')}
             </Button>
           </Dialog.Trigger>
@@ -121,5 +75,3 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
     </Dialog.Root>
   )
 }
-
-export { ProjectActions }

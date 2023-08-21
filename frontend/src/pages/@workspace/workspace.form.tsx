@@ -19,7 +19,7 @@ interface WorkspaceFormPageProps {
 
 export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
   const { t } = useTranslation('workspace')
-  const { create, edit } = useWorkspace()
+  const { create, update } = useWorkspace({})
 
   const form = useForm<Workspace>({
     mode: 'all',
@@ -29,7 +29,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
 
   const onSubmit = async (form: Workspace) => {
     if (data) {
-      await edit.mutateAsync({ _id: data._id, ...form })
+      await update.mutateAsync({ _id: data._id, ...form })
     } else {
       await create.mutateAsync(form)
     }
@@ -62,7 +62,7 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            isLoading={create.isLoading || edit.isLoading}
+            isLoading={create.isLoading || update.isLoading}
           >
             {data && (
               <>

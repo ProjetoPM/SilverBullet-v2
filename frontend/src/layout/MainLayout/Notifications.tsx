@@ -25,12 +25,13 @@ export const Notifications = () => {
   const { acceptInvite, declineInvite } = useNotifications()
 
   const { data } = useQuery<NotificationsProps>('invites', async () => {
-    return await api.get('/auth/me').then((res) => ({
+    const response = await api.get('/auth/me').then((res) => ({
       userId: res.data._id,
       tenants: res.data.tenants.filter(
-        (tenant: any) => tenant.status === 'invited'
+        (tenant: { status: string }) => tenant.status === 'invited'
       )
     }))
+    return response
   })
 
   return (

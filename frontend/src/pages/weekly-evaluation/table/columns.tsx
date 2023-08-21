@@ -3,10 +3,9 @@ import { Checkbox } from '@/components/ui'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next, { t } from 'i18next'
-import { Workspace } from '../workspace.types'
-import { WorkspaceActions } from './workspace.actions'
+import { WeeklyReportActions } from './weekly-report.actions'
 
-const helper = createColumnHelper<Workspace>()
+const helper = createColumnHelper<any>()
 
 export const columns = [
   /**
@@ -16,69 +15,71 @@ export const columns = [
     id: 'select',
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllRowsSelected()}
+        checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label={t('select_all')}
+        aria-label={i18next.t('select_all')}
       />
     ),
-    cell: ({ row }) =>
-      row.original.roles.some((role) => role === 'admin') && (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label={t('select_row')}
-        />
-      ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label={i18next.t('select_row')}
+      />
+    ),
     enableSorting: false,
     enableHiding: false
   }),
   /**
-   * Name
+   * Evaluation Name
    */
-  helper.accessor((row) => row.tenant.name, {
-    id: 'name',
+  helper.accessor((row) => row.weeklyEvaluation.name, {
+    id: 'evaluationName',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} header={t('data-table:name')} />
+      <DataTableColumnHeader
+        column={column}
+        header={t('data-table:evaluation_name')}
+      />
     ),
     cell: ({ row }) => (
-      <div id={`name-${row.index}`}>
-        {replaceHtmlTags(row.getValue('name'))}
+      <div id={`evaluation-name-${row.index}`}>
+        {row.getValue('evaluationName')}
       </div>
     ),
     enableSorting: true,
     enableHiding: true
   }),
   /**
-   * Plan Status
+   * Tool Evaluation
    */
-  helper.accessor((row) => row.tenant.planStatus, {
-    id: 'planStatus',
+  helper.accessor((row) => row.toolEvaluation, {
+    id: 'toolEvaluation',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('data-table:plan_status')}
+        header={t('data-table:tool_evaluation')}
       />
     ),
-    cell: ({ row }) => {
-      const planStatus =
-        row.getValue('planStatus') === 'active'
-          ? t('workspace:label.active')
-          : t('workspace:label.inactive')
-
-      return <div id={`plan-status-${row.index}`}>{planStatus}</div>
-    },
+    cell: ({ row }) => (
+      <div
+        id={`evaluation-name-${row.index}`}
+        className="line-clamp-1 max-w-lg"
+      >
+        {replaceHtmlTags(row.getValue('toolEvaluation'))}
+      </div>
+    ),
     enableSorting: true,
     enableHiding: true
   }),
   /**
    * Created At
    */
-  helper.accessor((row) => row.tenant.createdAt, {
+  helper.accessor((row) => row.createdAt, {
     id: 'createdAt',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('data-table:created_at')}
+        header={i18next.t('data-table:created_at')}
       />
     ),
     cell: ({ row }) => {
@@ -99,11 +100,12 @@ export const columns = [
   helper.display({
     id: 'actions',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} header={t('data-table:actions')} />
+      <DataTableColumnHeader column={column} header={'Actions'} />
     ),
-    cell: ({ row }) => {
-      return <WorkspaceActions id={row.index.toString()} data={row.original} />
-    },
+    cell: ({ row }) => (
+      <WeeklyReportActions data={row.original} id="weekly-report" />
+    ),
+    enableSorting: false,
     enableHiding: true
   })
 ]

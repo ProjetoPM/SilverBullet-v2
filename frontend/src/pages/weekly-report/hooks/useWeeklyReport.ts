@@ -1,3 +1,4 @@
+import { Props } from '@/@types/generic'
 import { useRedirect } from '@/hooks/useRedirect'
 import { supabase } from '@/lib/supabase'
 import { routes } from '@/routes/routes'
@@ -31,11 +32,36 @@ export const useFileList = create<FileUpload>()((set) => ({
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
-export const useWeeklyReport = () => {
+export const useWeeklyReport = ({
+  useList = false,
+  useEdit = undefined
+}: Props) => {
   const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
   const { redirect } = useRedirect()
   const navigate = useNavigate()
+  const workspaceId = getWorkspaceId()
+
+  /**
+   * Lista todos os Weekly-Reports disponíveis de um
+   * usuário.
+   */
+  const _list = async () => {
+    const response = await api
+      .get(`/tenant/${workspaceId}/weekly-report/submissions`)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+
+    if (!workspaceId) {
+      redirect()
+    }
+    return response.data
+  }
+
+  const list = useQuery<WeeklyReportList>('weekly-report', _list, {
+    enabled: useList,
+    onError: () => redirect()
+  })
 
   /**
    * Realiza (se houver) o upload dos arquivos de cada um
@@ -84,28 +110,32 @@ export const useWeeklyReport = () => {
             break
         }
       },
-      onError: redirect
+      onError: () => {}
     }
   )
 
-  return { create, uploadFiles }
-}
-
-/**
- * Lista todos os Weekly-Reports disponíveis de um
- * usuário.
- */
-export const useWeeklyReportList = () => {
-  const { redirect } = useRedirect()
-
-  const list = async () => {
-    return await api
-      .get(`/tenant/${getWorkspaceId()}/weekly-report/submissions`)
+  const _edit = async () => {
+    const response = await api
+      .get(`/tenant/${workspaceId}/weekly-report/${useEdit}`)
       .then((res) => res.data)
+      .catch((err) => err.response)
+
+    if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+      redirect(undefined, 'unknown_error')
+    }
+    return response
   }
 
-  const { ...props } = useQuery<WeeklyReportList>('workspaces', list, {
-    onError: redirect
+  /**
+   * Recupera os dados de um workspace.
+   */
+  const edit = useQuery<any>('weekly-report-edit', _edit, {
+    enabled: !!useEdit,
+    cacheTime: 0,
+    onError: () => {
+      toast.error(t('default:unknown_error'))
+    }
   })
-  return { ...props }
+
+  return { list, edit, create, uploadFiles }
 }
