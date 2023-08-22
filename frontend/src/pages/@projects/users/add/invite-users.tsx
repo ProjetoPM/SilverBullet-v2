@@ -8,7 +8,6 @@ import {
 } from '@/components/ui'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/utils'
-import { transformViewName } from '@/utils/transform-view-name'
 import { Download, ListRestart, Upload, UserPlus2, XCircle } from 'lucide-react'
 import Papa from 'papaparse'
 import React, { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
@@ -185,9 +184,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
                   'admin'
                 ].map((role) => (
                   <React.Fragment key={role}>
-                    <Select.Item value={role}>
-                      {t(`role_${transformViewName(role)}`)}
-                    </Select.Item>
+                    <Select.Item value={role}>{t(`role_${role}`)}</Select.Item>
                   </React.Fragment>
                 ))}
               </Select.Group>

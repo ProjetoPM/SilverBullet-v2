@@ -1,5 +1,5 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { useCommandMenuStore } from '@/layout/CommandMenu'
+import { useCommandMenuStore } from '@/layout/CommandMenu/useCommandMenuStore'
 import { routes } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'

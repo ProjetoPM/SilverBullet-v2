@@ -5,15 +5,8 @@ import i18next from 'i18next'
 import { MenuSquare, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { create } from 'zustand'
-import { combine } from 'zustand/middleware'
 import { items } from '../../constants/menu-items'
-
-export const useCommandMenuStore = create(
-  combine({ open: false }, (set) => ({
-    toggleMenu: () => set((state) => ({ open: !state.open }))
-  }))
-)
+import { useCommandMenuStore } from './useCommandMenuStore'
 
 export const CommandMenu = () => {
   const { t } = useTranslation(['areas', 'phases', 'menu', 'description'])
@@ -31,7 +24,7 @@ export const CommandMenu = () => {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [toggleMenu])
 
   const filtered =
     search.length > 0
@@ -68,7 +61,7 @@ export const CommandMenu = () => {
       <CommandDialog
         open={open}
         onOpenChange={toggleMenu}
-        className="max-w-[1095px] max-h-screen lg:max-h-[772px] lg:min-h-[772px] overflow-y-auto"
+        className="max-w-[1095px] max-h-screen lg:max-h-[700px] lg:min-h-[700px] min-[1367px]:max-h-[772px] min-[1367px]:min-h-[772px] overflow-y-auto"
       >
         <div className="flex items-center border-b px-3">
           <Search className="mr-2 h-5 w-5 shrink-0 opacity-50" />

@@ -21,7 +21,8 @@ export const routes = {
   },
   weekly_report: {
     index: '/weekly-report',
-    new: '/weekly-report/new'
+    new: '/weekly-report/new',
+    edit: '/weekly-report/:id/edit'
   },
   weekly_evaluation: {
     index: '/weekly-evaluation',

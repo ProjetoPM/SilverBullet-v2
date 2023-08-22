@@ -4,8 +4,8 @@ import { ComponentLayout } from '@/layout/ComponentLayout'
 import { AuthGuard } from '@/utils/guard'
 import { routes } from '../routes'
 
-import WeeklyReportList from '@/pages/weekly-report/weekly-report.list'
 import WeeklyReportPage from '@/pages/weekly-report/weekly-report'
+import WeeklyReportList from '@/pages/weekly-report/weekly-report.list'
 
 export const WeeklyReportRoutes: RouteObject = {
   path: '/',
@@ -24,6 +24,10 @@ export const WeeklyReportRoutes: RouteObject = {
         },
         {
           path: routes.weekly_report.new,
+          element: <WeeklyReportPage />
+        },
+        {
+          path: routes.weekly_report.edit,
           element: <WeeklyReportPage />
         }
       ]
