@@ -323,7 +323,8 @@ export default class UserRepository {
             $options: 'i',
           },
         })
-        .populate('tenants.tenant'),
+        .populate('tenants.tenant')
+        .populate('projects.project'),
       options,
     );
   }
@@ -579,7 +580,8 @@ export default class UserRepository {
     let record = await MongooseRepository.wrapWithSessionIfExists(
       User(options.database)
         .findById(id)
-        .populate('tenants.tenant'),
+        .populate('tenants.tenant')
+        .populate('projects.project'),
       options,
     );
 
