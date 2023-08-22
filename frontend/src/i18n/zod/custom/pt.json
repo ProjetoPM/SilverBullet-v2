@@ -3,5 +3,6 @@
   "at_most": "String deve conter no máximo {{value}} caracter(es)",
   "select_process_group": "Selecione o grupo do processo",
   "select_process_name": "Selecione o nome do processo",
-  "select_weekly_evaluation": "Selecione a avaliação semanal"
+  "select_weekly_evaluation": "Selecione a avaliação semanal",
+  "select_project": "Selecione o projeto"
 }

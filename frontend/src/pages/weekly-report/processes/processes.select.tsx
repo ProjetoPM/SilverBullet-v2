@@ -6,6 +6,16 @@ import { useTranslation } from 'react-i18next'
 import { Phases, usePhases } from '../hooks/usePhases'
 import { FieldsProcessProps } from './processes.items'
 
+type Select = {
+  group: boolean
+  name: boolean
+}
+
+const initialState = {
+  group: false,
+  name: false
+}
+
 export const SelectProcess = memo(
   ({
     index,
@@ -13,10 +23,9 @@ export const SelectProcess = memo(
     control
   }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
     const { phases } = usePhases()
-
     const { t } = useTranslation(['phases', 'weekly-report'])
-    const [isGroupOpen, setGroupOpen] = useState(false)
-    const [isNameOpen, setNameOpen] = useState(false)
+    const [open, setOpen] = useState<Select>(initialState)
+
     const [group, setGroup] = useState(
       form.getValues(`processes.${index}.group`) || '-1'
     )
@@ -32,12 +41,9 @@ export const SelectProcess = memo(
         case 'group':
           setGroup(data.id)
           form.setValue(`processes.${index}.name`, '')
-          setGroupOpen(false)
-          break
-        case 'name':
-          setNameOpen(false)
           break
       }
+      setOpen(initialState)
     }
 
     return (
@@ -51,7 +57,15 @@ export const SelectProcess = memo(
                 {t('weekly-report:process_group.label')}
               </Form.Label>
               <div className="flex flex-col gap-1">
-                <Popover.Root open={isGroupOpen} onOpenChange={setGroupOpen}>
+                <Popover.Root
+                  open={open.group}
+                  onOpenChange={() =>
+                    setOpen({
+                      ...initialState,
+                      group: !open.group
+                    })
+                  }
+                >
                   <Popover.Trigger asChild>
                     <Form.Control>
                       <Button
@@ -117,7 +131,15 @@ export const SelectProcess = memo(
                 {t('weekly-report:process_name.label')}
               </Form.Label>
               <div className="flex flex-col gap-1">
-                <Popover.Root open={isNameOpen} onOpenChange={setNameOpen}>
+                <Popover.Root
+                  open={open.name}
+                  onOpenChange={() =>
+                    setOpen({
+                      ...initialState,
+                      name: !open.name
+                    })
+                  }
+                >
                   <Popover.Trigger asChild>
                     <Form.Control>
                       <Button
