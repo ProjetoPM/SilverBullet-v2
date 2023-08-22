@@ -59,7 +59,7 @@ export default class ProjectUserRepository {
     );
     
     const filteredProjects = user.projects.filter(project => {
-      if(project.project.tenant == id && project.status == 'active'){
+      if(project.project.tenant == id){
         return project;
       }
     })
