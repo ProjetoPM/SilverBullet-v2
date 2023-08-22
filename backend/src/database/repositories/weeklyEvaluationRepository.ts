@@ -155,6 +155,12 @@ class WeeklyEvaluationRepository {
     );
   }
 
+  static async getMetrics(weeklyEvaluationId: string, options){
+    const weeklyEvaluation = await this.findById(weeklyEvaluationId, options);
+
+    return weeklyEvaluation.metrics
+  }
+
   static async findById(id, options: IRepositoryOptions) {
     const record =
       await MongooseRepository.wrapWithSessionIfExists(
