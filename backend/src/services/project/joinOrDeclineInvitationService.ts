@@ -66,10 +66,10 @@ export default class JoinOrDeclineInvitationService {
         currentProject: { id: projectUser.project.id },
         session,
       });
+      await MongooseRepository.commitTransaction(session);
 
       return 'accepted';
 
-      await MongooseRepository.commitTransaction(session);
     } catch (error) {
       await MongooseRepository.abortTransaction(session);
       throw error;
