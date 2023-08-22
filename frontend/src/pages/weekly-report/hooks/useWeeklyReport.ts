@@ -32,10 +32,17 @@ export const useFileList = create<FileUpload>()((set) => ({
 
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
+type WeeklyReportProps = Props & {
+  useProject?: boolean
+  useWeeklyEvaluation?: boolean
+}
+
 export const useWeeklyReport = ({
   useList = false,
-  useEdit = undefined
-}: Props) => {
+  useEdit = undefined,
+  useProject = false,
+  useWeeklyEvaluation = false
+}: WeeklyReportProps) => {
   const content = useFileList((state) => state.content)
   const { t } = useTranslation('weekly-report')
   const { redirect } = useRedirect()
@@ -127,9 +134,9 @@ export const useWeeklyReport = ({
   }
 
   /**
-   * Recupera os dados de um workspace.
+   * Recupera os dados de um weekly-report.
    */
-  const edit = useQuery<any>('weekly-report-edit', _edit, {
+  const edit = useQuery('weekly-report-edit', _edit, {
     enabled: !!useEdit,
     cacheTime: 0,
     onError: () => {
@@ -137,5 +144,43 @@ export const useWeeklyReport = ({
     }
   })
 
-  return { list, edit, create, uploadFiles }
+  const _listWeeklyEvaluation = async () => {
+    const url = `/tenant/${workspaceId}/weekly-evaluation/list-availables`
+    return api
+      .get(url)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+  }
+
+  /**
+   * Lista todas as avliações semanais.
+   */
+  const weeklyEvaluation = useQuery<{
+    rows: { id: string; name: string }[]
+    count: number
+  }>('weekly-evaluation-list', _listWeeklyEvaluation, {
+    enabled: useWeeklyEvaluation,
+    onError: () => redirect()
+  })
+
+  const _listProjects = async () => {
+    const url = `/tenant/${workspaceId}/project-list`
+    return api
+      .get(url)
+      .then((res) => res.data)
+      .catch((err) => err.response)
+  }
+
+  /**
+   * Lista todos os projetos.
+   */
+  const projects = useQuery<{
+    rows: { id: string; name: string }[]
+    count: number
+  }>('weekly-report-projects', _listProjects, {
+    enabled: useProject,
+    onError: () => redirect()
+  })
+
+  return { list, edit, create, uploadFiles, weeklyEvaluation, projects }
 }

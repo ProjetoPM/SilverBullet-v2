@@ -29,8 +29,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReport) => {
-    console.table(form)
-    // await create.mutateAsync(form)
+    await create.mutateAsync(form)
   }
 
   return (

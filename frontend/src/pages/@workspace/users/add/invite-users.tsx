@@ -29,7 +29,7 @@ type InviteUsersProps = {
 export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const { t } = useTranslation('invites')
   const [invites, setInvites] = useState<Invites[]>([])
-  const [role, setRoles] = useState('')
+  const [role, setRoles] = useState('student')
   const [emailInput, setEmailInput] = useState('')
   const { create } = useWorkspaceInvites({})
 

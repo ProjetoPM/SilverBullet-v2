@@ -1,11 +1,12 @@
 import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
 import { cn } from '@/lib/utils'
+import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
+import { useWeeklyReport } from './hooks/useWeeklyReport'
 import { WeeklyReport, WeeklyReportSchema } from './weekly-report.schema'
 
 type MainSelectProps = {
@@ -25,7 +26,10 @@ const initialState = {
 
 export const MainSelect = ({ form, data }: MainSelectProps) => {
   const { t } = useTranslation('weekly-report')
-  const { data: weeklyEvaluation } = useWeeklyEvaluation()
+  const { weeklyEvaluation, projects } = useWeeklyReport({
+    useWeeklyEvaluation: true,
+    useProject: true
+  })
   const [open, setOpen] = useState<Select>(initialState)
 
   return (
@@ -61,7 +65,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                       )}
                     >
                       {t(
-                        weeklyEvaluation?.rows?.find(
+                        weeklyEvaluation?.data?.rows?.find(
                           (name) => name.id === field.value
                         )?.name ?? 'select_weekly_evaluation'
                       )}
@@ -71,44 +75,45 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    {weeklyEvaluation && weeklyEvaluation.count > 0 && (
-                      <>
-                        <Command.Input
-                          className="w-72 xs:w-80 md:w-96"
-                          placeholder={t('search_weekly_evaluation')}
-                        />
-                        <Command.Empty>
-                          {t('weekly-report:no_results_found')}
-                        </Command.Empty>
-                        <ScrollArea className="max-h-[300px]">
-                          <Command.Group>
-                            {weeklyEvaluation.rows.map((data) => (
-                              <Command.Item
-                                value={data.id}
-                                key={data.id}
-                                onSelect={() => {
-                                  form.setValue('weeklyEvaluationId', data.id)
-                                  form.clearErrors('weeklyEvaluationId')
-                                  setOpen(initialState)
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    'mr-2 h-4 w-4',
-                                    data.id === field.value
-                                      ? 'opacity-100'
-                                      : 'opacity-0'
-                                  )}
-                                />
-                                {data.name}
-                              </Command.Item>
-                            ))}
-                          </Command.Group>
-                        </ScrollArea>
-                      </>
-                    )}
-                    {!weeklyEvaluation ||
-                      (weeklyEvaluation?.count === 0 && (
+                    {weeklyEvaluation?.data &&
+                      weeklyEvaluation?.data?.count > 0 && (
+                        <>
+                          <Command.Input
+                            className="w-72 xs:w-80 md:w-96"
+                            placeholder={t('search_weekly_evaluation')}
+                          />
+                          <Command.Empty>
+                            {t('weekly-report:no_results_found')}
+                          </Command.Empty>
+                          <ScrollArea className="max-h-[300px]">
+                            <Command.Group>
+                              {weeklyEvaluation?.data?.rows.map((data) => (
+                                <Command.Item
+                                  value={data.id}
+                                  key={data.id}
+                                  onSelect={() => {
+                                    form.setValue('weeklyEvaluationId', data.id)
+                                    form.clearErrors('weeklyEvaluationId')
+                                    setOpen(initialState)
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      data.id === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {data.name}
+                                </Command.Item>
+                              ))}
+                            </Command.Group>
+                          </ScrollArea>
+                        </>
+                      )}
+                    {!weeklyEvaluation?.data ||
+                      (weeklyEvaluation?.data?.count === 0 && (
                         <Command.Item>
                           {t('weekly-report:no_weekly_evaluation_exists')}
                         </Command.Item>
@@ -151,10 +156,12 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                         !field.value && 'text-muted-foreground'
                       )}
                     >
-                      {t(
-                        weeklyEvaluation?.rows?.find(
-                          (name) => name.id === field.value
-                        )?.name ?? 'select_project'
+                      {replaceHtmlTags(
+                        t(
+                          projects?.data?.rows?.find(
+                            (name) => name.id === field.value
+                          )?.name ?? 'select_project'
+                        )
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -162,7 +169,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    {weeklyEvaluation && weeklyEvaluation.count > 0 && (
+                    {projects?.data && projects?.data?.count > 0 && (
                       <>
                         <Command.Input
                           className="w-72 xs:w-80 md:w-96"
@@ -173,7 +180,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                         </Command.Empty>
                         <ScrollArea className="max-h-[300px]">
                           <Command.Group>
-                            {weeklyEvaluation.rows.map((data) => (
+                            {projects?.data?.rows.map((data) => (
                               <Command.Item
                                 value={data.id}
                                 key={data.id}
@@ -191,15 +198,15 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                                       : 'opacity-0'
                                   )}
                                 />
-                                {data.name}
+                                {replaceHtmlTags(data.name)}
                               </Command.Item>
                             ))}
                           </Command.Group>
                         </ScrollArea>
                       </>
                     )}
-                    {!weeklyEvaluation ||
-                      (weeklyEvaluation?.count === 0 && (
+                    {!projects.data ||
+                      (projects?.data?.count === 0 && (
                         <Command.Item>
                           {t('weekly-report:no_weekly_evaluation_exists')}
                         </Command.Item>
