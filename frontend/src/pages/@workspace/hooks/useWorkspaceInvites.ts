@@ -30,6 +30,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
    */
   const list = useQuery<{ rows: Users[] }>('workspace-users', _list, {
     enabled: useList,
+    cacheTime: 0,
     onError: () => redirect()
   })
 

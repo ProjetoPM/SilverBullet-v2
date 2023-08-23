@@ -29,7 +29,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const { t } = useTranslation('invites')
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('')
-  const [emailInput, setEmailInput] = useState('')
+  const [emailInput, setEmailInput] = useState('manager')
   const { create } = useProjectsInvites({})
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
