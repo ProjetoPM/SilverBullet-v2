@@ -10,7 +10,6 @@ import { useNotifications } from './hooks/useNotifications'
 
 type NotificationsProps = {
   userId: string
-  hasNotifications: boolean
   tenants: {
     status: 'invited' | 'active'
     invitationToken: string
@@ -36,8 +35,6 @@ export const Notifications = () => {
   const { data } = useQuery<NotificationsProps>('invites', async () => {
     return await api.get('/auth/me').then((res) => ({
       userId: res.data._id,
-      hasNotifications:
-        res.data.projects.length > 0 || res.data.tenants.length > 0,
       tenants: res.data.tenants.filter(
         (tenant: { status: string }) => tenant.status === 'invited'
       ),
@@ -47,12 +44,15 @@ export const Notifications = () => {
     }))
   })
 
+  const hasNotifications =
+    (data && data.tenants.length > 0) || (data && data.projects.length > 0)
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <Button variant={'outline'} size={'icon'} className="relative">
           <Bell className="w-5 h-5" />
-          {data && data.hasNotifications && (
+          {hasNotifications && (
             <Badge className="p-0 h-2 w-2 absolute top-2 right-[10px] bg-red-700 animate-pulse" />
           )}
         </Button>
@@ -158,20 +158,19 @@ export const Notifications = () => {
                           </Button>
                         </div>
                       </div>
-                      {index !== data.tenants.length - 1 && (
+                      {index !== data.projects.length - 1 && (
                         <DropdownMenu.Separator className="my-3" />
                       )}
                     </React.Fragment>
                   )
                 })}
-              {!data ||
-                (!data.hasNotifications && (
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <span className="text-sm text-gray-500">
-                      {t('no_notifications')}
-                    </span>
-                  </div>
-                ))}
+              {!hasNotifications && (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <span className="text-sm text-gray-500">
+                    {t('no_notifications')}
+                  </span>
+                </div>
+              )}
             </Suspense>
           </ScrollArea>
         </DropdownMenu.Group>

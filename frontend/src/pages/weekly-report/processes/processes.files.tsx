@@ -20,7 +20,7 @@ export const ViewFileList = ({
   const folder = useMemo(() => {
     const uuid = form.getValues(`processes.${index}.filesFolder`)
     return uuid ?? crypto.randomUUID()
-  }, [])
+  }, [form, index])
 
   const { data: cloudFiles } = useQuery<FileObject[]>(
     [`files-${folder}`, folder],

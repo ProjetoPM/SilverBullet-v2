@@ -26,13 +26,15 @@ export const useProjects = ({
    */
   const _list = async () => {
     const response = await api
-      .get(`/tenant/${workspaceId}/project-list`)
+      .get(`/auth/me`)
       .then((res) => {
         return {
-          rows: res.data.rows.map((row: { id: string }) => ({
-            deletionId: row.id,
-            ...row
-          }))
+          rows: res.data.projects
+            .filter((data: { status: string }) => data.status === 'active')
+            .map((data: { project: { _id: string } }) => ({
+              deletionId: data.project._id,
+              ...data.project
+            }))
         }
       })
       .catch((err) => err.response)

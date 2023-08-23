@@ -11,7 +11,7 @@ type AddProcessProps = {
 
 const AddProcess = ({ title, append }: AddProcessProps) => {
   const addProcess = () => {
-    append({ group: '', name: '', description: '', content: undefined })
+    append({ group: '', name: '', description: '', filesFolder: undefined })
   }
 
   return (

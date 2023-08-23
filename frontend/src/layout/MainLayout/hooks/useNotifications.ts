@@ -21,7 +21,7 @@ export const useNotifications = () => {
     async ({ token, isProject }: InviteProps) => {
       if (isProject) {
         return await api
-          .post(`/invitation/project/accept-decline`, {
+          .post(`/project/accept-decline`, {
             data: {
               option: 'accept',
               token: token
@@ -65,7 +65,7 @@ export const useNotifications = () => {
     async ({ token, isProject }: InviteProps) => {
       if (isProject) {
         return await api
-          .post(`/invitation/project/accept-decline`, {
+          .post(`/project/accept-decline`, {
             data: {
               option: 'decline',
               token: token

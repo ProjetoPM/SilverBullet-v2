@@ -17,7 +17,7 @@ export const WeeklyEvaluationRoutes: RouteObject = {
       ),
       children: [
         {
-          path: routes.weekly_evaluation.index,
+          path: routes.weekly_evaluation.new,
           element: <WeeklyEvaluationPage />
         }
       ]

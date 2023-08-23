@@ -9,7 +9,7 @@ const WeeklyEvaluationPage = () => {
 
   return (
     <PageLayout
-      title={t(`${'' ? 'edit.title' : 'new.title'}`)}
+      title={t(`${Math.random() === 1 ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
       <WeeklyEvaluationForm />
