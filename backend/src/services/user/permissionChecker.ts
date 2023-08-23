@@ -100,7 +100,7 @@ export default class PermissionChecker {
    * Checks if the current user roles allows the permission.
    */
   hasProjectRolePermission(permission) {
-    return this.currentProject.some((role) =>
+    return this.currentUserProjectRolesIds.some((role) =>
       permission.allowedProjectRoles.some(
         (allowedRole) => allowedRole === role,
       ),
