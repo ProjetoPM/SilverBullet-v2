@@ -35,7 +35,10 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {
-      const split = emailInput.split(',').map((email) => email.trim())
+      const split = emailInput
+        .toLowerCase()
+        .split(',')
+        .map((email) => email.trim())
 
       /**
        * Filtrando os e-mails que ainda não existem na lista,
