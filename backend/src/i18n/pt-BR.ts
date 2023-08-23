@@ -52,6 +52,7 @@ const ptBR = {
   },
     project: {
       errors: {
+        userNotInTenant: "O usuário não está na área de trabalho deste projeto",
         projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
       }
     },

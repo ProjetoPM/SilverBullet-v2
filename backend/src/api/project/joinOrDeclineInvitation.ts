@@ -10,9 +10,9 @@ export default async (req, res, next) => {
     if (!req.currentUser || !req.currentUser.id) {
       throw new Error403(req.language);
     }
-    new PermissionChecker(req).validateHas(
-      Permissions.values.acceptOrDeclineProjectInvitation,
-    );
+    // new PermissionChecker(req).validateHas(
+    //   Permissions.values.acceptOrDeclineProjectInvitation,
+    // );
 
     const payload = await new JoinOrDeclineInvitationService(req).handle(
       req.body.data,

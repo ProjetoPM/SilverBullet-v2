@@ -77,7 +77,8 @@ export default class ProjectUserRepository {
         .findOne({
           projects: { $elemMatch: { invitationToken } },
         })
-        .populate('projects.project'),
+        .populate('projects.project')
+        .populate('tenants.tenant'),
       options,
     );
 
@@ -91,7 +92,7 @@ export default class ProjectUserRepository {
       return userProject.invitationToken === invitationToken;
     });
 
-    console.log(projectUser);
+    
     
 
     return {

@@ -54,6 +54,7 @@ const en = {
 
     project: {
       errors: {
+        userNotInTenant: "The user is not in the project workspace",
         projectWithSameName: "A project with the same name already exists in this workspace"
       }
     },
