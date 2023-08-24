@@ -33,14 +33,12 @@ export const useFileList = create<FileUpload>()((set) => ({
 type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
 
 type WeeklyReportProps = Props & {
-  useProject?: boolean
   useWeeklyEvaluation?: boolean
 }
 
 export const useWeeklyReport = ({
   useList = false,
   useEdit = undefined,
-  useProject = false,
   useWeeklyEvaluation = false
 }: WeeklyReportProps) => {
   const content = useFileList((state) => state.content)
@@ -163,24 +161,5 @@ export const useWeeklyReport = ({
     onError: () => redirect()
   })
 
-  const _listProjects = async () => {
-    const url = `/tenant/${workspaceId}/project-list`
-    return api
-      .get(url)
-      .then((res) => res.data)
-      .catch((err) => err.response)
-  }
-
-  /**
-   * Lista todos os projetos.
-   */
-  const projects = useQuery<{
-    rows: { id: string; name: string }[]
-    count: number
-  }>('weekly-report-projects', _listProjects, {
-    enabled: useProject,
-    onError: () => redirect()
-  })
-
-  return { list, edit, create, uploadFiles, weeklyEvaluation, projects }
+  return { list, edit, create, uploadFiles, weeklyEvaluation }
 }

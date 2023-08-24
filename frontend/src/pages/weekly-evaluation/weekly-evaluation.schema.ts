@@ -2,7 +2,7 @@ import { html, params } from '@/utils/replace-html-tags'
 import { string, z } from 'zod'
 
 export const max = {
-  name: 200
+  name: 50
 }
 
 export const WeeklyEvaluationSchema = z.object({
@@ -19,7 +19,7 @@ export const WeeklyEvaluationSchema = z.object({
     })
     .refine((date) => date.startDate <= date.endDate, {
       message: 'teste',
-      path: ['endDate']
+      path: ['startDate', 'endDate']
     }),
   type: z.enum(['Individual Report', 'Group Report'])
 })
