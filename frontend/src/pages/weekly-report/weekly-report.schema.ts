@@ -1,5 +1,5 @@
 import { html, params } from '@/utils/replace-html-tags'
-import { string, z } from 'zod'
+import { z } from 'zod'
 
 export const max = {
   toolEvaluation: 200,
@@ -9,15 +9,14 @@ export const max = {
 }
 
 export const WeeklyReportSchema = z.object({
-  projectId: string().refine(
-    (value) => value.length > 0,
-    params('select_project')
-  ),
-  weeklyEvaluationId: string().refine(
-    (value) => value.length > 0,
-    params('select_weekly_evaluation')
-  ),
-  toolEvaluation: string()
+  projectName: z
+    .string()
+    .refine((value) => value.length > 0, params('no_project_detected')),
+  weeklyEvaluationId: z
+    .string()
+    .refine((value) => value.length > 0, params('select_weekly_evaluation')),
+  toolEvaluation: z
+    .string()
     .refine((value) => html(value, 3, '>='), params('at_least', 3))
     .refine(
       (value) => html(value, max.toolEvaluation, '<='),
@@ -26,20 +25,19 @@ export const WeeklyReportSchema = z.object({
   processes: z
     .array(
       z.object({
-        group: string().refine(
-          (value) => value.length > 0,
-          params('select_process_group')
-        ),
-        name: string().refine(
-          (value) => value.length > 0,
-          params('select_process_name')
-        ),
-        description: string()
-          .refine((value) => html(value, 3, '>='), params('at_least', 3))
+        group: z
+          .string()
+          .refine((value) => value.length > 0, params('select_process_group')),
+        name: z
+          .string()
+          .refine((value) => value.length > 0, params('select_process_name')),
+        description: z
+          .string()
           .refine(
             (value) => html(value, max.processes.description, '<='),
             params('at_most', max.processes.description)
-          ),
+          )
+          .optional(),
         filesFolder: z.string().optional()
       })
     )

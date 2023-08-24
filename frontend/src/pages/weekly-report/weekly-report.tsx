@@ -20,8 +20,6 @@ const WeeklyReportPage = () => {
     return <div>Something went wrong!</div>
   }
 
-  console.log(edit.data)
-
   return (
     <PageLayout
       title={t(`${id ? 'edit.title' : 'new.title'}`)}

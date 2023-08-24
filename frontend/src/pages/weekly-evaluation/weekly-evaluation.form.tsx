@@ -13,7 +13,8 @@ import { useTranslation } from 'react-i18next'
 import {
   WeeklyEvaluation,
   WeeklyEvaluationSchema,
-  defaultValues
+  defaultValues,
+  max
 } from './weekly-evaluation.schema'
 
 interface WeeklyReportFormProps {
@@ -21,7 +22,7 @@ interface WeeklyReportFormProps {
 }
 
 export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
-  const { t } = useTranslation('weekly-report')
+  const { t } = useTranslation('weekly-evaluation')
   const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyEvaluation>({
@@ -45,11 +46,11 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
           name="name"
           render={({ field }) => (
             <Form.Item className="flex-grow">
-              <Form.Label required>{t('tool_evaluation.label')}</Form.Label>
+              <Form.Label required>{t('evaluation_name')}</Form.Label>
               <Form.Control>
                 <Editor
-                  limit={1000}
-                  placeholder={t('tool_evaluation.placeholder')}
+                  limit={max.name}
+                  placeholder={t('evaluation_name_placeholder')}
                   {...field}
                 />
               </Form.Control>
@@ -79,7 +80,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                             locale: i18next.language === 'en-US' ? enUS : ptBR
                           })
                         ) : (
-                          <span>Pick a date</span>
+                          <span>{t('pick_a_date')}</span>
                         )}
                         <CalendarIcon className="ml-3 h-4 w-4 opacity-50" />
                       </Button>
@@ -104,7 +105,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
             name="dates.endDate"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label>End Date</Form.Label>
+                <Form.Label>{t('end_date')}</Form.Label>
                 <Popover.Root>
                   <Popover.Trigger asChild>
                     <Form.Control>
@@ -120,7 +121,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                             locale: i18next.language === 'en-US' ? enUS : ptBR
                           })
                         ) : (
-                          <span>Pick a date</span>
+                          <span>{t('pick_a_date')}</span>
                         )}
                         <CalendarIcon className="ml-3 h-4 w-4 opacity-50" />
                       </Button>
@@ -144,8 +145,8 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
             control={form.control}
             name="type"
             render={({ field }) => (
-              <Form.Item>
-                <Form.Label>Type</Form.Label>
+              <Form.Item className="col-span-full md:col-auto">
+                <Form.Label>{t('report_type')}</Form.Label>
                 <Select.Root
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -176,7 +177,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
           name="type"
           render={({ field }) => (
             <Form.Item>
-              <Form.Label>Metrics</Form.Label>
+              <Form.Label>{t('score_metric')}</Form.Label>
               <Select.Root
                 onValueChange={field.onChange}
                 defaultValue={field.value}

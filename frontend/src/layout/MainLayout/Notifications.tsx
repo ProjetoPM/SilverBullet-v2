@@ -112,7 +112,7 @@ export const Notifications = () => {
                     </React.Fragment>
                   )
                 })}
-              {data && data.tenants.length > 0 && (
+              {data && data.tenants.length > 0 && data.projects.length > 0 && (
                 <DropdownMenu.Separator className="my-3" />
               )}
               {data &&

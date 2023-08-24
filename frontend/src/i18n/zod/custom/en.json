@@ -4,5 +4,6 @@
   "select_process_group": "Select the process group",
   "select_process_name": "Select the process name",
   "select_weekly_evaluation": "Select the weekly evaluation",
-  "select_project": "Select the project"
+  "select_project": "Select the project",
+  "no_project_detected": "No project has been detected"
 }
