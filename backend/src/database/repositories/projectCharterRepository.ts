@@ -7,19 +7,15 @@ import lodash from 'lodash';
 import ProjectCharter from '../models/projectCharter';
 
 class ProjectCharterRepository {
-  
   static async create(data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentUser = MongooseRepository.getCurrentUser(
-      options,
-    );
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(
-      options,
-    );
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     const [record] = await ProjectCharter(
       options.database,
@@ -31,7 +27,7 @@ class ProjectCharterRepository {
           tenant: currentTenant.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
-        }
+        },
       ],
       options,
     );
@@ -43,23 +39,29 @@ class ProjectCharterRepository {
       options,
     );
 
-    
-
     return this.findById(record.id, options);
   }
 
-  static async update(id, data, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async update(
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
-
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject}),
-      options,
-    );
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectCharter(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject,
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
@@ -69,9 +71,8 @@ class ProjectCharterRepository {
       { _id: id },
       {
         ...data,
-        updatedBy: MongooseRepository.getCurrentUser(
-          options,
-        ).id,
+        updatedBy:
+          MongooseRepository.getCurrentUser(options).id,
       },
       options,
     );
@@ -87,22 +88,30 @@ class ProjectCharterRepository {
   }
 
   static async destroy(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectCharter(options.database).findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
-      options,
-    );
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectCharter(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject.id,
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
     }
 
-    await ProjectCharter(options.database).deleteOne({ _id: id }, options);
+    await ProjectCharter(options.database).deleteOne(
+      { _id: id },
+      options,
+    );
 
     await this._createAuditLog(
       AuditLogRepository.DELETE,
@@ -110,8 +119,6 @@ class ProjectCharterRepository {
       record,
       options,
     );
-
-
   }
 
   static async filterIdInTenant(
@@ -136,14 +143,14 @@ class ProjectCharterRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
-
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     const records = await ProjectCharter(options.database)
       .find({
         _id: { $in: ids },
         tenant: currentTenant.id,
-        project: currentProject.id
+        project: currentProject.id,
       })
       .select(['_id']);
 
@@ -151,35 +158,38 @@ class ProjectCharterRepository {
   }
 
   static async count(filter, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
-
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     return MongooseRepository.wrapWithSessionIfExists(
       ProjectCharter(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
-        project: currentProject.id
+        project: currentProject.id,
       }),
       options,
     );
   }
 
   static async findById(id, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
-    let record = await MongooseRepository.wrapWithSessionIfExists(
-      ProjectCharter(options.database)
-        .findOne({_id: id, tenant: currentTenant.id, project: currentProject.id}),
-      options,
-    );
+    let record =
+      await MongooseRepository.wrapWithSessionIfExists(
+        ProjectCharter(options.database).findOne({
+          _id: id,
+          tenant: currentTenant.id,
+          project: currentProject.id,
+        }),
+        options,
+      );
 
     if (!record) {
       throw new Error404();
@@ -192,21 +202,20 @@ class ProjectCharterRepository {
     { filter, limit = 0, offset = 0, orderBy = '' },
     options: IRepositoryOptions,
   ) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
-
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
     let criteriaAnd: any = [];
-    
+
     criteriaAnd.push({
       tenant: currentTenant.id,
     });
 
     criteriaAnd.push({
-      project: currentProject.id
+      project: currentProject.id,
     });
 
     if (filter) {
@@ -238,40 +247,56 @@ class ProjectCharterRepository {
         });
       }
 
-      if (filter.startdateRange) {
-        const [start, end] = filter.startdateRange;
+      if (filter.startDateRange) {
+        const [start, end] = filter.startDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
-            startdate: {
+            startDate: {
               $gte: start,
             },
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
-            startdate: {
+            startDate: {
               $lte: end,
             },
           });
         }
       }
 
-      if (filter.enddateRange) {
-        const [start, end] = filter.enddateRange;
+      if (filter.endDateRange) {
+        const [start, end] = filter.endDateRange;
 
-        if (start !== undefined && start !== null && start !== '') {
+        if (
+          start !== undefined &&
+          start !== null &&
+          start !== ''
+        ) {
           criteriaAnd.push({
-            enddate: {
+            endDate: {
               $gte: start,
             },
           });
         }
 
-        if (end !== undefined && end !== null && end !== '') {
+        if (
+          end !== undefined &&
+          end !== null &&
+          end !== ''
+        ) {
           criteriaAnd.push({
-            enddate: {
+            endDate: {
               $lte: end,
             },
           });
@@ -455,18 +480,23 @@ class ProjectCharterRepository {
     return { rows, count };
   }
 
-  static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {
-    const currentTenant = MongooseRepository.getCurrentTenant(
-      options,
-    );
+  static async findAllAutocomplete(
+    search,
+    limit,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
 
-    const currentProject = MongooseRepository.getCurrentProject(options);
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
 
-
-    let criteriaAnd: Array<any> = [{
-      tenant: currentTenant.id,
-      project: currentProject.id
-    }];
+    let criteriaAnd: Array<any> = [
+      {
+        tenant: currentTenant.id,
+        project: currentProject.id,
+      },
+    ];
 
     if (search) {
       criteriaAnd.push({
@@ -476,10 +506,11 @@ class ProjectCharterRepository {
           },
           {
             projectName: {
-              $regex: MongooseQueryUtils.escapeRegExp(search),
+              $regex:
+                MongooseQueryUtils.escapeRegExp(search),
               $options: 'i',
-            }
-          },          
+            },
+          },
         ],
       });
     }
@@ -500,10 +531,16 @@ class ProjectCharterRepository {
     }));
   }
 
-  static async _createAuditLog(action, id, data, options: IRepositoryOptions) {
+  static async _createAuditLog(
+    action,
+    id,
+    data,
+    options: IRepositoryOptions,
+  ) {
     await AuditLogRepository.log(
       {
-        entityName: ProjectCharter(options.database).modelName,
+        entityName: ProjectCharter(options.database)
+          .modelName,
         entityId: id,
         action,
         values: data,
@@ -520,10 +557,6 @@ class ProjectCharterRepository {
     const output = record.toObject
       ? record.toObject()
       : record;
-
-
-
-
 
     return output;
   }
