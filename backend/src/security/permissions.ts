@@ -64,6 +64,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      getEvaluationsByProfessor: {
+        id: 'getEvaluationsByProfessor',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       weeklyReportCreate: {
         id: 'weeklyReportCreate',
         allowedRoles: [roles.student],
