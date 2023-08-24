@@ -32,7 +32,7 @@ export default class RiskManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'riskManagementPlan',
+        'entities.riskManagementPlan',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class RiskManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'riskManagementPlan',
+        'entities.riskManagementPlan',
       );
 
       throw error;

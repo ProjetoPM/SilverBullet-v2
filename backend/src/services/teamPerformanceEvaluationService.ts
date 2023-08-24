@@ -32,7 +32,7 @@ export default class TeamPerformanceEvaluationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'teamPerformanceEvaluation',
+        'entities.teamPerformanceEvaluation',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class TeamPerformanceEvaluationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'teamPerformanceEvaluation',
+        'entities.teamPerformanceEvaluation',
       );
 
       throw error;

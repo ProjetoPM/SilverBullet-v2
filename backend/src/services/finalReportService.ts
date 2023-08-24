@@ -32,7 +32,7 @@ export default class FinalReportService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'finalReport',
+        'entities.finalReport',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class FinalReportService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'finalReport',
+        'entities.finalReport',
       );
 
       throw error;

@@ -30,7 +30,7 @@ export default class ResourceManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resourceManagementPlan',
+        'entities.resourceManagementPlan',
       );
 
       throw error;
@@ -63,7 +63,7 @@ export default class ResourceManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resourceManagementPlan',
+        'entities.resourceManagementPlan',
       );
 
       throw error;

@@ -32,7 +32,7 @@ export default class RequirementDocumentationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'requirementDocumentation',
+        'entities.requirementDocumentation',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class RequirementDocumentationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'requirementDocumentation',
+        'entities.requirementDocumentation',
       );
 
       throw error;

@@ -32,7 +32,7 @@ export default class LessonLearnedRegisterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'lessonLearnedRegister',
+        'entities.lessonLearnedRegister',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class LessonLearnedRegisterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'lessonLearnedRegister',
+        'entities.lessonLearnedRegister',
       );
 
       throw error;

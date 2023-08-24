@@ -32,7 +32,7 @@ export default class ResourceService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resource',
+        'entities.resource',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ResourceService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resource',
+        'entities.resource',
       );
 
       throw error;

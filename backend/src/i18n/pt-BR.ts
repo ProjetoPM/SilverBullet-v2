@@ -124,7 +124,8 @@ const ptBR = {
     businessCase: {
       errors: {
         unique: {
-
+          importHash: 'Hash duplicada',
+          tenant: 'Não é possível criar mais de um caso de negócio'
         }
       }
     },

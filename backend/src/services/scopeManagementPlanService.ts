@@ -31,7 +31,7 @@ export default class ScopeManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scopeManagementPlan',
+        'entities.scopeManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class ScopeManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scopeManagementPlan',
+        'entities.scopeManagementPlan',
       );
 
       throw error;

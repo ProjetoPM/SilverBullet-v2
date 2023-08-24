@@ -32,7 +32,7 @@ export default class ClosedProcurementDocumentationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'closedProcurementDocumentation',
+        'entities.closedProcurementDocumentation',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ClosedProcurementDocumentationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'closedProcurementDocumentation',
+        'entities.closedProcurementDocumentation',
       );
 
       throw error;

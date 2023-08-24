@@ -32,7 +32,7 @@ export default class WorkPerformanceReportsService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'workPerformanceReports',
+        'entities.workPerformanceReports',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class WorkPerformanceReportsService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'workPerformanceReports',
+        'entities.workPerformanceReports',
       );
 
       throw error;

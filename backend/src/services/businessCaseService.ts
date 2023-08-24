@@ -24,13 +24,13 @@ export default class BusinessCaseService {
       await MongooseRepository.commitTransaction(session);
 
       return record;
-    } catch (error) {
+    } catch (error:any) {
       await MongooseRepository.abortTransaction(session);
 
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'businessCase',
+        'entities.businessCase',
       );
 
       throw error;
@@ -63,7 +63,7 @@ export default class BusinessCaseService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'businessCase',
+        'entities.businessCase',
       );
 
       throw error;

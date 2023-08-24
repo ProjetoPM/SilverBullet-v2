@@ -32,7 +32,7 @@ export default class ChangeRequestService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'changeRequest',
+        'entities.changeRequest',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ChangeRequestService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'changeRequest',
+        'entities.changeRequest',
       );
 
       throw error;

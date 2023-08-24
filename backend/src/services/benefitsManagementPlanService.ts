@@ -31,7 +31,7 @@ export default class BenefitsManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'benefitsManagementPlan',
+        'entities.benefitsManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class BenefitsManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'benefitsManagementPlan',
+        'entities.benefitsManagementPlan',
       );
 
       throw error;

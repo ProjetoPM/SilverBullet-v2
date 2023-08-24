@@ -252,8 +252,8 @@ export default class MongooseRepository {
 
     const uniqueFieldWithError = Object.keys(
       error.keyPattern,
-    ).filter((key) => key !== 'tenant')[0];
-
+      )[0];
+      
     throw new Error400(
       language,
       `${errorPath}.errors.unique.${uniqueFieldWithError}`,

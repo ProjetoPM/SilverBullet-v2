@@ -32,7 +32,7 @@ export default class StakeholderRegistrationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'stakeholderRegistration',
+        'entities.stakeholderRegistration',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class StakeholderRegistrationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'stakeholderRegistration',
+        'entities.stakeholderRegistration',
       );
 
       throw error;

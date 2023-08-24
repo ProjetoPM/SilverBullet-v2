@@ -33,7 +33,7 @@ export default class ActivityDurationEstimatesService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'activityDurationEstimates',
+        'entities.activityDurationEstimates',
       );
 
       throw error;
@@ -66,7 +66,7 @@ export default class ActivityDurationEstimatesService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'activityDurationEstimates',
+        'entities.activityDurationEstimates',
       );
 
       throw error;

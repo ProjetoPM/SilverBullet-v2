@@ -31,7 +31,7 @@ export default class ProjectCharterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectCharter',
+        'entities.projectCharter',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class ProjectCharterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectCharter',
+        'entities.projectCharter',
       );
 
       throw error;

@@ -32,7 +32,7 @@ export default class AssumptionLogService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'assumptionLog',
+        'entities.assumptionLog',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class AssumptionLogService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'assumptionLog',
+        'entities.assumptionLog',
       );
 
       throw error;

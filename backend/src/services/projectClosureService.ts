@@ -32,7 +32,7 @@ export default class ProjectClosureService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectClosure',
+        'entities.projectClosure',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ProjectClosureService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectClosure',
+        'entities.projectClosure',
       );
 
       throw error;

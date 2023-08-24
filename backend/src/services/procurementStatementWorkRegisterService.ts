@@ -32,7 +32,7 @@ export default class ProcurementStatementWorkRegisterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'procurementStatementWorkRegister',
+        'entities.procurementStatementWorkRegister',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ProcurementStatementWorkRegisterService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'procurementStatementWorkRegister',
+        'entities.procurementStatementWorkRegister',
       );
 
       throw error;

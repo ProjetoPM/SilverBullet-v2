@@ -35,7 +35,7 @@ export default class ResourceRequirementsService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resourceRequirements',
+        'entities.resourceRequirements',
       );
 
       throw error;

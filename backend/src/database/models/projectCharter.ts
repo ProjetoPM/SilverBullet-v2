@@ -102,6 +102,12 @@ export default (database) => {
       },
     },
   );
+  ProjectCharterSchema.index(
+    { project: 1, tenant: 1 },
+    {
+      unique: true
+    },
+  );
 
   
 

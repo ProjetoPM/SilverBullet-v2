@@ -32,7 +32,7 @@ export default class ActivityListService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'activityList',
+        'entities.activityList',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ActivityListService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'activityList',
+        'entities.activityList',
       );
 
       throw error;

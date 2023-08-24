@@ -32,7 +32,7 @@ export default class WorkbreakdownStructureService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'workbreakdownStructure',
+        'entities.workbreakdownStructure',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class WorkbreakdownStructureService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'workbreakdownStructure',
+        'entities.workbreakdownStructure',
       );
 
       throw error;

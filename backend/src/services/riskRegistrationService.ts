@@ -32,7 +32,7 @@ export default class RiskRegistrationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'riskRegistration',
+        'entities.riskRegistration',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class RiskRegistrationService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'riskRegistration',
+        'entities.riskRegistration',
       );
 
       throw error;

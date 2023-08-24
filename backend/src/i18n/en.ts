@@ -129,7 +129,10 @@ const en = {
     },
     businessCase: {
       errors: {
-        unique: {},
+        unique: {
+          importHash: 'Duplicated hash',
+          tenant: 'You cannot create more than one business case'
+        },
       },
     },
     benefitsManagementPlan: {

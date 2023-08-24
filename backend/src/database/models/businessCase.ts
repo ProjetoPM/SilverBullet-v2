@@ -56,7 +56,12 @@ export default (database) => {
     },
   );
 
-  
+  BusinessCaseSchema.index(
+    { project: 1, tenant: 1 },
+    {
+      unique: true,
+    },
+  );
 
   BusinessCaseSchema.virtual('id').get(function () {
     // @ts-ignore

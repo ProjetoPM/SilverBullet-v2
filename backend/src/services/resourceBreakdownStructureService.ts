@@ -65,7 +65,7 @@ export default class ResourceBreakdownStructureService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'resourceBreakdownStructure',
+        'entities.resourceBreakdownStructure',
       );
 
       throw error;

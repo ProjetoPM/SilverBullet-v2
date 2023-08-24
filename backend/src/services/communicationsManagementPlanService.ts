@@ -32,7 +32,7 @@ export default class CommunicationsManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'communicationsManagementPlan',
+        'entities.communicationsManagementPlan',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class CommunicationsManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'communicationsManagementPlan',
+        'entities.communicationsManagementPlan',
       );
 
       throw error;

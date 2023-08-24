@@ -31,7 +31,7 @@ export default class CostManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'costManagementPlan',
+        'entities.costManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class CostManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'costManagementPlan',
+        'entities.costManagementPlan',
       );
 
       throw error;

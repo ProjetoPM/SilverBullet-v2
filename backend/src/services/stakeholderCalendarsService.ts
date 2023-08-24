@@ -35,7 +35,7 @@ export default class StakeholderCalendarsService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'stakeholderCalendars',
+        'entities.stakeholderCalendars',
       );
 
       throw error;
@@ -69,7 +69,7 @@ export default class StakeholderCalendarsService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'stakeholderCalendars',
+        'entities.stakeholderCalendars',
       );
 
       throw error;

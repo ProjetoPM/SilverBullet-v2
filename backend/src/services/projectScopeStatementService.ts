@@ -31,7 +31,7 @@ export default class ProjectScopeStatementService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectScopeStatement',
+        'entities.projectScopeStatement',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class ProjectScopeStatementService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectScopeStatement',
+        'entities.projectScopeStatement',
       );
 
       throw error;

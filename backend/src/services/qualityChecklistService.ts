@@ -32,7 +32,7 @@ export default class QualityChecklistService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'qualityChecklist',
+        'entities.qualityChecklist',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class QualityChecklistService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'qualityChecklist',
+        'entities.qualityChecklist',
       );
 
       throw error;

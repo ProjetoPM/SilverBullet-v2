@@ -31,7 +31,7 @@ export default class ScheduleManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scheduleManagementPlan',
+        'entities.scheduleManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class ScheduleManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scheduleManagementPlan',
+        'entities.scheduleManagementPlan',
       );
 
       throw error;

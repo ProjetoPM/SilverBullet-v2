@@ -32,7 +32,7 @@ export default class IssueLogService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'issueLog',
+        'entities.issueLog',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class IssueLogService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'issueLog',
+        'entities.issueLog',
       );
 
       throw error;

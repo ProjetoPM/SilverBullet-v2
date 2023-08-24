@@ -32,7 +32,7 @@ export default class ProjectManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectManagementPlan',
+        'entities.projectManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class ProjectManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectManagementPlan',
+        'entities.projectManagementPlan',
       );
 
       throw error;

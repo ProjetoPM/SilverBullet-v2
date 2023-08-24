@@ -32,7 +32,7 @@ export default class ProjectPerformanceMonitoringReportService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectPerformanceMonitoringReport',
+        'entities.projectPerformanceMonitoringReport',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ProjectPerformanceMonitoringReportService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectPerformanceMonitoringReport',
+        'entities.projectPerformanceMonitoringReport',
       );
 
       throw error;

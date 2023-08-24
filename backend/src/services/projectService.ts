@@ -31,8 +31,8 @@ export default class ProjectService {
     );
 
     const roles: string[] = [
-      Roles.projectValues.projectAdmin,
-      Roles.projectValues.projectManager,
+      Roles.projectValues.admin,
+      Roles.projectValues.manager,
     ];
     try {
       if (data.name) {
@@ -109,7 +109,7 @@ export default class ProjectService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'projectCharter',
+        'entities.projectCharter',
       );
 
       throw error;

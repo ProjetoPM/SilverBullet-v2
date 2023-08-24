@@ -31,7 +31,7 @@ export default class RequirementsManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'requirementsManagementPlan',
+        'entities.requirementsManagementPlan',
       );
 
       throw error;

@@ -32,7 +32,7 @@ export default class CostEstimatesService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'costEstimates',
+        'entities.costEstimates',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class CostEstimatesService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'costEstimates',
+        'entities.costEstimates',
       );
 
       throw error;

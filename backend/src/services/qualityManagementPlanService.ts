@@ -31,7 +31,7 @@ export default class QualityManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'qualityManagementPlan',
+        'entities.qualityManagementPlan',
       );
 
       throw error;
@@ -64,7 +64,7 @@ export default class QualityManagementPlanService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'qualityManagementPlan',
+        'entities.qualityManagementPlan',
       );
 
       throw error;

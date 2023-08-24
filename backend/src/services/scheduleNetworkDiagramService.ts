@@ -32,7 +32,7 @@ export default class ScheduleNetworkDiagramService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scheduleNetworkDiagram',
+        'entities.scheduleNetworkDiagram',
       );
 
       throw error;
@@ -65,7 +65,7 @@ export default class ScheduleNetworkDiagramService {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        'scheduleNetworkDiagram',
+        'entities.scheduleNetworkDiagram',
       );
 
       throw error;
