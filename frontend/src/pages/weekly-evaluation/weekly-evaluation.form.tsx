@@ -7,9 +7,11 @@ import { format } from 'date-fns'
 import { enUS, ptBR } from 'date-fns/locale'
 import i18next from 'i18next'
 import { CalendarIcon, Edit, RotateCcw, Save } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useMetrics } from './hooks/useMetrics'
+import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
 import {
   WeeklyEvaluation,
   WeeklyEvaluationSchema,
@@ -23,7 +25,8 @@ interface WeeklyReportFormProps {
 
 export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-evaluation')
-  const [output, setOutput] = useState('')
+  const { metrics } = useMetrics()
+  const { create } = useWeeklyEvaluation()
 
   const form = useForm<WeeklyEvaluation>({
     mode: 'all',
@@ -32,7 +35,13 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyEvaluation) => {
-    setOutput(JSON.stringify(form, null, 2))
+    if (form.dates.startDate > form.dates.endDate) {
+      toast.error(t('end_date_gt_start_date'), {
+        autoClose: 4000
+      })
+      return
+    }
+    await create.mutateAsync(form)
   }
 
   return (
@@ -174,7 +183,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
         </div>
         <Form.Field
           control={form.control}
-          name="type"
+          name="metricGroupId"
           render={({ field }) => (
             <Form.Item>
               <Form.Label>{t('score_metric')}</Form.Label>
@@ -188,12 +197,9 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                   </Select.Trigger>
                 </Form.Control>
                 <Select.Content>
-                  {[
-                    { value: 'Individual Report', key: 'individual_report' },
-                    { value: 'Group Report', key: 'group_report' }
-                  ].map((item) => (
-                    <Select.Item key={item.value} value={item.value}>
-                      {t(item.key)}
+                  {metrics?.map((item) => (
+                    <Select.Item key={item.id} value={item.id}>
+                      {item.metrics.map((metric) => metric.name).join(' - ')}
                     </Select.Item>
                   ))}
                 </Select.Content>
@@ -202,7 +208,6 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
             </Form.Item>
           )}
         />
-        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
           <Button type="submit" className="w-30 gap-1 font-medium">
             {data && (

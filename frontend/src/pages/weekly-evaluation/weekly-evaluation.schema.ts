@@ -1,36 +1,34 @@
 import { html, params } from '@/utils/replace-html-tags'
-import { string, z } from 'zod'
+import { z } from 'zod'
 
 export const max = {
   name: 50
 }
 
 export const WeeklyEvaluationSchema = z.object({
-  name: string()
+  name: z
+    .string()
     .refine((value) => html(value, 3, '>='), params('at_least', 3))
     .refine(
       (value) => html(value, max.name, '<='),
       params('at_most', max.name)
     ),
-  dates: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date()
-    })
-    .refine((date) => date.startDate <= date.endDate, {
-      message: 'teste',
-      path: ['startDate', 'endDate']
-    }),
-  type: z.enum(['Individual Report', 'Group Report'])
+  dates: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date()
+  }),
+  type: z.enum(['Individual Report', 'Group Report']),
+  metricGroupId: z.string().refine((value) => value.length > 0)
 })
 
 export const defaultValues = {
-  name: undefined,
+  name: '',
   dates: {
     startDate: undefined,
     endDate: undefined
   },
-  type: undefined
+  type: undefined,
+  scoreId: ''
 }
 
 export type WeeklyEvaluation = z.infer<typeof WeeklyEvaluationSchema>

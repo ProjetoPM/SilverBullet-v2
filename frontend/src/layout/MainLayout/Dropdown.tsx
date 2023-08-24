@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 const Dropdown = () => {
   const signOut = useAuthStore((state) => state.signOut)
   const { t } = useTranslation(['default', 'workspace'])
+  const email = useAuthStore((state) => state.email)
 
   return (
     <DropdownMenu.Root>
@@ -19,6 +20,14 @@ const Dropdown = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="w-56">
         <DropdownMenu.Label>{t('default:my_account')}</DropdownMenu.Label>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item
+          className="bg-accent"
+          onClick={() => navigator.clipboard.writeText(email ?? 'error')}
+        >
+          <User className="mr-2 w-4 h-4" />
+          <span>{email}</span>
+        </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Group>
           <DropdownMenu.Item>

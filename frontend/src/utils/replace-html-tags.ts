@@ -13,6 +13,10 @@ export const params = (key: string, number?: number) => {
   return { params: { i18n: { key: key } } }
 }
 
+export const paramsValues = (key: string) => {
+  return { i18n: { key: key } }
+}
+
 export const html = (html: string, number: number, type: '<=' | '>=') => {
   const text = html
     ?.replace(/<[^>]+>/g, '')

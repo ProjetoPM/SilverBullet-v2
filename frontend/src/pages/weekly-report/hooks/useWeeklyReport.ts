@@ -53,7 +53,7 @@ export const useWeeklyReport = ({
    */
   const _list = async () => {
     const response = await api
-      .get(`/tenant/${workspaceId}/weekly-report/submissions`)
+      .get(`/tenant/${workspaceId}/weekly-report/list`)
       .then((res) => res.data)
       .catch((err) => err.response)
 
