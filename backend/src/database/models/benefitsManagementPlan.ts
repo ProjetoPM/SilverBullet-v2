@@ -65,6 +65,13 @@ export default (database) => {
     },
   );
 
+  BenefitsManagementPlanSchema.index(
+    { project: 1, tenant: 1 },
+    {
+      unique: true
+    },
+  );
+
   
 
   BenefitsManagementPlanSchema.virtual('id').get(function () {
