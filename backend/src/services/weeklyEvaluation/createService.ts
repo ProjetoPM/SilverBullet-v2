@@ -10,9 +10,13 @@ import { IWeeklyEvaluation } from '../../interfaces';
 export interface IRequest {
   name: string;
   type: string;
-  startDate: Date | string;
-  endDate: Date | string;
+  dates: IDates;
   metricGroupId: string;
+}
+
+export interface IDates {
+  startDate: string;
+  endDate: string;
 }
 
 export default class WeeklyEvaluationCreateService {
@@ -25,14 +29,15 @@ export default class WeeklyEvaluationCreateService {
   async create({
     name,
     type,
-    startDate,
-    endDate,
+    dates,
     metricGroupId,
   }: IRequest) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
+    const {startDate, endDate} = dates;
+    
     if (!startDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullStartDate');
     if (!endDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullEndDate');
 
