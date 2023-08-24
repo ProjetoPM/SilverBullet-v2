@@ -30,7 +30,7 @@ export const useWeeklyEvaluation = () => {
           case StatusCodes.OK:
             toast.success(t('created_successfully'))
             await queryClient.invalidateQueries('weekly-evaluation')
-            navigate(routes.weekly_report.index)
+            navigate(routes.weekly_evaluation.index)
             break
           default:
             toast.error(response.data)
