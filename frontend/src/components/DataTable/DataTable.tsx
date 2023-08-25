@@ -114,18 +114,22 @@ export function DataTable<TData, TValue>({
                 </Table.Cell>
               </Table.Row>
             )}
-            {table.getRowModel().rows?.map((row) => (
-              <Table.Row
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Cell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))}
+            {!isLoading &&
+              table.getRowModel().rows?.map((row) => (
+                <Table.Row
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <Table.Cell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Table.Cell>
+                  ))}
+                </Table.Row>
+              ))}
             {!isLoading && table.getRowModel().rows?.length === 0 && (
               <Table.Row>
                 <Table.Cell

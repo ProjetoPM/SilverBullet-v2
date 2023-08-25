@@ -6,11 +6,13 @@ import {
   Popover,
   ScrollArea
 } from '@/components/ui'
+import { useRedirect } from '@/hooks/useRedirect'
 import { cn } from '@/lib/utils'
+import { routes } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -22,28 +24,20 @@ type MainSelectProps = {
   data?: WeeklyReport
 }
 
-type Select = {
-  weeklyEvaluation: boolean
-}
-
-const initialState = {
-  weeklyEvaluation: false
-}
-
 export const MainSelect = ({ form, data }: MainSelectProps) => {
   const { t } = useTranslation('weekly-report')
   const { weeklyEvaluation } = useWeeklyReport({
     useWeeklyEvaluation: true
   })
-  const [open, setOpen] = useState<Select>(initialState)
+  const [open, setOpen] = useState(false)
+  const project = useWorkspaceStore((state) => state.project)
+  const { redirect } = useRedirect()
 
-  const projectName = useWorkspaceStore((state) =>
-    replaceHtmlTags(state.project?.name ?? 'error')
-  )
-
-  if (!form.getValues('projectName')) {
-    form.setValue('projectName', projectName)
-  }
+  useEffect(() => {
+    if (data?.project || !project) {
+      redirect(routes.projects.index, undefined)
+    }
+  }, [data, project, redirect])
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -54,15 +48,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
           <Form.Item className="flex-grow">
             <Form.Label required>{t('evaluation_name.label')}</Form.Label>
             <div className="flex flex-col gap-2">
-              <Popover.Root
-                open={open.weeklyEvaluation}
-                onOpenChange={() =>
-                  setOpen({
-                    ...initialState,
-                    weeklyEvaluation: !open.weeklyEvaluation
-                  })
-                }
-              >
+              <Popover.Root open={open} onOpenChange={setOpen}>
                 <Popover.Trigger
                   asChild
                   disabled={!!data}
@@ -77,10 +63,10 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                         !field.value && 'text-muted-foreground'
                       )}
                     >
-                      {t(
+                      {replaceHtmlTags(
                         weeklyEvaluation?.data?.rows?.find(
                           (name) => name.id === field.value
-                        )?.name ?? 'select_weekly_evaluation'
+                        )?.name ?? t('select_weekly_evaluation')
                       )}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -107,7 +93,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                                   onSelect={() => {
                                     form.setValue('weeklyEvaluationId', data.id)
                                     form.clearErrors('weeklyEvaluationId')
-                                    setOpen(initialState)
+                                    setOpen(false)
                                   }}
                                 >
                                   <Check
@@ -118,7 +104,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                                         : 'opacity-0'
                                     )}
                                   />
-                                  {data.name}
+                                  {replaceHtmlTags(data.name)}
                                 </Command.Item>
                               ))}
                             </Command.Group>
@@ -139,18 +125,29 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
           </Form.Item>
         )}
       />
-      <Form.Field
-        control={form.control}
-        name="projectName"
-        render={({ field }) => (
-          <Form.Item className="flex-grow">
-            <Form.Label required>{t('project_name.label')}</Form.Label>
-            <Form.Control>
-              <Input readOnly {...field} />
-            </Form.Control>
-            <Form.Message />
-          </Form.Item>
-        )}
+      <div className="space-y-2">
+        <Form.Label required>{t('project_name.label')}</Form.Label>
+        <div>
+          <Input
+            {...form.register('project.name')}
+            value={
+              data?.project.name ??
+              replaceHtmlTags(project?.name ?? 'error', '')
+            }
+            readOnly
+          />
+          {form.formState.errors.project && (
+            <div className="text-destructive text-sm">
+              {form.formState.errors.project.name?.message}
+            </div>
+          )}
+        </div>
+      </div>
+      <Input
+        className="hidden"
+        {...form.register('project.id')}
+        value={data?.project.id ?? project?._id ?? ''}
+        readOnly
       />
     </div>
   )
