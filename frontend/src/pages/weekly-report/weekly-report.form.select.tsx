@@ -21,7 +21,12 @@ import { WeeklyReport, WeeklyReportSchema } from './weekly-report.schema'
 
 type MainSelectProps = {
   form: UseFormReturn<z.infer<typeof WeeklyReportSchema>>
-  data?: WeeklyReport
+  data?: WeeklyReport & {
+    project?: {
+      id: string
+      name: string
+    }
+  }
 }
 
 export const MainSelect = ({ form, data }: MainSelectProps) => {
@@ -129,26 +134,13 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
         <Form.Label required>{t('project_name.label')}</Form.Label>
         <div>
           <Input
-            {...form.register('project.name')}
-            value={
-              data?.project.name ??
-              replaceHtmlTags(project?.name ?? 'error', '')
-            }
+            value={replaceHtmlTags(
+              data?.project?.name ?? project?.name ?? 'error'
+            )}
             readOnly
           />
-          {form.formState.errors.project && (
-            <div className="text-destructive text-sm">
-              {form.formState.errors.project.name?.message}
-            </div>
-          )}
         </div>
       </div>
-      <Input
-        className="hidden"
-        {...form.register('project.id')}
-        value={data?.project.id ?? project?._id ?? ''}
-        readOnly
-      />
     </div>
   )
 }

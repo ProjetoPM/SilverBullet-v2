@@ -9,10 +9,6 @@ export const max = {
 }
 
 export const WeeklyReportSchema = z.object({
-  project: z.object({
-    id: z.string().refine((value) => value !== 'error'),
-    name: z.string().refine((value) => value !== 'error')
-  }),
   weeklyEvaluationId: z
     .string()
     .refine((value) => value.length > 0, params('select_weekly_evaluation')),

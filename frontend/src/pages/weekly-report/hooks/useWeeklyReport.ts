@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { queryClient } from '@/services/react-query'
-import { getWorkspaceId } from '@/stores/useWorkspaceStore'
+import { getProjectId, getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery } from 'react-query'
@@ -102,7 +102,7 @@ export const useWeeklyReport = ({
   const create = useMutation(
     async (data: WeeklyReport) => {
       return await api.post(
-        `/tenant/${getWorkspaceId()}/weekly-report/create`,
+        `/tenant/${getWorkspaceId()}/project/${getProjectId()}/weekly-report/create`,
         { data: { ...data } }
       )
     },
