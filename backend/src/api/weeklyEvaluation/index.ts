@@ -4,5 +4,6 @@ export default (app) => {
   app.get(`/tenant/:tenantId/weekly-evaluation/list-availables`, require('./getAvailableEvaluations').default);
   app.get(`/tenant/:tenantId/weekly-evaluation/list`, require('./getEvaluationsByTenant').default);
   app.get(`/tenant/:tenantId/weekly-evaluation/:id/metrics`, require('./getMetrics').default);
+  app.get(`/tenant/:tenantId/weekly-evaluation/:id`, require('./find').default);
   app.get(`/weekly-evaluation/metrics/list`, require('./getAllMetrics').default);
 };
