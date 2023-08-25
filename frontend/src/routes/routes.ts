@@ -26,6 +26,7 @@ export const routes = {
   },
   weekly_evaluation: {
     index: '/weekly-evaluation',
-    new: '/weekly-evaluation/new'
+    new: '/weekly-evaluation/new',
+    edit: '/weekly-evaluation/:id/edit'
   }
 }

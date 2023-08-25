@@ -10,9 +10,8 @@ import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { z } from 'zod'
 import { create } from 'zustand'
-import { WeeklyReportSchema } from '../weekly-report.schema'
+import { WeeklyReport } from '../weekly-report.schema'
 import { WeeklyReportList } from '../weekly-report.types'
 
 type Content = {
@@ -30,11 +29,14 @@ export const useFileList = create<FileUpload>()((set) => ({
   setContent: (content: Array<Content>) => set({ content })
 }))
 
-type FormWeeklyReport = z.infer<typeof WeeklyReportSchema>
-
 type WeeklyReportProps = Props & {
   useWeeklyEvaluation?: boolean
 }
+
+/**
+ * Chave usada para o cache do React Query.
+ */
+const KEY = 'weekly-reports'
 
 export const useWeeklyReport = ({
   useList = false,
@@ -63,7 +65,7 @@ export const useWeeklyReport = ({
     return response.data
   }
 
-  const list = useQuery<WeeklyReportList>('weekly-report', _list, {
+  const list = useQuery<WeeklyReportList>(KEY, _list, {
     enabled: useList,
     onError: () => redirect()
   })
@@ -72,7 +74,7 @@ export const useWeeklyReport = ({
    * Realiza (se houver) o upload dos arquivos de cada um
    * dos processos adicionados.
    */
-  const uploadFiles = async (data: FormWeeklyReport) => {
+  const uploadFiles = async (data: WeeklyReport) => {
     const maybeHasFiles = content.length > 0 && data.processes
 
     if (maybeHasFiles) {
@@ -98,7 +100,7 @@ export const useWeeklyReport = ({
    * do servidor.
    */
   const create = useMutation(
-    async (data: FormWeeklyReport) => {
+    async (data: WeeklyReport) => {
       return await api.post(
         `/tenant/${getWorkspaceId()}/weekly-report/create`,
         { data: { ...data } }
@@ -110,7 +112,7 @@ export const useWeeklyReport = ({
           case StatusCodes.OK:
             await uploadFiles(data)
             toast.success(t('created_successfully'))
-            queryClient.invalidateQueries('weekly-reports')
+            await queryClient.invalidateQueries([KEY])
             navigate(routes.weekly_report.index)
             break
         }
@@ -151,7 +153,7 @@ export const useWeeklyReport = ({
   }
 
   /**
-   * Lista todas as avliações semanais.
+   * Lista todas as avaliações semanais.
    */
   const weeklyEvaluation = useQuery<{
     rows: { id: string; name: string }[]

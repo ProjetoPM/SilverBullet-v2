@@ -2,8 +2,8 @@ import { Editor } from '@/components/Editor/Editor'
 import { Button, Form, Popover, Select } from '@/components/ui'
 import { Calendar } from '@/components/ui/Calendar'
 import { cn } from '@/lib/utils'
+import { formatDate } from '@/utils/date-format'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
 import { enUS, ptBR } from 'date-fns/locale'
 import i18next from 'i18next'
 import { CalendarIcon, Edit, RotateCcw, Save } from 'lucide-react'
@@ -20,13 +20,15 @@ import {
 } from './weekly-evaluation.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyEvaluation
+  data?: WeeklyEvaluation & {
+    id: string
+  }
 }
 
 export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-evaluation')
   const { metrics } = useMetrics()
-  const { create } = useWeeklyEvaluation()
+  const { create, update } = useWeeklyEvaluation({})
 
   const form = useForm<WeeklyEvaluation>({
     mode: 'all',
@@ -39,6 +41,11 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
       toast.error(t('end_date_gt_start_date'), {
         autoClose: 4000
       })
+      return
+    }
+
+    if (data) {
+      await update.mutateAsync({ id: data.id, ...form })
       return
     }
     await create.mutateAsync(form)
@@ -85,9 +92,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'P', {
-                            locale: i18next.language === 'en-US' ? enUS : ptBR
-                          })
+                          formatDate(field.value)
                         ) : (
                           <span>{t('pick_a_date')}</span>
                         )}
@@ -126,9 +131,7 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'P', {
-                            locale: i18next.language === 'en-US' ? enUS : ptBR
-                          })
+                          formatDate(field.value)
                         ) : (
                           <span>{t('pick_a_date')}</span>
                         )}
@@ -198,7 +201,10 @@ export const WeeklyEvaluationForm = ({ data }: WeeklyReportFormProps) => {
                 </Form.Control>
                 <Select.Content>
                   {metrics?.map((item) => (
-                    <Select.Item key={item.id} value={item.id}>
+                    <Select.Item
+                      key={item.metricGroupId}
+                      value={item.metricGroupId}
+                    >
                       {item.metrics.map((metric) => metric.name).join(' - ')}
                     </Select.Item>
                   ))}

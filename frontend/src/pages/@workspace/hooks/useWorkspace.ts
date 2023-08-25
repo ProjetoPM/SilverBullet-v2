@@ -12,12 +12,13 @@ import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import {
-  FormWorkspace,
-  Workspace,
-  WorkspaceData,
-  WorkspaceList
-} from '../workspace.types'
+import { Workspace } from '../workspace.schema'
+import { WorkspaceData, WorkspaceList } from '../workspace.types'
+
+/**
+ * Chave usada para o cache do React Query.
+ */
+const KEY = 'workspaces'
 
 export const useWorkspace = ({
   useList = false,
@@ -39,8 +40,8 @@ export const useWorkspace = ({
       .then((res) => {
         return {
           tenants: res.data.tenants
-            .filter((tenant: Workspace) => tenant.status === 'active')
-            .map((tenant: Workspace) => ({
+            .filter((tenant) => tenant.status === 'active')
+            .map((tenant) => ({
               deletionId: tenant.tenant._id,
               ...tenant
             }))
@@ -54,7 +55,7 @@ export const useWorkspace = ({
     return response
   }
 
-  const list = useQuery<WorkspaceList>('workspaces', _list, {
+  const list = useQuery<WorkspaceList>(KEY, _list, {
     enabled: useList,
     onError: () => {
       toast.error(t('default:unknown_error'))
@@ -89,7 +90,7 @@ export const useWorkspace = ({
    * o cache anterior.
    */
   const create = useMutation(
-    async (data: FormWorkspace) => {
+    async (data: Workspace) => {
       return await api
         .post('/tenant', { data: { ...data } })
         .catch((err) => err.response)
@@ -99,7 +100,7 @@ export const useWorkspace = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('created_successfully'))
-            await queryClient.invalidateQueries(['workspaces'])
+            await queryClient.invalidateQueries([KEY])
             navigate(routes.workspaces.index)
         }
       },
@@ -114,9 +115,9 @@ export const useWorkspace = ({
    * invalida o cache anterior.
    */
   const update = useMutation(
-    async (data: FormWorkspace) => {
+    async (data: Workspace) => {
       return await api
-        .put(`/tenant/${data._id}`, { data: { ...data } })
+        .put(`/tenant/${useEdit}`, { data: { ...data } })
         .catch((err) => err.response)
     },
     {
@@ -124,7 +125,7 @@ export const useWorkspace = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('edited_successfully'))
-            await queryClient.invalidateQueries(['workspaces'])
+            await queryClient.invalidateQueries([KEY])
             navigate(routes.workspaces.index)
             break
           case StatusCodes.FORBIDDEN:
@@ -161,7 +162,7 @@ export const useWorkspace = ({
               resetWorkspaceStore()
             }
             toast.success(t('deleted_successfully'))
-            await queryClient.invalidateQueries(['workspaces'])
+            await queryClient.invalidateQueries([KEY])
             break
           case StatusCodes.UNAUTHORIZED:
             toast.error(t('no_permission_to_delete'))

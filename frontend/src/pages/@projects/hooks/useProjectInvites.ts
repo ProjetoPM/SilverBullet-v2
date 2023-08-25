@@ -10,6 +10,11 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Invites } from '../users/add/invite-users'
 
+/**
+ * Chave usada para o cache do React Query.
+ */
+export const KEY = 'project-users'
+
 export const useProjectsInvites = ({ useList = false }: Props) => {
   const { t } = useTranslation('projects')
   const { redirect } = useRedirect()

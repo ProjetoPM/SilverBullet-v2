@@ -19,7 +19,7 @@ export function DataTableColumnHeader<TData, TValue>({
   const { t } = useTranslation()
 
   return (
-    <div className={cn('flex items-center space-x-2', className)}>
+    <div className={cn('flex items-center space-x-2 min-w-max', className)}>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button

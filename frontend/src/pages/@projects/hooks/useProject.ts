@@ -10,6 +10,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { DeleteProject, FormProject, ProjectData } from '../projects.types'
 
+/**
+ * Chave usada para o cache do React Query.
+ */
+const KEY = 'projects'
+
 export const useProjects = ({
   useList = false,
   useEdit = undefined
@@ -45,7 +50,7 @@ export const useProjects = ({
     return response
   }
 
-  const list = useQuery<{ rows: ProjectData[] }>(['projects'], _list, {
+  const list = useQuery<{ rows: ProjectData[] }>([KEY], _list, {
     enabled: useList,
     onError: () => redirect()
   })
@@ -90,7 +95,7 @@ export const useProjects = ({
         switch (response?.status) {
           case StatusCodes.OK:
             toast.success(t('created_successfully'))
-            await queryClient.invalidateQueries(['projects'])
+            await queryClient.invalidateQueries([KEY])
             navigate(routes.projects.index)
             break
           case StatusCodes.BAD_REQUEST:
@@ -124,7 +129,7 @@ export const useProjects = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('edited_successfully'))
-            await queryClient.invalidateQueries(['projects'])
+            await queryClient.invalidateQueries([KEY])
             navigate(routes.projects.index)
             break
           default:
@@ -155,7 +160,7 @@ export const useProjects = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('deleted_successfully'))
-            await queryClient.invalidateQueries(['projects'])
+            await queryClient.invalidateQueries([KEY])
             break
           default:
             toast.error(response.data)

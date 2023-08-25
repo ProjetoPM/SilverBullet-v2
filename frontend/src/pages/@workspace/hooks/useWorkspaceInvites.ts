@@ -8,6 +8,11 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Invites } from '../users/add/invite-users'
 
+/**
+ * Chave usada para o cache do React Query.
+ */
+const KEY = 'workspace-users'
+
 export const useWorkspaceInvites = ({ useList = false }: Props) => {
   const { t } = useTranslation('workspace')
   const { redirect } = useRedirect()
@@ -28,7 +33,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
   /**
    * Lista todos os usuários de um Workspace
    */
-  const list = useQuery<{ rows: Users[] }>('workspace-users', _list, {
+  const list = useQuery<{ rows: Users[] }>(KEY, _list, {
     enabled: useList,
     cacheTime: 0,
     onError: () => redirect()
@@ -50,7 +55,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('users_invited'))
-            await queryClient.invalidateQueries(['workspace-users'])
+            await queryClient.invalidateQueries([KEY])
             break
         }
       },
@@ -73,7 +78,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('user_deleted_successfully'))
-            await queryClient.invalidateQueries(['workspace-users'])
+            await queryClient.invalidateQueries([KEY])
             break
           case StatusCodes.UNAUTHORIZED:
             toast.error(t('no_permission_to_delete'))
