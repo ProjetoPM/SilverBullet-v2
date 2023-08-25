@@ -179,7 +179,7 @@ class WeeklyReportRepository {
   static async findById(id, options: IRepositoryOptions) {
     const record =
       await MongooseRepository.wrapWithSessionIfExists(
-        WeeklyReport(options.database).findById(id),
+        WeeklyReport(options.database).findById(id).populate('project', 'id name'),
         options,
       );
 
