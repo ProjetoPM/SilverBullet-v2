@@ -1,0 +1,30 @@
+import { DataTable } from '@/components/DataTable/DataTable'
+import { Separator } from '@/components/ui'
+import { PageLayout } from '@/layout'
+import { routes } from '@/routes/routes'
+import { useTranslation } from 'react-i18next'
+import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
+import { columns } from './table/columns'
+import { WeeklyEvaluationToolbar } from './weekly-evaluation.toolbar'
+
+const WeeklyEvaluationList = () => {
+  const { t } = useTranslation('weekly-evaluation')
+  const breadcrumb = [['Home', routes.weekly_evaluation.index], [t('title')]]
+  const { list } = useWeeklyEvaluation({ useList: true })
+
+  return (
+    <PageLayout title={t('title')} breadcrumb={breadcrumb}>
+      <div className="min-h-screen">
+        <WeeklyEvaluationToolbar />
+        <Separator className="my-5" />
+        <DataTable
+          isLoading={list.isLoading}
+          columns={columns}
+          data={list.data?.rows ?? []}
+        />
+      </div>
+    </PageLayout>
+  )
+}
+
+export default WeeklyEvaluationList

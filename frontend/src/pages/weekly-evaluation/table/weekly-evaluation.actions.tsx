@@ -1,21 +1,20 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { routes } from '@/routes/routes'
+import { replaceParams } from '@/utils/replace-params'
+import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { WeeklyEvaluationData } from '../weekly-evaluation.types'
 
 type ProjectActionsProps = {
   id: string
-  data: any
+  data: WeeklyEvaluationData
 }
 
-export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
+export const WeeklyEvaluationActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
 
   const handleDelete = async () => {
-    // TODO
-  }
-
-  const handleOpen = () => {
     // TODO
   }
 
@@ -30,15 +29,10 @@ export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          <DropdownMenu.Item
-            className="flex gap-3"
-            id={`open-${id}`}
-            onClick={handleOpen}
+          <Link
+            to={replaceParams(routes.weekly_evaluation.edit, data?.id)}
+            id={`edit-${id}`}
           >
-            <FolderOpen size={18} />
-            {t('default:btn.open')}
-          </DropdownMenu.Item>
-          <Link to={'#'} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}
@@ -55,7 +49,7 @@ export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
+            onClick={() => navigator.clipboard.writeText(data?.id ?? 'error')}
             className="flex gap-3"
             id={`copy-${id}`}
           >

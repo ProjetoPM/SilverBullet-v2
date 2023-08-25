@@ -3,9 +3,10 @@ import { Checkbox } from '@/components/ui'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next, { t } from 'i18next'
-import { WeeklyReportActions } from './weekly-report.actions'
+import { WeeklyEvaluationData } from '../weekly-evaluation.types'
+import { WeeklyEvaluationActions } from './weekly-evaluation.actions'
 
-const helper = createColumnHelper<any>()
+const helper = createColumnHelper<WeeklyEvaluationData>()
 
 export const columns = [
   /**
@@ -33,7 +34,7 @@ export const columns = [
   /**
    * Evaluation Name
    */
-  helper.accessor((row) => row.weeklyEvaluation.name, {
+  helper.accessor((row) => row.name, {
     id: 'evaluationName',
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -43,21 +44,21 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div id={`evaluation-name-${row.index}`}>
-        {row.getValue('evaluationName')}
+        {replaceHtmlTags(row.getValue('evaluationName'))}
       </div>
     ),
     enableSorting: true,
     enableHiding: true
   }),
   /**
-   * Tool Evaluation
+   * Report type
    */
-  helper.accessor((row) => row.toolEvaluation, {
-    id: 'toolEvaluation',
+  helper.accessor((row) => row.type, {
+    id: 'reportType',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={t('data-table:tool_evaluation')}
+        header={t('data-table:report_type')}
       />
     ),
     cell: ({ row }) => (
@@ -65,25 +66,48 @@ export const columns = [
         id={`evaluation-name-${row.index}`}
         className="line-clamp-1 max-w-lg"
       >
-        {replaceHtmlTags(row.getValue('toolEvaluation'))}
+        {replaceHtmlTags(row.getValue('reportType'))}
       </div>
     ),
     enableSorting: true,
     enableHiding: true
   }),
   /**
-   * Created At
+   * Start Date
    */
-  helper.accessor((row) => row.createdAt, {
-    id: 'createdAt',
+  helper.accessor((row) => row.startDate, {
+    id: 'startDate',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        header={i18next.t('data-table:created_at')}
+        header={i18next.t('data-table:start_date')}
       />
     ),
     cell: ({ row }) => {
-      const data = new Date(row.getValue('createdAt'))
+      const data = new Date(row.getValue('startDate'))
+
+      const formatted = new Intl.DateTimeFormat(i18next.language, {
+        dateStyle: 'medium'
+      }).format(data)
+
+      return <div className="font-medium">{formatted}</div>
+    },
+    enableSorting: true,
+    enableHiding: true
+  }),
+  /**
+   * End Date
+   */
+  helper.accessor((row) => row.endDate, {
+    id: 'endDate',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        header={i18next.t('data-table:end_date')}
+      />
+    ),
+    cell: ({ row }) => {
+      const data = new Date(row.getValue('endDate'))
 
       const formatted = new Intl.DateTimeFormat(i18next.language, {
         dateStyle: 'medium'
@@ -103,7 +127,7 @@ export const columns = [
       <DataTableColumnHeader column={column} header={'Actions'} />
     ),
     cell: ({ row }) => (
-      <WeeklyReportActions data={row.original} id="weekly-report" />
+      <WeeklyEvaluationActions data={row.original} id="weekly-evaluation" />
     ),
     enableSorting: false,
     enableHiding: true

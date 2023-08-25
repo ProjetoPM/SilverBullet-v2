@@ -8,8 +8,13 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Invites } from '../users/add/invite-users'
 
+/**
+ * Chave usada para o cache do React Query.
+ */
+const KEY = 'workspace-users'
+
 export const useWorkspaceInvites = ({ useList = false }: Props) => {
-  const { t } = useTranslation('workspace')
+  const { t } = useTranslation(['workspace', 'default'])
   const { redirect } = useRedirect()
   const { id } = useParams()
   const queryClient = useQueryClient()
@@ -28,7 +33,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
   /**
    * Lista todos os usuários de um Workspace
    */
-  const list = useQuery<{ rows: Users[] }>('workspace-users', _list, {
+  const list = useQuery<{ rows: Users[] }>(KEY, _list, {
     enabled: useList,
     cacheTime: 0,
     onError: () => redirect()
@@ -39,20 +44,20 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
    */
   const create = useMutation(
     async (data: Invites[]) => {
-      return await api
-        .post(`/tenant/${id}/user`, {
+      return await toast.promise(
+        api.post(`/tenant/${id}/user`, {
           data: { emails: data }
-        })
-        .catch((err) => err.response)
+        }),
+        {
+          pending: t('default:promise.pending'),
+          success: t('workspace:users_invited'),
+          error: t('default:promise.error')
+        }
+      )
     },
     {
-      onSuccess: async (response) => {
-        switch (response.status) {
-          case StatusCodes.OK:
-            toast.success(t('users_invited'))
-            await queryClient.invalidateQueries(['workspace-users'])
-            break
-        }
+      onSuccess: async () => {
+        await queryClient.invalidateQueries([KEY])
       },
       onError: () => redirect()
     }
@@ -72,8 +77,8 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
       onSuccess: async (response) => {
         switch (response.status) {
           case StatusCodes.OK:
-            toast.success(t('user_deleted_successfully'))
-            await queryClient.invalidateQueries(['workspace-users'])
+            toast.success(t('users_deleted_successfully'))
+            await queryClient.invalidateQueries([KEY])
             break
           case StatusCodes.UNAUTHORIZED:
             toast.error(t('no_permission_to_delete'))

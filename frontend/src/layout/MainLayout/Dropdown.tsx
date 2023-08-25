@@ -18,15 +18,15 @@ const Dropdown = () => {
           <Settings size={20} />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="w-56">
+      <DropdownMenu.Content className="w-56" align="end">
         <DropdownMenu.Label>{t('default:my_account')}</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <DropdownMenu.Item
-          className="bg-accent"
+          className="bg-accent grid grid-cols-[auto,1fr] gap-2"
           onClick={() => navigator.clipboard.writeText(email ?? 'error')}
         >
-          <User className="mr-2 w-4 h-4" />
-          <span>{email}</span>
+          <User className="w-4 h-4" />
+          <span className="truncate">{email}</span>
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Group>

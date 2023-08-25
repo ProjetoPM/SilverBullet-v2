@@ -2,6 +2,7 @@ import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './hooks/useWeeklyReport'
@@ -21,6 +22,7 @@ interface WeeklyReportFormProps {
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const { create } = useWeeklyReport({})
+  const [output, setOutput] = useState('')
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -29,7 +31,8 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   })
 
   const onSubmit = async (form: WeeklyReport) => {
-    await create.mutateAsync(form)
+    // await create.mutateAsync(form)
+    setOutput(JSON.stringify(form, null, 2))
   }
 
   return (
@@ -58,6 +61,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           )}
         />
         <Processes form={form} control={form.control} />
+        <pre>{output}</pre>
         <div className="space-y-2 space-x-2.5">
           <Button
             type="submit"

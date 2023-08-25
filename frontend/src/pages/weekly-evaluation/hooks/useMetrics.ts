@@ -2,7 +2,7 @@ import { api } from '@/services/api'
 import { useQuery } from 'react-query'
 
 export type Metrics = {
-  id: string
+  metricGroupId: string
   metrics: {
     name: string
     value: number

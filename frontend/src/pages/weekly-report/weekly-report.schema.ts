@@ -9,9 +9,10 @@ export const max = {
 }
 
 export const WeeklyReportSchema = z.object({
-  projectName: z
-    .string()
-    .refine((value) => value.length > 0, params('no_project_detected')),
+  project: z.object({
+    id: z.string().refine((value) => value !== 'error'),
+    name: z.string().refine((value) => value !== 'error')
+  }),
   weeklyEvaluationId: z
     .string()
     .refine((value) => value.length > 0, params('select_weekly_evaluation')),
@@ -45,6 +46,7 @@ export const WeeklyReportSchema = z.object({
 })
 
 export const defaultValues = {
+  project: undefined,
   weeklyEvaluationId: '',
   toolEvaluation: '',
   processes: undefined

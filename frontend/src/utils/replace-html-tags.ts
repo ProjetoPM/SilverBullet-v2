@@ -1,5 +1,5 @@
-export const replaceHtmlTags = (html: string) => {
-  return html?.replace(/<[^>]+>/g, ' ')
+export const replaceHtmlTags = (html: string, replace?: string) => {
+  return html?.replace(/<[^>]+>/g, replace ?? ' ')
 }
 
 export const removeHtmlEscapeCodes = (html: string) => {
