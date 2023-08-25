@@ -1,7 +1,7 @@
 export interface IProject {
   _id: Object;
   id: Object | null;
-  project: Object | null;
+  project: any | null;
   name: string;
   tenant: Object | string;
   description: string;

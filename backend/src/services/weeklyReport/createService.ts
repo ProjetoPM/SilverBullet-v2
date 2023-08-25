@@ -61,20 +61,21 @@ export default class WeeklyReportCreateService {
         userId,
         this.options,
       );
-      console.log(user);
-
+      
       const { projects } = user;
 
       const projectFound: IProject = projects.find(
-        ({ id }) => projectId == id,
+        (project) => projectId == project.project.id,
       );
+
       if (!projectFound)
         throw new Error400(
           language,
           'tenant.weeklyReport.errors.notInProject',
         );
+       
       const projectInTenant =
-        projectFound.tenant == tenantId;
+       projectFound.project.tenant == tenantId;
 
       if (!projectInTenant)
         throw new Error400(
