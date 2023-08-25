@@ -41,9 +41,7 @@ export default class WeeklyReportUpdateService {
 
   async update(
     weeklyReportId: string,
-    data: UpdateRequestWeeklyReport,
-    language: string,
-    tenantId: string,
+    data: UpdateRequestWeeklyReport
   ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
@@ -55,6 +53,19 @@ export default class WeeklyReportUpdateService {
 
       const weeklyReport = await WeeklyReportRepository.findById(weeklyReportId, this.options);
       const { weeklyEvaluation: weeklyEvaluationId } = weeklyReport;
+
+      const { id: tenantId } =
+      await MongooseRepository.getCurrentTenant(
+        this.options,
+      );
+    const { id: projectId } =
+      await MongooseRepository.getCurrentProject(
+        this.options,
+      );
+    const { id: userId } =
+      await MongooseRepository.getCurrentUser(this.options);
+
+    const language = this.options.language;
     
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(

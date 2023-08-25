@@ -18,7 +18,6 @@ export type Process = {
 
 export type RequestWeeklyReport = {
   weeklyEvaluationId: string;
-  projectId: string;
   toolEvaluation: string;
   processes?: Process[];
 };
@@ -30,29 +29,32 @@ export default class WeeklyReportCreateService {
     this.options = options;
   }
 
-  async create(
-    data: RequestWeeklyReport,
-    language: string,
-    tenantId: string,
-    userId: string,
-  ) {
+  async create(data: RequestWeeklyReport) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
 
+    const { id: tenantId } =
+      await MongooseRepository.getCurrentTenant(
+        this.options,
+      );
+    const { id: projectId } =
+      await MongooseRepository.getCurrentProject(
+        this.options,
+      );
+    const { id: userId } =
+      await MongooseRepository.getCurrentUser(this.options);
+
+    const language = this.options.language;
+
     try {
       const date = Date.now();
-      const { weeklyEvaluationId, projectId, processes } =
-        data;
+      const { weeklyEvaluationId, processes } = data;
+
       if (!weeklyEvaluationId)
         throw new Error400(
           language,
           'tenant.weeklyReport.errors.missingWeeklyEvaluationId',
-        );
-      if (!projectId)
-        throw new Error400(
-          language,
-          'tenant.weeklyReport.errors.missingProjectId',
         );
 
       const user = await UserRepository.findById(
@@ -60,7 +62,7 @@ export default class WeeklyReportCreateService {
         this.options,
       );
       console.log(user);
-      
+
       const { projects } = user;
 
       const projectFound: IProject = projects.find(
@@ -73,20 +75,20 @@ export default class WeeklyReportCreateService {
         );
       const projectInTenant =
         projectFound.tenant == tenantId;
+
       if (!projectInTenant)
         throw new Error400(
           language,
-          'tenant.weeklyReport.errors.notInProject',
+          'tenant.weeklyReport.errors.projectNotInTenant',
         );
-        
-        const isInRange =
+
+      const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
           weeklyEvaluationId,
           this.options,
-          );
-          
-          console.log(isInRange);
+        );
+
       if (!isInRange)
         throw new Error400(
           language,

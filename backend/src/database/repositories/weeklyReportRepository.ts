@@ -21,10 +21,17 @@ class WeeklyReportRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    if (!currentTenant) {
+    const { id: tenantId } = currentTenant;
+    if (!tenantId) {
       throw new Error400();
     }
 
+    const { id: projectId } =
+      MongooseRepository.getCurrentUser(options);
+
+    if (!projectId) {
+      throw new Error400();
+    }
     const currentUser =
       MongooseRepository.getCurrentUser(options);
 
@@ -35,8 +42,8 @@ class WeeklyReportRepository {
         {
           ...data,
           weeklyEvaluation: data.weeklyEvaluationId,
-          project: data.projectId,
-          tenant: currentTenant.id,
+          project: projectId,
+          tenant: tenantId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         },
@@ -65,8 +72,8 @@ class WeeklyReportRepository {
     data: UpdateRequestWeeklyReport,
     options: IRepositoryOptions,
   ) {
-
-    const currentUser = await MongooseRepository.getCurrentUser(options);
+    const currentUser =
+      await MongooseRepository.getCurrentUser(options);
 
     const record = await this.findById(id, options);
     if (!record) {
@@ -74,8 +81,7 @@ class WeeklyReportRepository {
     }
 
     const isSameUser = record.createdBy == currentUser.id;
-    if(!isSameUser) throw new Error400(language, '');
-
+    if (!isSameUser) throw new Error400(language, 'tenant.weeklyReport.errors.notSameUser');
 
     await WeeklyReport(options.database).updateOne(
       { _id: id },
@@ -193,8 +199,6 @@ class WeeklyReportRepository {
 
     output.processes = processes;
 
-
-
     return output;
   }
 
@@ -202,23 +206,22 @@ class WeeklyReportRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    const currentUser = MongooseRepository.getCurrentUser(options);
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
 
     const criteriaAnd: any = [
       {
         tenant: currentTenant.id,
       },
       {
-        createdBy: currentUser.id
-      }
+        createdBy: currentUser.id,
+      },
     ];
     const criteria = { $and: criteriaAnd };
 
     let rows = await WeeklyReport(options.database)
       .find(criteria)
       .populate('weeklyEvaluation');
-
- 
 
     const count = await WeeklyReport(
       options.database,
@@ -306,7 +309,6 @@ class WeeklyReportRepository {
       weeklyReport.processes = processes;
       newData.push(weeklyReport);
     }
-
 
     const count = await WeeklyReport(
       options.database,
