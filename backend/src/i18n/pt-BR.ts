@@ -41,6 +41,7 @@ const ptBR = {
   },
 
   tenant: {
+    userNotInTenant: "You cannot delete a workspace that you don't have access to",
 
     weeklyEvaluation: {
     errors: {

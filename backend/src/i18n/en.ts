@@ -42,6 +42,8 @@ const en = {
   },
 
   tenant: {
+    userNotInTenant: "You cannot delete a workspace that you don't have access to",
+
     weeklyEvaluation: {
       errors: {
         nullStartDate: 'Invalid start date',
