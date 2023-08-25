@@ -30,7 +30,7 @@ export default (database) => {
         type: Date,
         required: true,
       },
-      metricGroup: [MetricGroupSchema],
+      metricGroup: MetricGroupSchema,
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
