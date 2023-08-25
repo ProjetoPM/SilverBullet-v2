@@ -47,7 +47,6 @@ export const useWeeklyReport = ({
   const { t } = useTranslation('weekly-report')
   const { redirect } = useRedirect()
   const navigate = useNavigate()
-  const workspaceId = getWorkspaceId()
 
   /**
    * Lista todos os Weekly-Reports disponíveis de um
@@ -55,11 +54,13 @@ export const useWeeklyReport = ({
    */
   const _list = async () => {
     const response = await api
-      .get(`/tenant/${workspaceId}/weekly-report/list`)
+      .get(
+        `/tenant/${getWorkspaceId()}/project/${getProjectId()}weekly-report/list`
+      )
       .then((res) => res.data)
       .catch((err) => err.response)
 
-    if (!workspaceId) {
+    if (!getWorkspaceId()) {
       redirect()
     }
     return response.data
@@ -123,7 +124,7 @@ export const useWeeklyReport = ({
 
   const _edit = async () => {
     const response = await api
-      .get(`/tenant/${workspaceId}/weekly-report/${useEdit}`)
+      .get(`/tenant/${getWorkspaceId()}/weekly-report/${useEdit}`)
       .then((res) => res.data)
       .catch((err) => err.response)
 
@@ -145,7 +146,7 @@ export const useWeeklyReport = ({
   })
 
   const _listWeeklyEvaluation = async () => {
-    const url = `/tenant/${workspaceId}/weekly-evaluation/list-availables`
+    const url = `/tenant/${getWorkspaceId()}/weekly-evaluation/list-availables`
     return api
       .get(url)
       .then((res) => res.data)
