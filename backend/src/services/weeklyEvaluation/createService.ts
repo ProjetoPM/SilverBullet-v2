@@ -36,19 +36,41 @@ export default class WeeklyEvaluationCreateService {
       this.options.database,
     );
 
-    const {startDate, endDate} = dates;
-    
-    if (!startDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullStartDate');
-    if (!endDate) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.nullEndDate');
+    const { startDate, endDate } = dates;
+
+    if (!startDate)
+      throw new Error400(
+        this.options.language,
+        'tenant.weeklyEvaluation.errors.nullStartDate',
+      );
+    if (!endDate)
+      throw new Error400(
+        this.options.language,
+        'tenant.weeklyEvaluation.errors.nullEndDate',
+      );
 
     const startDateObject = new Date(startDate);
     const endDateObject = new Date(endDate);
-    if(endDateObject.getTime() < startDateObject.getTime()) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.startDateGreaterThanEndDate');
-    const metricGroup = metricGroups.find(
-      (metric) => metric.metricGroupId === metricGroupId,
-    );
+    if (endDateObject.getTime() < startDateObject.getTime())
+      throw new Error400(
+        this.options.language,
+        'tenant.weeklyEvaluation.errors.startDateGreaterThanEndDate',
+      );
+    const metricGroup = metricGroups.find((metric) => {
+      console.log(metricGroupId);
+      console.log(metric.metricGroupId);
 
-    if (!metricGroup) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.invalidMetricGroup');
+      console.log(metric.metricGroupId === metricGroupId);
+
+      if (metric.metricGroupId === metricGroupId) return;
+    });
+
+    if (!metricGroup)
+      throw new Error400(
+        this.options.language,
+        'tenant.weeklyEvaluation.errors.invalidMetricGroup',
+      );
+    console.log(metricGroup);
 
     const data = {
       name,
@@ -58,7 +80,6 @@ export default class WeeklyEvaluationCreateService {
       metricGroup,
     };
 
-    
     try {
       let record = await WeeklyEvaluationRepository.create(
         data,

@@ -6,8 +6,7 @@ const MetricGroupSchema = new Schema(
   {
     metricGroupId: {
       type: String,
-      required: true,
-      enum: ['NOK', 'PNOK', 'POK', 'PTOK', 'TOK']
+      required: true
     },
     metrics: [MetricSchema],
   },
