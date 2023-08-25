@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Error401 from '../../errors/Error401';
-import MetricGroupSchema from './schemas/metricGroup';
+import MetricGroupSchema from './schemas/metric';
 
 const Schema = mongoose.Schema;
 

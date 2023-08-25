@@ -1,30 +1,33 @@
 import mongoose from 'mongoose';
-import MetricSchema from './metric';
 const Schema = mongoose.Schema;
 
-const MetricGroupSchema = new Schema(
+const MetricSchema = new Schema(
   {
-    metricGroupId: {
+    name: {
       type: String,
       required: true,
       enum: ['NOK', 'PNOK', 'POK', 'PTOK', 'TOK']
     },
-    metrics: [MetricSchema],
+    value: {
+      type: Number,
+      required: true,
+      enum: [0, 2.5, 5, 7.5, 10]
+    },
   },
   { timestamps: false },
 );
 
-MetricGroupSchema.virtual('id').get(function () {
+MetricSchema.virtual('id').get(function () {
   // @ts-ignore
   return this._id.toHexString();
 });
 
-MetricGroupSchema.set('toJSON', {
+MetricSchema.set('toJSON', {
   getters: true,
 });
 
-MetricGroupSchema.set('toObject', {
+MetricSchema.set('toObject', {
   getters: true,
 });
 
-export default MetricGroupSchema;
+export default MetricSchema;

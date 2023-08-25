@@ -14,7 +14,7 @@ export interface IWeeklyEvaluation {
   type: string;
   startDate: Date | string;
   endDate: Date | string;
-  metrics: IMetric[];
+  metricGroup: IMetricGroup;
 }
 
 export interface IWeeklyReport {
@@ -49,10 +49,6 @@ export interface IProcessReport {
 
 
 
-export interface IMetricGroup {
-  id: string;
-  metrics: Array<IMetric>;
-}
 
 export interface IProcessGroup {
   id: string;
@@ -67,4 +63,9 @@ export interface IProcessName {
 export interface IMetric {
   name: string;
   value: number;
+}
+
+export interface IMetricGroup {
+  metricGroupId: string;
+  metrics: IMetric[];
 }

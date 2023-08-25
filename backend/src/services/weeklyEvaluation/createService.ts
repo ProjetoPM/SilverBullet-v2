@@ -45,7 +45,7 @@ export default class WeeklyEvaluationCreateService {
     const endDateObject = new Date(endDate);
     if(endDateObject.getTime() < startDateObject.getTime()) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.startDateGreaterThanEndDate');
     const metricGroup = metricGroups.find(
-      (metric) => metric.id === metricGroupId,
+      (metric) => metric.metricGroupId === metricGroupId,
     );
 
     if (!metricGroup) throw new Error400(this.options.language, 'tenant.weeklyEvaluation.errors.invalidMetricGroup');
@@ -55,7 +55,7 @@ export default class WeeklyEvaluationCreateService {
       type,
       startDate,
       endDate,
-      metrics: metricGroup.metrics,
+      metricGroup,
     };
 
     

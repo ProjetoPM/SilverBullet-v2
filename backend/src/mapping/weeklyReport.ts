@@ -2,7 +2,7 @@ import { IMetricGroup, IProcessGroup } from '../interfaces';
 
 export const metricGroups: Array<IMetricGroup> = [
   {
-    id: '1',
+    metricGroupId: '1',
     metrics: [
       {
         name: 'NOK',
@@ -16,10 +16,10 @@ export const metricGroups: Array<IMetricGroup> = [
         name: 'TOK',
         value: 10,
       },
-    ],
+    ]
   },
   {
-    id: '2',
+    metricGroupId: '2',
     metrics: [
       {
         name: 'NOK',
@@ -44,6 +44,7 @@ export const metricGroups: Array<IMetricGroup> = [
     ],
   },
 ];
+
 
 export const groups: Array<IProcessGroup> = [
   {
