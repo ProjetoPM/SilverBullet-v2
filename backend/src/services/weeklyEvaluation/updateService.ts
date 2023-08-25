@@ -9,9 +9,13 @@ import { metricGroups } from '../../mapping/weeklyReport';
 export interface IWeeklyEvaluation {
   name: string;
   type: string;
-  startDate: Date | string;
-  endDate: Date | string;
+  dates: IDates;
   metricGroupId: string;
+}
+
+export interface IDates {
+  startDate: string;
+  endDate: string;
 }
 
 export interface IRequest {
@@ -29,12 +33,13 @@ export default class WeeklyEvaluationEditService {
   async handle(reqData: IRequest) {
     const { data, weeklyEvaluationId } = reqData;
     const {
-      startDate,
-      endDate,
+      dates,
       metricGroupId,
       name,
       type,
     } = data;
+
+    const { startDate, endDate } = dates;
 
     const session = await MongooseRepository.createSession(
       this.options.database,

@@ -54,9 +54,8 @@ export default class WeeklyReportUpdateService {
       const { processes } = data;
 
       const weeklyReport = await WeeklyReportRepository.findById(weeklyReportId, this.options);
-      const weeklyEvaluationId = weeklyReport.weeklyEvaluation;
-
-      
+      const { weeklyEvaluation: weeklyEvaluationId } = weeklyReport;
+    
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
@@ -64,8 +63,6 @@ export default class WeeklyReportUpdateService {
           this.options,
         );
 
-
-        
       if (!isInRange)
         throw new Error400(
           language,
@@ -115,7 +112,7 @@ export default class WeeklyReportUpdateService {
           filesWithFolder.push(`${filesFolder}/${file.name}`);
         });
 
-        const { data, error } = await supabase.storage.from ('weekly-report').remove (filesWithFolder);
+        await supabase.storage.from ('weekly-report').remove (filesWithFolder);
       }
       
 
