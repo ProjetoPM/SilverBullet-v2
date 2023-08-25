@@ -27,7 +27,7 @@ class WeeklyReportRepository {
     }
 
     const { id: projectId } =
-      MongooseRepository.getCurrentUser(options);
+      MongooseRepository.getCurrentProject(options);
 
     if (!projectId) {
       throw new Error400();
