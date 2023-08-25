@@ -109,6 +109,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      adminGetWeeklyReport: {
+        id: 'adminGetWeeklyReport',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       projectRead: {
         id: 'projectRead',
         allowedRoles: [roles.admin, roles.student],

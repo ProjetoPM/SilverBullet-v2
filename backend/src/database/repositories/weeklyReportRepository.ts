@@ -206,12 +206,18 @@ class WeeklyReportRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
+    const currentProject =
+      MongooseRepository.getCurrentTenant(options);
+
     const currentUser =
       MongooseRepository.getCurrentUser(options);
 
     const criteriaAnd: any = [
       {
         tenant: currentTenant.id,
+      },
+      {
+        project: currentProject.id,
       },
       {
         createdBy: currentUser.id,
