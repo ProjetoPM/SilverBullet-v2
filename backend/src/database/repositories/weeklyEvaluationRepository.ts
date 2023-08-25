@@ -12,7 +12,6 @@ class WeeklyEvaluationRepository {
     data: IWeeklyEvaluation,
     options: IRepositoryOptions,
   ) {
-
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
@@ -155,10 +154,16 @@ class WeeklyEvaluationRepository {
     );
   }
 
-  static async getMetrics(weeklyEvaluationId: string, options){
-    const weeklyEvaluation = await this.findById(weeklyEvaluationId, options);
+  static async getMetrics(
+    weeklyEvaluationId: string,
+    options,
+  ) {
+    const weeklyEvaluation = await this.findById(
+      weeklyEvaluationId,
+      options,
+    );
 
-    return weeklyEvaluation.metrics
+    return weeklyEvaluation.metrics;
   }
 
   static async findById(id, options: IRepositoryOptions) {
@@ -176,35 +181,41 @@ class WeeklyEvaluationRepository {
       ? record.toObject()
       : record;
 
+    const { startDate, endDate } = output;
+    delete output.startDate;
+    delete output.endDate;
+
+    output.dates = {
+      startDate,
+      endDate
+    }
+
     return output;
   }
 
-  static async getAvailableEvaluations(
-    options,
-  ) {
-
-    const date =  Date.now();
+  static async getAvailableEvaluations(options) {
+    const date = Date.now();
 
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
     const criteriaAnd: any = [
       {
-        tenant: currentTenant.id
+        tenant: currentTenant.id,
       },
       {
         startDate: {
           $lte: date,
-        }
+        },
       },
       {
         endDate: {
           $gte: date,
-        }
-      }
+        },
+      },
     ];
     const criteria = { $and: criteriaAnd };
-    
+
     const rows = await WeeklyEvaluation(
       options.database,
     ).find(criteria);
@@ -213,21 +224,19 @@ class WeeklyEvaluationRepository {
       options.database,
     ).countDocuments(criteria);
 
-    return {rows, count};
+    return { rows, count };
   }
-  static async getAllEvaluationsByTenant(
-    options,
-  ) {
+  static async getAllEvaluationsByTenant(options) {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
     const criteriaAnd: any = [
       {
-        tenant: currentTenant.id
-      }
+        tenant: currentTenant.id,
+      },
     ];
     const criteria = { $and: criteriaAnd };
-    
+
     const rows = await WeeklyEvaluation(
       options.database,
     ).find(criteria);
@@ -236,7 +245,7 @@ class WeeklyEvaluationRepository {
       options.database,
     ).countDocuments(criteria);
 
-    return {rows, count};
+    return { rows, count };
   }
 
   static async verifySubmitDateRange(
@@ -247,35 +256,33 @@ class WeeklyEvaluationRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-      console.log('tenant');
-      
-      console.log(currentTenant.id);
-      
+    console.log('tenant');
+
+    console.log(currentTenant.id);
+
     const criteriaAnd: any = [
       {
-        tenant: currentTenant.id
+        tenant: currentTenant.id,
       },
       {
         startDate: {
           $lte: date,
-        }
+        },
       },
       {
         endDate: {
           $gte: date,
-        }
+        },
       },
       {
-        '_id': id,
-      }
+        _id: id,
+      },
     ];
     const criteria = { $and: criteriaAnd };
-    
+
     const data = await WeeklyEvaluation(
       options.database,
     ).find(criteria);
-
-    
 
     const exists = data.length > 0 ? true : false;
     return exists;
