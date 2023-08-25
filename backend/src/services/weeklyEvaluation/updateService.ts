@@ -46,7 +46,7 @@ export default class WeeklyEvaluationEditService {
     );
 
     const metricGroup = metricGroups.find(
-      (metric) => metric.id === metricGroupId,
+      (metric) => metric.metricGroupId === metricGroupId,
     );
 
     if (!startDate)
