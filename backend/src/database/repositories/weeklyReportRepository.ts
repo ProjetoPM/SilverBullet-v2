@@ -207,7 +207,7 @@ class WeeklyReportRepository {
       MongooseRepository.getCurrentTenant(options);
 
     const currentProject =
-      MongooseRepository.getCurrentTenant(options);
+      MongooseRepository.getCurrentProject(options);
 
     const currentUser =
       MongooseRepository.getCurrentUser(options);
