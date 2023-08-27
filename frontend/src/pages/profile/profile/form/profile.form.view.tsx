@@ -1,47 +1,45 @@
-import { User } from '../../User.type'
 import { Input, Label } from '@/components/ui'
+import { useTranslation } from 'react-i18next'
+import { User } from '../../User.type'
 
-const ProfileFormView = (data: User) => {
+const ProfileFormView = (data?: User) => {
+  const { t } = useTranslation('profile')
+
   return (
     <>
-      <div className="mt-1 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-10">
-        <div className="sm:col-span-5">
-          <Label>Nome Completo</Label>
-          <Input
-            readOnly
-            value={data.fullName}
-          ></Input>
+      <div className="space-y-2">
+        <div>
+          <Label>{t('full_name')}</Label>
+          <Input readOnly value={data?.fullName}></Input>
         </div>
-        <div className="sm:col-span-5">
-          <Label>Telefone</Label>
-          <Input
-            readOnly
-            value={(data.phoneNumber?? "(xx) xxxx xxxx")}
-          ></Input>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div>
+            <Label>{t('member_since')}</Label>
+            <Input
+              readOnly
+              value={
+                data?.createdAt
+                  ? new Date(data.createdAt).toLocaleString()
+                  : 'dd/mm/yyyy'
+              }
+            />
+          </div>
+          <div>
+            <Label>{t('last_update')}</Label>
+            <Input
+              readOnly
+              value={
+                data?.updatedAt
+                  ? new Date(data.updatedAt).toLocaleString()
+                  : 'dd/mm/yyyy'
+              }
+            />
+          </div>
         </div>
-      </div>
-      <div className="mt-1 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-10">
-        <div className="sm:col-span-5">
-          <Label>Membro desde:</Label>
-          <Input
-            readOnly
-            value={new Date(data.createdAt).toLocaleDateString()}
-          />
+        <div>
+          <Label>{t('email')}</Label>
+          <Input readOnly value={data?.email}></Input>
         </div>
-        <div className="sm:col-span-5">
-          <Label>Ultima alteração</Label>
-          <Input
-            readOnly
-            value={new Date(data.updatedAt).toLocaleDateString()}
-          />
-        </div>
-      </div>
-      <div>
-        <Label>Email</Label>
-        <Input
-          readOnly
-          value={data.email}
-        ></Input>
       </div>
     </>
   )

@@ -11,7 +11,7 @@ const WorkspacesList = () => {
   const { data, isLoading } = useWorkspaceList()
 
   return (
-    <PageLayout title={t('title')} breadcrumb={breadcrumb}>
+    <PageLayout title={t('title')} breadcrumb={breadcrumb} footer={false}>
       <div className="min-h-screen">
         <DataTable
           isLoading={isLoading}
