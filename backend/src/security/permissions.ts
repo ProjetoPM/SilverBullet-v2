@@ -109,6 +109,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      weeklyReportDelete: {
+        id: 'weeklyReportDelete',
+        allowedRoles: [roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       getWeeklyReport: {
         id: 'getWeeklyReport',
         allowedRoles: [roles.admin, roles.student],

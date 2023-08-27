@@ -138,7 +138,7 @@ class WeeklyReportRepository {
   }
 
   static async destroy(
-    id: Object,
+    id: string,
     options: IRepositoryOptions,
   ) {
     let record =
@@ -161,11 +161,11 @@ class WeeklyReportRepository {
   }
 
   static async destroyAll(
-    WeeklyReports: Array<IWeeklyReport>,
+    weeklyReports: string[],
     options: IRepositoryOptions,
   ) {
-    for (const WeeklyReport of WeeklyReports) {
-      this.destroy(WeeklyReport.id!, options);
+    for (const weeklyReport of weeklyReports) {
+      this.destroy(weeklyReport, options);
     }
   }
 
@@ -192,7 +192,7 @@ class WeeklyReportRepository {
       : record;
 
     const { rows: processes }: { rows: IProcessReport[] } =
-      await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+      await ProcessReportRepository.getProcessesByWeeklyReportId(
         id!,
         options,
       );
@@ -265,7 +265,7 @@ class WeeklyReportRepository {
       const {
         rows: processes,
       }: { rows: IProcessReport[] } =
-        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        await ProcessReportRepository.getProcessesByWeeklyReportId(
           _id!,
           options,
         );
@@ -307,7 +307,7 @@ class WeeklyReportRepository {
       const {
         rows: processes,
       }: { rows: IProcessReport[] } =
-        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        await ProcessReportRepository.getProcessesByWeeklyReportId(
           _id!,
           options,
         );
