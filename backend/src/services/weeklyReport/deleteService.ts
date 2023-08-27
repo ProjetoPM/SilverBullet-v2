@@ -45,7 +45,7 @@ export default class WeeklyReportDeleteService {
         this.options,
       );
 
-    if (!weeklyReport) throw new Error();
+    if (!weeklyReport) return;
 
     if (weeklyReport.createdBy != userId) return;
 
