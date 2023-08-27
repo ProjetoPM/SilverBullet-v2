@@ -22,7 +22,7 @@ export default class ListProjectsByUserService {
     this.options = options;
   }
   async handle() {
-    return ProjectUserRepository.findProjectsByUser(
+    return ProjectUserRepository.projectsByUserTenant(
       this.options
     );
   }

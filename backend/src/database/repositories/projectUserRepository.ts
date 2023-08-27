@@ -4,7 +4,7 @@ import User from '../models/user';
 import { IRepositoryOptions } from './IRepositoryOptions';
 import { IProject } from '../../interfaces';
 import crypto from 'crypto';
-
+import tenant from '../models/tenant';
 
 export default class ProjectUserRepository {
   private static entityName = 'user';
@@ -12,12 +12,11 @@ export default class ProjectUserRepository {
   static async create(
     project: IProject,
     options: IRepositoryOptions,
-    roles: Array<string>
+    roles: Array<string>,
   ) {
     const currentUser =
       MongooseRepository.getCurrentUser(options);
     const status = selectStatus('active', roles);
-
 
     await User(options.database).updateMany(
       { _id: currentUser.id },
@@ -26,7 +25,7 @@ export default class ProjectUserRepository {
           projects: {
             project: project.id,
             status,
-            roles
+            roles,
           },
         },
       },
@@ -46,25 +45,33 @@ export default class ProjectUserRepository {
     );
   }
 
-  static async findProjectsByUser(options){
-    const currentUser = await MongooseRepository.getCurrentUser(options);
+  static async findProjectsByUser(options) {
+    const currentUser =
+      await MongooseRepository.getCurrentUser(options);
 
-    const {id} = await MongooseRepository.getCurrentTenant(options);
-    
-    const user = await MongooseRepository.wrapWithSessionIfExists(
-      User(options.database)
-        .findById(currentUser.id)
-        .populate('projects.project'),
-      options,
+    const { id } =
+      await MongooseRepository.getCurrentTenant(options);
+
+    const user =
+      await MongooseRepository.wrapWithSessionIfExists(
+        User(options.database)
+          .findById(currentUser.id)
+          .populate('projects.project'),
+        options,
+      );
+
+    const filteredProjects = user.projects.filter(
+      (project) => {
+        if (
+          project.project.tenant == id &&
+          project.status == 'active'
+        ) {
+          return project;
+        }
+      },
     );
-    
-    const filteredProjects = user.projects.filter(project => {
-      if(project.project.tenant == id && project.status == 'active') {
-        return project;
-      }
-    })
     user.projects = filteredProjects;
-    
+
     return user;
   }
 
@@ -72,15 +79,16 @@ export default class ProjectUserRepository {
     invitationToken: string,
     options: IRepositoryOptions,
   ) {
-    let user = await MongooseRepository.wrapWithSessionIfExists(
-      User(options.database)
-        .findOne({
-          projects: { $elemMatch: { invitationToken } },
-        })
-        .populate('projects.project')
-        .populate('tenants.tenant'),
-      options,
-    );
+    let user =
+      await MongooseRepository.wrapWithSessionIfExists(
+        User(options.database)
+          .findOne({
+            projects: { $elemMatch: { invitationToken } },
+          })
+          .populate('projects.project')
+          .populate('tenants.tenant'),
+        options,
+      );
 
     if (!user) {
       return null;
@@ -88,12 +96,13 @@ export default class ProjectUserRepository {
 
     user = user.toObject ? user.toObject() : user;
 
-    const projectUser = user.projects.find((userProject) => {
-      return userProject.invitationToken === invitationToken;
-    });
-
-    
-    
+    const projectUser = user.projects.find(
+      (userProject) => {
+        return (
+          userProject.invitationToken === invitationToken
+        );
+      },
+    );
 
     return {
       ...projectUser,
@@ -101,13 +110,44 @@ export default class ProjectUserRepository {
     };
   }
 
+  static async projectsByUserTenant(
+    options: IRepositoryOptions,
+  ) {
+    const { id: tenantId } =
+      await MongooseRepository.getCurrentTenant(options);
+    const { id: userId } =
+      await MongooseRepository.getCurrentUser(options);
+
+
+    let user =
+      await MongooseRepository.wrapWithSessionIfExists(
+        User(options.database)
+          .findById(userId)
+          .populate({path: 'projects.project', match: { tenant: tenantId }}),
+        options,
+      );
+
+    if (!user) {
+      return null;
+    }
+
+    user = user.toObject ? user.toObject() : user;
+
+const { projects } = user;
+const filteredProjects = projects.filter(projectUser => projectUser.project != null);
+
+
+    return filteredProjects;
+  }
+
   static async updateRoles(projectId, id, roles, options) {
-    const user = await MongooseRepository.wrapWithSessionIfExists(
-      User(options.database)
-        .findById(id)
-        .populate('projects.project'),
-      options,
-    );
+    const user =
+      await MongooseRepository.wrapWithSessionIfExists(
+        User(options.database)
+          .findById(id)
+          .populate('projects.project'),
+        options,
+      );
 
     let projectUser = user.projects.find((userProject) => {
       return userProject.project.id === projectId;
@@ -191,15 +231,15 @@ export default class ProjectUserRepository {
     invitationToken,
     options: IRepositoryOptions,
   ) {
-    const currentUser = MongooseRepository.getCurrentUser(
-      options,
-    );
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
 
     // This tenant user includes the User data
-    let invitationProjectUser = await this.findByInvitationToken(
-      invitationToken,
-      options,
-    );
+    let invitationProjectUser =
+      await this.findByInvitationToken(
+        invitationToken,
+        options,
+      );
 
     let existingProjectUser = currentUser.projects.find(
       (userProject) =>
@@ -238,7 +278,6 @@ export default class ProjectUserRepository {
     await User(options.database).updateOne(
       { _id: currentUser.id },
       {
- 
         $push: {
           projects: projectUser,
         },
@@ -260,7 +299,6 @@ export default class ProjectUserRepository {
       options,
     );
   }
-
 
   static async destroy(
     projectId: String,
