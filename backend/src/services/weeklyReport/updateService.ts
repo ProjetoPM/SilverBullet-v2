@@ -94,7 +94,7 @@ export default class WeeklyReportUpdateService {
 
       if (!processes) return record;
 
-      const {rows: dbProcesses} = await ProcessReportRepository.getSubmissionsByWeeklyReportId(weeklyReportId, this.options);
+      const {rows: dbProcesses} = await ProcessReportRepository.getProcessesByWeeklyReportId(weeklyReportId, this.options);
 
       const processesWithoutId: CreateProcess[] = processes.filter(process => process.id == undefined);
       
