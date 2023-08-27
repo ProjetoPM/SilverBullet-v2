@@ -1,10 +1,12 @@
+import { Loading } from '@/components/Loading'
 import { Label } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import { XCircle } from 'lucide-react'
-import { ChangeEvent, useMemo, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { useFileList } from '../hooks/useWeeklyReport'
+import { useEffectOnce } from 'react-use'
+import { useWeeklyReport } from '../hooks'
 import { DataTableProcesses } from './DataTable/DataTableProcesses'
 import { FieldsProcessProps } from './processes.items'
 import { FileObject, columns } from './table/columns'
@@ -15,25 +17,40 @@ export const ViewFileList = ({
 }: Pick<FieldsProcessProps, 'index' | 'form'>) => {
   const { t } = useTranslation(['default', 'weekly-report'])
   const [files, setFiles] = useState<FileList>()
-  const content = useFileList((state) => state.content)
+  const { useFileList } = useWeeklyReport()
+  const { content } = useFileList()
+  const [isLoading, setLoading] = useState(false)
+  const [isEditMode, setEditMode] = useState(false)
+  const [folder, setFolder] = useState<string>('')
 
-  const folder = useMemo(() => {
-    const uuid = form.getValues(`processes.${index}.filesFolder`)
-    return uuid ?? crypto.randomUUID()
-  }, [form, index])
+  useEffectOnce(() => {
+    const folder = form.getValues(`processes.${index}.filesFolder`)
+
+    if (folder) {
+      setFolder(folder)
+      setEditMode(true)
+    } else {
+      /**
+       * Gera uma folder para esse processo.
+       */
+      setFolder(crypto.randomUUID())
+    }
+  })
 
   const { data: cloudFiles } = useQuery<FileObject[]>(
     [`files-${folder}`, folder],
     async () => {
-      const isEditMode = form.getValues(`processes.${index}.filesFolder`)
-
       if (!isEditMode) {
         return []
       }
 
+      setLoading(true)
+
       const { data, error } = await supabase.storage
         .from('weekly-report')
         .list(`processes/${folder}`)
+
+      setLoading(false)
 
       if (error) {
         return []
@@ -48,6 +65,10 @@ export const ViewFileList = ({
         folder: folder
       }))
       return filesWithFolder
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: isEditMode
     }
   )
 
@@ -168,14 +189,20 @@ export const ViewFileList = ({
       )}
       {cloudFiles && cloudFiles.length > 0 && (
         <div>
-          <Label className="text-sm font-medium">
-            {t('files_already_uploaded')}
-          </Label>
-          <DataTableProcesses
-            data={cloudFiles}
-            columns={columns}
-            className="mt-2"
-          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Label className="text-sm font-medium">
+                {t('files_already_uploaded')}
+              </Label>
+              <DataTableProcesses
+                data={cloudFiles}
+                columns={columns}
+                className="mt-2"
+              />
+            </>
+          )}
         </div>
       )}
     </div>

@@ -30,11 +30,11 @@ export const WeeklyReportSchema = z.object({
           .refine((value) => value.length > 0, params('select_process_name')),
         description: z
           .string()
+          .refine((value) => html(value, 3, '>='), params('at_most', 3))
           .refine(
             (value) => html(value, max.processes.description, '<='),
             params('at_most', max.processes.description)
-          )
-          .optional(),
+          ),
         filesFolder: z.string().optional()
       })
     )

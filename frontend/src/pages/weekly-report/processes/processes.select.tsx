@@ -3,7 +3,8 @@ import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Phases, usePhases } from '../hooks/usePhases'
+import { useWeeklyReport } from '../hooks'
+import { Phases } from '../hooks/usePhases'
 import { FieldsProcessProps } from './processes.items'
 
 type Select = {
@@ -22,7 +23,7 @@ export const SelectProcess = memo(
     form,
     control
   }: Pick<FieldsProcessProps, 'index' | 'form' | 'control'>) => {
-    const { phases } = usePhases()
+    const { phases } = useWeeklyReport()
     const { t } = useTranslation(['phases', 'weekly-report'])
     const [open, setOpen] = useState<Select>(initialState)
 

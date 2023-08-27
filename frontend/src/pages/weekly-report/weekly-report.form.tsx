@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useWeeklyReport } from './hooks/useWeeklyReport'
+import { useWeeklyReport } from './hooks'
 import { Processes } from './processes/processes'
 import { MainSelect } from './weekly-report.form.select'
 import {
@@ -15,12 +15,14 @@ import {
 } from './weekly-report.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyReport
+  data?: WeeklyReport & {
+    id: string
+  }
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
-  const { create } = useWeeklyReport({})
+  const { create } = useWeeklyReport()
 
   const form = useForm<WeeklyReport>({
     mode: 'all',

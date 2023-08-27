@@ -6,17 +6,15 @@ import {
   Popover,
   ScrollArea
 } from '@/components/ui'
-import { useRedirect } from '@/hooks/useRedirect'
 import { cn } from '@/lib/utils'
-import { routes } from '@/routes/routes'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceHtmlTags } from '@/utils/replace-html-tags'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
-import { useWeeklyReport } from './hooks/useWeeklyReport'
+import { useWeeklyReport } from './hooks'
 import { WeeklyReport, WeeklyReportSchema } from './weekly-report.schema'
 
 type MainSelectProps = {
@@ -31,18 +29,9 @@ type MainSelectProps = {
 
 export const MainSelect = ({ form, data }: MainSelectProps) => {
   const { t } = useTranslation('weekly-report')
-  const { weeklyEvaluation } = useWeeklyReport({
-    useWeeklyEvaluation: true
-  })
   const [open, setOpen] = useState(false)
   const project = useWorkspaceStore((state) => state.project)
-  const { redirect } = useRedirect()
-
-  useEffect(() => {
-    if (data?.project || !project) {
-      redirect(routes.projects.index, undefined)
-    }
-  }, [data, project, redirect])
+  const { weeklyEvaluationList } = useWeeklyReport()
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -69,7 +58,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                       )}
                     >
                       {replaceHtmlTags(
-                        weeklyEvaluation?.data?.rows?.find(
+                        weeklyEvaluationList?.data?.rows?.find(
                           (name) => name.id === field.value
                         )?.name ?? t('select_weekly_evaluation')
                       )}
@@ -79,8 +68,8 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                 </Popover.Trigger>
                 <Popover.Content className="p-0">
                   <Command.Root>
-                    {weeklyEvaluation?.data &&
-                      weeklyEvaluation?.data?.count > 0 && (
+                    {weeklyEvaluationList?.data &&
+                      weeklyEvaluationList?.data?.count > 0 && (
                         <>
                           <Command.Input
                             className="w-72 xs:w-80 md:w-96"
@@ -91,7 +80,7 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                           </Command.Empty>
                           <ScrollArea className="max-h-[300px]">
                             <Command.Group>
-                              {weeklyEvaluation?.data?.rows.map((data) => (
+                              {weeklyEvaluationList?.data?.rows.map((data) => (
                                 <Command.Item
                                   value={data.id}
                                   key={data.id}
@@ -116,8 +105,9 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
                           </ScrollArea>
                         </>
                       )}
-                    {!weeklyEvaluation?.data ||
-                      (weeklyEvaluation?.data?.count === 0 && (
+                    {!weeklyEvaluationList ||
+                      !weeklyEvaluationList?.data ||
+                      (weeklyEvaluationList?.data?.count === 0 && (
                         <Command.Item>
                           {t('weekly-report:no_weekly_evaluation_exists')}
                         </Command.Item>
@@ -131,9 +121,12 @@ export const MainSelect = ({ form, data }: MainSelectProps) => {
         )}
       />
       <div className="space-y-2">
-        <Form.Label required>{t('project_name.label')}</Form.Label>
+        <Form.Label htmlFor={`projectId`} required>
+          {t('project_name.label')}
+        </Form.Label>
         <div>
           <Input
+            id="projectId"
             value={replaceHtmlTags(
               data?.project?.name ?? project?.name ?? 'error'
             )}
