@@ -17,16 +17,16 @@ export const useWorkspaceInvites = () => {
    * Envia os convites para os usuários.
    */
   const create = useMutation(
-    async (data: Invites) => {
-      return await api.post(`/tenant/${getWorkspaceId()}/create`, {
-        data: { data }
+    async (data: Invites[]) => {
+      return await api.post(`/tenant/${getWorkspaceId()}/user`, {
+        data: { emails: data }
       })
     },
     {
       onSuccess: (response) => {
         switch (response.status) {
           case StatusCodes.OK:
-            toast.success(t('users_has_been_invited'))
+            toast.success(t('users_invited'))
             queryClient.invalidateQueries('workspace-users')
             break
         }
@@ -53,7 +53,6 @@ export const useWorkspaceUsersList = () => {
     }
 
     return await api.get(`/tenant/${workspace}/user`).then((res) => {
-      console.log(res.data)
       return res.data
     })
   }

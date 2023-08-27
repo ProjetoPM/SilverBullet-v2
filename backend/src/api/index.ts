@@ -67,6 +67,8 @@ require('./auth').default(routes);
 require('./plan').default(routes);
 require('./tenant').default(routes);
 require('./project').default(routes);
+require('./weeklyEvaluation').default(routes);
+require('./weeklyReport').default(routes);
 require('./file').default(routes);
 require('./user').default(routes);
 require('./settings').default(routes);

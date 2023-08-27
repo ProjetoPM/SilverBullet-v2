@@ -27,6 +27,10 @@ const models = [
   require('./qualityManagementPlan').default,
   require('./resourceManagementPlan').default,
   require('./resourceBreakdownStructure').default,  
+  require('./weeklyEvaluation').default,  
+  require('./weeklyReport').default,  
+  require('./processReport').default,  
+
 ];
 
 export default function init(database) {
