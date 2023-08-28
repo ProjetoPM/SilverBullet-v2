@@ -14,6 +14,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true }
     ],
+    "@typescript-eslint/no-explicit-any": 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     "@tanstack/query/exhaustive-deps": "error",
@@ -23,7 +24,6 @@ module.exports = {
       {
         "types": {
           "Function": false,
-          "{}": false
         }
       }
     ]

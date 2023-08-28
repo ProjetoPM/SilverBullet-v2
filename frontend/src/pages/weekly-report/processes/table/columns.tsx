@@ -38,16 +38,26 @@ export const columns = [
   /**
    * Actions
    */
-  helper.display({
-    id: 'actions',
+  helper.accessor((row) => row.folder, {
+    id: 'folder',
     header: 'Actions',
-    cell: ({ row }) => (
-      <div className="flex gap-2">
-        <View className="w-4 h-4 cursor-pointer" />
-        <FileMinus2 className="w-4 h-4 cursor-pointer hover:text-destructive" />
-        {row.getValue('folder')}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const folder = row.getValue('folder')
+
+      return (
+        <div className="flex gap-2">
+          <View
+            className="w-4 h-4 cursor-pointer"
+            onClick={() => console.log('view', folder)}
+          />
+          <FileMinus2
+            className="w-4 h-4 cursor-pointer hover:text-destructive"
+            onClick={() => console.log('delete file in', folder)}
+          />
+          {row.getValue('folder')}
+        </div>
+      )
+    },
     enableSorting: false,
     enableHiding: false
   })

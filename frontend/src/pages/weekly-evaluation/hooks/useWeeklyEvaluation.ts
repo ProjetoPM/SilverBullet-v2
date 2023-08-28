@@ -89,7 +89,6 @@ export const useWeeklyEvaluation = ({
       })
       .catch((err) => err.response)
 
-    console.log(response)
     if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
       redirect(undefined, 'unknown_error')
     }

@@ -2,30 +2,26 @@ import { Loading } from '@/components/Loading'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
-import { useWeeklyReport } from './hooks/useWeeklyReport'
+import { useWeeklyReport } from './hooks'
 import WeeklyReportForm from './weekly-report.form'
 
 const WeeklyReportPage = () => {
   const { t } = useTranslation('weekly-report')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
-  const { id } = useParams()
-  const { edit } = useWeeklyReport({ useEdit: id })
+  const { useEdit } = useWeeklyReport()
+  const { data, isError, isLoading } = useEdit()
 
-  if (edit.isLoading) {
+  if (isLoading) {
     return <Loading size={32} />
   }
 
-  if (edit.isError) {
+  if (isError) {
     return <div>Something went wrong!</div>
   }
 
   return (
-    <PageLayout
-      title={t(`${id ? 'edit.title' : 'new.title'}`)}
-      breadcrumb={breadcrumb}
-    >
-      <WeeklyReportForm data={edit.data} />
+    <PageLayout title={t(`edit.title`)} breadcrumb={breadcrumb}>
+      <WeeklyReportForm data={data} />
     </PageLayout>
   )
 }
