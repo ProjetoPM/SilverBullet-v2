@@ -5,7 +5,6 @@ import Error400 from '../../errors/Error400';
 import { IServiceOptions } from '../IServiceOptions';
 
 import { metricGroups } from '../../mapping/weeklyReport';
-import { IWeeklyEvaluation } from '../../interfaces';
 
 export interface IRequest {
   name: string;
