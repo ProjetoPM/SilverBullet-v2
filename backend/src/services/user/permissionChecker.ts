@@ -136,6 +136,8 @@ export default class PermissionChecker {
       return [];
     }
 
+    if(!this.currentTenant) return [];
+
     const tenant = this.currentUser.tenants
       .filter(
         (tenantUser) => tenantUser.status === 'active',
@@ -160,6 +162,8 @@ export default class PermissionChecker {
     if (!this.currentUser || !this.currentUser.projects) {
       return [];
     }
+
+    if(!this.currentProject) return [];
 
     const project = this.currentUser.projects
       .filter(
