@@ -62,13 +62,17 @@ const en = {
     },
     weeklyReport: {
       errors: {
+        notFound: 'This weekly report does not exist',
         rangeDateError:
           'This weekly evaluation is not available to be submitted',
         missingWeeklyEvaluationId:
           'You need to choose a weekly evaluation',
         missingProjectId: 'You need to choose a project',
         notInProject:
-          "You can't submit it because you are not in this project",
+          "You do not belong to this project",
+        notProfessorEvaluate: 'Only professors are able to evaluate reports',
+        reportNotBelongToTenant: 'This report does not belong to this workspace',
+          
         projectNotInTenant:
           'The chosen project does not belong to this workspace',
         notSameUser:

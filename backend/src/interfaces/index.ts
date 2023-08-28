@@ -22,10 +22,12 @@ export interface IWeeklyReport {
   id?: Object | string;
   name: string;
   endDate: Date | string;
-  score?: IMetricGroup;
-  weeklyEvaluation: string;
+  score?: IMetric;
+  weeklyEvaluation: string | object;
   processes: IProcessReport[];
   tenant: string | null;
+  project: string | null;
+  createdBy: string | object;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 }
@@ -44,11 +46,6 @@ export interface IProcessReport {
   createdAt?: Date | string;
   updatedAt?: Date | string;
 }
-
-
-
-
-
 
 export interface IProcessGroup {
   id: string;

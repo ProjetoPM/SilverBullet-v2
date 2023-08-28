@@ -8,7 +8,7 @@ const plans = Plans.values;
 
 export type IPermission = {
   id: string;
-  allowedRoles: string[];
+  allowedRoles?: string[];
   allowedProjectRoles?: string[];
   allowedPlans: string[];
 };

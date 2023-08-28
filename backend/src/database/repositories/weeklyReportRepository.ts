@@ -103,6 +103,35 @@ class WeeklyReportRepository {
     return await this.findById(id, options);
   }
 
+  static async updateScore(
+    id: string,
+    data,
+    options: IRepositoryOptions,
+  ) {
+
+    const record = await this.findById(id, options);
+    if (!record) {
+      throw new Error404();
+    }
+
+    await WeeklyReport(options.database).updateOne(
+      { _id: id },
+      {
+        score: data
+      },
+      options,
+    );
+
+    await this._createAuditLog(
+      AuditLogRepository.UPDATE,
+      id,
+      data,
+      options,
+    );
+
+    return await this.findById(id, options);
+  }
+
   /**
    * Updates the Tenant Plan user.
    */
@@ -183,11 +212,9 @@ class WeeklyReportRepository {
         options,
       );
 
-    if (!record) {
-      return record;
-    }
+    if (!record) return;
 
-    const output: IWeeklyReport = record.toObject
+    const output = record.toObject
       ? record.toObject()
       : record;
 

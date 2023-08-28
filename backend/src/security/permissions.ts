@@ -100,6 +100,15 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      evaluateWeeklyReport: {
+        id: 'evaluateWeeklyReport',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       weeklyReportSubmissionsRead: {
         id: 'weeklyReportSubmissionsRead',
         allowedRoles: [roles.admin],

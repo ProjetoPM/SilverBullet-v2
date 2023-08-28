@@ -59,10 +59,13 @@ const ptBR = {
     },
     weeklyReport: {
       errors: {
+        notFound: 'Este relatório não existe',
         rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',
         missingWeeklyEvaluationId: 'É necessário escolher uma avaliação semanal',
         missingProjectId: 'É necessário escolher um projeto',
-        notInProject: 'Não é possível realizar a submissão, pois você não pertence ao projeto informado',
+        notInProject: 'Você não pertence a este projeto',
+        notProfessorEvaluate: 'Apenas professores podem avaliar submissões',
+        reportNotBelongToTenant: 'This report does not belong to this workspace',
         projectNotInTenant: 'O projeto informado não pertence a esta área de trabalho',
         notSameUser: 'Não é possível editar um relatório criado por outro usuário',
         unique: {
