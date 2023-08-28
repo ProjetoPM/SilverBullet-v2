@@ -80,8 +80,7 @@ export const useProfile = () => {
         switch (response.status) {
           case StatusCodes.OK:
             await queryClient.invalidateQueries([KEY])
-            toast.success(t('change_passwor_successful'))
-            signOut(false)
+            signOut({ message: 'password_change_successful', type: 'success' })
             break
           case StatusCodes.BAD_REQUEST:
             toast.error(t('incorrect_password'))

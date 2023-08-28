@@ -43,7 +43,11 @@ const Dropdown = () => {
           </Link>
         </DropdownMenu.Group>
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={signOut}>
+        <DropdownMenu.Item
+          onClick={() => {
+            signOut({})
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>{t('default:log_out')}</span>
           <DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>

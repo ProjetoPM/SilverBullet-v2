@@ -15,7 +15,7 @@ const ProfileUserInfo = () => {
           <img src={'profileImage.png'}></img>
         </div>
         <div className="sm:col-span-7">
-          <ProfileFormView {...data}></ProfileFormView>
+          <ProfileFormView {...data} />
         </div>
       </div>
     </>

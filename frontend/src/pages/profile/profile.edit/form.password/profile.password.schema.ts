@@ -12,7 +12,6 @@ export const PasswordSchema = z.object({
       newPassword: z.string().min(3).max(max.password)
     })
     .refine((data) => data.confirmPassword === data.newPassword, {
-      //message: 'senhas não coincidem!',
       message: t('custom:password_not_match'),
       path: ['confirmPassword']
     }),
