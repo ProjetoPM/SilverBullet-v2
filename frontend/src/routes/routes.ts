@@ -20,5 +20,9 @@ export const routes = {
   weekly_report: {
     index: '/weekly-report',
     new: '/weekly-report/new'
+  },
+  profile: {
+    index:'/profile',
+    edit: '/profile/edit'
   }
 }

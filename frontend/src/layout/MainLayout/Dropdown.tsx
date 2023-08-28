@@ -21,11 +21,13 @@ const Dropdown = () => {
         <DropdownMenu.Label>{t('default:my_account')}</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <DropdownMenu.Group>
-          <DropdownMenu.Item>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-            <DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
-          </DropdownMenu.Item>
+          <Link to={routes.profile.index}>
+            <DropdownMenu.Item>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+              <DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
+            </DropdownMenu.Item>
+          </Link>
           <DropdownMenu.Item>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
@@ -41,7 +43,11 @@ const Dropdown = () => {
           </Link>
         </DropdownMenu.Group>
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={signOut}>
+        <DropdownMenu.Item
+          onClick={() => {
+            signOut({})
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>{t('default:log_out')}</span>
           <DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>

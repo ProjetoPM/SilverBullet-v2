@@ -12,6 +12,10 @@ type AuthCredentials = {
   password: string
   rememberMe: boolean
 }
+type signOutMessage = {
+  message?: string
+  type?: 'info' | 'success'
+}
 
 type State = {
   token: string | null
@@ -21,7 +25,7 @@ type State = {
 
 type Actions = {
   signIn: (credentials: AuthCredentials) => Promise<void>
-  signOut: () => void
+  signOut: (props: signOutMessage) => void
 }
 
 export const useAuthStore = create<State & Actions>()(
@@ -60,10 +64,14 @@ export const useAuthStore = create<State & Actions>()(
             history.pushState(null, '', routes.workspaces.index)
           }
         },
-        signOut: () => {
+        signOut: (props) => {
           set({ token: null })
           resetWorkspaceStore()
-          toast.info(i18next.t('info.sign_out'))
+          if (props.type === 'success') {
+            toast.success(i18next.t(props.message ?? 'info.sign_out'))
+          } else {
+            toast.info(i18next.t(props.message ?? 'info.sign_out'))
+          }
           history.pushState(null, '', routes.auth.index)
         }
       }),
