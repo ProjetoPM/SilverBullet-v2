@@ -456,6 +456,46 @@ export default class UserRepository {
     return { rows, count };
   }
 
+  static async listUsersByProject(
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant = MongooseRepository.getCurrentTenant(
+      options,
+    );
+
+    const currentProject = MongooseRepository.getCurrentProject(
+      options,
+    );
+
+    let criteriaAnd: any = [
+      {
+        tenants: { $elemMatch: { tenant: currentTenant.id } },
+      },
+      {
+        projects: { $elemMatch: { project: currentProject.id } },
+      }
+    ];
+ 
+    const criteria = criteriaAnd.length
+      ? { $and: criteriaAnd }
+      : null;
+
+    let rows = await MongooseRepository.wrapWithSessionIfExists(
+      User(options.database)
+        .find(criteria)
+        .populate('tenants.tenant')
+        .populate('projects.project'),
+      options,
+    );
+
+    const count = await MongooseRepository.wrapWithSessionIfExists(
+      User(options.database).countDocuments(criteria),
+      options,
+    );
+
+    return { rows, count };
+  }
+
   static async findAllAutocomplete(
     search,
     limit,

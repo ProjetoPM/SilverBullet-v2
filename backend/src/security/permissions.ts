@@ -145,15 +145,6 @@ class Permissions {
           plans.enterprise,
         ],
       },
-      projectRead: {
-        id: 'projectRead',
-        allowedRoles: [roles.admin, roles.student],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
       projectCreate: {
         id: 'projectCreate',
         allowedRoles: [roles.admin, roles.student],
@@ -172,9 +163,34 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      projectRead: {
+        id: 'projectRead',
+        allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       projectDestroy: {
         id: 'projectDestroy',
         allowedRoles: [roles.admin, roles.student],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      projectListUsers: {
+        id: 'projectListUsers',
+        allowedRoles: [roles.admin, roles.student],
+        allowedProjectRoles: [
+          projectRoles.admin,
+          projectRoles.manager,
+          projectRoles.developer,
+          projectRoles.professor,
+          projectRoles.stakeholder
+        ],
         allowedPlans: [
           plans.free,
           plans.growth,
