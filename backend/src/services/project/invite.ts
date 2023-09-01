@@ -66,11 +66,17 @@ export default class ProjectInviteService {
 
     const isInvitesWithErrors = returnResponse.some(response => response == 'error');
     if(isInvitesWithErrors){
-      return i18n(this.options.language, 'tenant.project.errors.inviteWithErrors');
+      const message = i18n(this.options.language, 'tenant.project.errors.inviteWithErrors');
+      return {
+        partial: message
+      }
     }
 
 
-    return i18n(this.options.language, 'tenant.project.successResponses.invitesSentSuccessfully');
+    const message = i18n(this.options.language, 'tenant.project.successResponses.invitesSentSuccessfully');
+    return {
+      success: message
+    }
   }
 
   async addUserToProjectOrUpdate({ email, role }: IEmail) {
