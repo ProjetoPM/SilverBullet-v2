@@ -3,7 +3,7 @@ import MongooseRepository from '../../database/repositories/mongooseRepository';
 import Error400 from '../../errors/Error400';
 import { IServiceOptions } from '../IServiceOptions';
 import UserRepository from '../../database/repositories/userRepository';
-
+import { i18n } from '../../i18n';
 
 export type IInviteRequest = {
   emails: IEmail[];
@@ -52,53 +52,50 @@ export default class ProjectInviteService {
   }
 
   async addOrUpdateAll(emails: IEmail[]) {
-    const returnResponse: {
-      email: string;
-      status: string;
-    }[] = [];
+    const returnResponse: string[] = [];
     for (const email of emails) {
       const res = await this.addUserToProjectOrUpdate(
         email,
       );
       returnResponse.push(res);
     }
-    return returnResponse;
+
+
+    const isInvitesWithErrors = returnResponse.some(response => response == 'error');
+    if(isInvitesWithErrors){
+      return i18n(this.options.language, 'tenant.project.errors.inviteWithErrors');
+    }
+
+
+    return i18n(this.options.language, 'tenant.project.successResponses.invitesSentSuccessfully');
   }
 
   async addUserToProjectOrUpdate({ email, role }: IEmail) {
-    const allowedRoles = ['admin', 'manager', 'developer', 'stakeholder', 'professor']
-    if(!allowedRoles.includes(role)) {
-      return {
-        email,
-        status: 'InvalidRole'
-      }
-    };
+    const allowedRoles = [
+      'admin',
+      'manager',
+      'developer',
+      'stakeholder',
+      'professor',
+    ];
+    if (!allowedRoles.includes(role)) return 'error';
 
     const userRoles = [role];
-    
+
     let user =
       await UserRepository.findByEmailWithoutAvatar(email, {
         ...this.options,
       });
 
-      if(!user){
-        return {
-          email,
-          status: 'UserNotFound',
-        };
-      };
+    if (!user) return 'error';
 
-      const isUserAlreadyInTenant = user.tenants.some(
-        (userTenant) =>
-          userTenant.tenant.id ===
-          this.options.currentTenant.id,
-      );
+    const isUserAlreadyInTenant = user.tenants.some(
+      (userTenant) =>
+        userTenant.tenant.id ===
+        this.options.currentTenant.id,
+    );
 
-    if (!isUserAlreadyInTenant)
-      return {
-        email,
-        status: 'NotInTenant',
-      };
+    if (!isUserAlreadyInTenant) return 'error';
 
     await ProjectUserRepository.updateRoles(
       this.options.currentProject.id,
@@ -110,9 +107,6 @@ export default class ProjectInviteService {
       },
     );
 
-    return {
-      email,
-      status: 'Invited',
-    };
+    return 'sucess';
   }
 }

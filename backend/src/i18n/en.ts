@@ -40,22 +40,28 @@ const en = {
       destroyingPlanUser: `You can't delete the plan manager.`,
     },
   },
-
+  
   tenant: {
     userNotInTenant: "You cannot delete a workspace that you don't have access to",
-
+    
     weeklyEvaluation: {
       errors: {
+        notFound: 'This weekly evaluation does not exist',
         nullStartDate: 'Invalid start date',
         nullEndDate: 'Invalid end date',
         invalidMetricGroup: 'Invalid metric group',
+        notSameUser: 'You cannot manage a weekly evaluation that does not belong to you',
         startDateGreaterThanEndDate:
           'Start date greater than end date',
       },
     },
 
     project: {
+      successResponses: {
+        invitesSentSuccessfully: 'All invitations were successfully sent',
+      },
       errors: {
+        inviteWithErrors: 'A problem has occurred while sending one or more invitations',
         userNotInTenant: "The user is not in the project workspace",
         projectWithSameName: "A project with the same name already exists in this workspace"
       }

@@ -45,14 +45,20 @@ const ptBR = {
 
     weeklyEvaluation: {
     errors: {
+      notFound: 'Esta avaliação não existe',
       nullStartDate: "Data de início não informada",
       nullEndDate: "Data de fim não informada",
       invalidMetricGroup: "Grupo de métricas inválido",
+      notSameUser: 'Não é possível gerenciar uma avaliação que não pertence a você',
       startDateGreaterThanEndDate: "Data de início maior que data de fim"
     }
   },
     project: {
+      successResponses: {
+        invitesSentSuccessfully: 'Todos convites foram enviados',
+      },
       errors: {
+        inviteWithErrors: 'Ocorreu um erro no envio de um ou mais convites',
         userNotInTenant: "O usuário não está na área de trabalho deste projeto",
         projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
       }
