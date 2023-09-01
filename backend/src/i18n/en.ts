@@ -45,7 +45,9 @@ const en = {
     userNotInTenant: "You cannot delete a workspace that you don't have access to",
     
     weeklyEvaluation: {
-      evaluationsSuccessfullyDeleted: 'All evaluations were successfully deleted',
+      successResponses: {
+        evaluationsSuccessfullyDeleted: 'All evaluations were successfully deleted',
+      },
       errors: {
         someEvaluationsUnsuccessfullyDeleted: 'Some of the evaluations could not be deleted',
         allEvaluationsUnsuccessfullyDeleted: 'None of the evaluations could be deleted',

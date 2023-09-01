@@ -2,7 +2,7 @@ import PermissionChecker from '../../services/user/permissionChecker';
 import ApiResponseHandler from '../apiResponseHandler';
 import Permissions from '../../security/permissions';
 import Error403 from '../../errors/Error403';
-import WeeklyEvaluationCreateService from '../../services/weeklyEvaluation/createService';
+import WeeklyEvaluationDeleteService from '../../services/weeklyEvaluation/deleteService';
 
 export default async (req, res, next) => {
   try {
@@ -10,12 +10,12 @@ export default async (req, res, next) => {
       throw new Error403(req.language);
     }
     new PermissionChecker(req).validateHas(
-      Permissions.values.weeklyEvaluationCreate,
+      Permissions.values.weeklyEvaluationDelete,
     );
 
-    const payload = await new WeeklyEvaluationCreateService(
+    const payload = await new WeeklyEvaluationDeleteService(
       req,
-    ).create(req.body.data);
+    ).handle(req.body.data);
 
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {
