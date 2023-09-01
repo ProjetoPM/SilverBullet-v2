@@ -55,6 +55,24 @@ class Permissions {
           plans.enterprise,
         ],
       },
+      weeklyEvaluationEdit: {
+        id: 'weeklyEvaluationEdit',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
+      weeklyEvaluationDelete: {
+        id: 'weeklyEvaluationDelete',
+        allowedRoles: [roles.admin],
+        allowedPlans: [
+          plans.free,
+          plans.growth,
+          plans.enterprise,
+        ],
+      },
       getWeeklyEvaluation: {
         id: 'getWeeklyEvaluation',
         allowedRoles: [roles.admin],

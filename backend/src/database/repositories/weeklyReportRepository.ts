@@ -350,6 +350,36 @@ class WeeklyReportRepository {
     return { rows: newData, count };
   }
 
+  static async getReportsByEvaluationId(
+    weeklyEvaluationId: string,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    let criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+      {
+        weeklyEvaluation: weeklyEvaluationId
+      }
+    ];
+
+    const criteria = criteriaAnd.length
+      ? { $and: criteriaAnd }
+      : null;
+
+    let rows = await WeeklyReport(options.database)
+      .find(criteria)
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows, count };
+  }
+
   static async findAndCountAll(
     { filter, limit = 0, offset = 0, orderBy = '' },
     options: IRepositoryOptions,

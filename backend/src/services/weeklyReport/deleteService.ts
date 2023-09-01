@@ -25,7 +25,7 @@ export default class WeeklyReportDeleteService {
       await MongooseRepository.getCurrentUser(this.options);
 
     for (const id of data) {
-      this.delete(id, userId);
+      await this.delete(id, userId);
     }
 
     try {
@@ -48,6 +48,54 @@ export default class WeeklyReportDeleteService {
     if (!weeklyReport) return;
 
     if (weeklyReport.createdBy != userId) return;
+
+    WeeklyReportRepository.destroy(id, this.options);
+
+    const { rows: processes } =
+      await ProcessReportRepository.getProcessesByWeeklyReportId(
+        id,
+        this.options,
+      );
+
+    processes.map((process) =>
+      processesToDelete.push({
+        id: process.id,
+        filesFolder: process.filesFolder,
+      }),
+    );
+
+    await new ProcessReportDeleteService(
+      this.options,
+    ).handle(processesToDelete);
+  }
+
+  async handleDeleteFromWeeklyEvaluation(data: string[]) {
+    const session = await MongooseRepository.createSession(
+      this.options.database,
+    );
+
+    for (const id of data) {
+      await this.deleteFromWeeklyEvaluation(id);
+    }
+
+    try {
+    } catch (error: any) {
+      throw error;
+    } finally {
+      await MongooseRepository.abortTransaction(session);
+    }
+  }
+
+  async deleteFromWeeklyEvaluation(id: string) {
+    let processesToDelete: IProcessToDelete[] = [];
+
+    const weeklyReport =
+      await WeeklyReportRepository.findById(
+        id,
+        this.options,
+      );
+
+    if (!weeklyReport) return;
 
     WeeklyReportRepository.destroy(id, this.options);
 

@@ -41,45 +41,67 @@ const ptBR = {
   },
 
   tenant: {
-    userNotInTenant: "You cannot delete a workspace that you don't have access to",
+    userNotInTenant:
+      "You cannot delete a workspace that you don't have access to",
 
     weeklyEvaluation: {
-    errors: {
-      notFound: 'Esta avaliação não existe',
-      nullStartDate: "Data de início não informada",
-      nullEndDate: "Data de fim não informada",
-      invalidMetricGroup: "Grupo de métricas inválido",
-      notSameUser: 'Não é possível gerenciar uma avaliação que não pertence a você',
-      startDateGreaterThanEndDate: "Data de início maior que data de fim"
-    }
-  },
-    project: {
       successResponses: {
-        invitesSentSuccessfully: 'Todos convites foram enviados',
+        evaluationsSuccessfullyDeleted:
+          'Todas avaliações foram excluídas com sucesso',
       },
       errors: {
-        inviteWithErrors: 'Ocorreu um erro no envio de um ou mais convites',
+        someEvaluationsUnsuccessfullyDeleted:
+          'Não foi possível excluir algumas avaliações',
+        allEvaluationsUnsuccessfullyDeleted:
+          'Não foi possível deletar as avaliações',
+        notFound: 'Esta avaliação não existe',
+        nullStartDate: 'Data de início não informada',
+        nullEndDate: 'Data de fim não informada',
+        invalidMetricGroup: 'Grupo de métricas inválido',
+        notSameUser:
+          'Não é possível gerenciar uma avaliação que não pertence a você',
+        startDateGreaterThanEndDate:
+          'Data de início maior que data de fim',
+      },
+    },
+    project: {
+      successResponses: {
+        invitesSentSuccessfully:
+          'Todos convites foram enviados',
+      },
+      errors: {
+        inviteWithErrors:
+          'Ocorreu um erro no envio de um ou mais convites',
         noInvitesSent: 'Não foi posível enviar os convites',
-        userNotInTenant: "O usuário não está na área de trabalho deste projeto",
-        projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
-      }
+        userNotInTenant:
+          'O usuário não está na área de trabalho deste projeto',
+        projectWithSameName:
+          'Um projeto com o mesmo nome já existe nesta área de trabalho',
+      },
     },
     weeklyReport: {
       errors: {
         notFound: 'Este relatório não existe',
-        rangeDateError: 'Essa avaliação semanal não está disponível para ser submetida',
-        missingWeeklyEvaluationId: 'É necessário escolher uma avaliação semanal',
-        missingProjectId: 'É necessário escolher um projeto',
+        rangeDateError:
+          'Essa avaliação semanal não está disponível para ser submetida',
+        missingWeeklyEvaluationId:
+          'É necessário escolher uma avaliação semanal',
+        missingProjectId:
+          'É necessário escolher um projeto',
         notInProject: 'Você não pertence a este projeto',
-        notProfessorEvaluate: 'Apenas professores podem avaliar submissões',
-        reportNotBelongToTenant: 'This report does not belong to this workspace',
-        projectNotInTenant: 'O projeto informado não pertence a esta área de trabalho',
-        notSameUser: 'Não é possível editar um relatório criado por outro usuário',
+        notProfessorEvaluate:
+          'Apenas professores podem avaliar submissões',
+        reportNotBelongToTenant:
+          'This report does not belong to this workspace',
+        projectNotInTenant:
+          'O projeto informado não pertence a esta área de trabalho',
+        notSameUser:
+          'Não é possível editar um relatório criado por outro usuário',
         unique: {
-          weeklyEvaluation: 'Não é possível submeter mais de um relatório por avaliação semanal',
-        }
-
-      }
+          weeklyEvaluation:
+            'Não é possível submeter mais de um relatório por avaliação semanal',
+        },
+      },
     },
     exists: 'Já existe um inquilino para esta aplicação.',
     url: {
@@ -128,166 +150,120 @@ const ptBR = {
   entities: {
     projectCharter: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     businessCase: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     benefitsManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     assumptionLog: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     stakeholderRegistration: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     projectManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     requirementsManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     requirementDocumentation: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scopeManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scheduleManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     projectScopeStatement: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     workbreakdownStructure: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     scheduleNetworkDiagram: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     activityList: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resource: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceRequirements: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     activityDurationEstimates: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     stakeholderCalendars: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     costManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     costEstimates: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     qualityManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceManagementPlan: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
     resourceBreakdownStructure: {
       errors: {
-        unique: {
-
-        }
-      }
+        unique: {},
+      },
     },
-  }
+  },
 };
 
 export default ptBR;

@@ -58,12 +58,11 @@ export default class WeeklyReportUpdateService {
       await MongooseRepository.getCurrentTenant(
         this.options,
       );
-    const { id: projectId } =
-      await MongooseRepository.getCurrentProject(
-        this.options,
-      );
     const { id: userId } =
       await MongooseRepository.getCurrentUser(this.options);
+
+      // Check if user created the report
+      // Not implemented yet
 
     const language = this.options.language;
     
