@@ -62,6 +62,7 @@ const en = {
       },
       errors: {
         inviteWithErrors: 'A problem has occurred while sending one or more invitations',
+        noInvitesSent: 'None of the invitations could be sent',
         userNotInTenant: "The user is not in the project workspace",
         projectWithSameName: "A project with the same name already exists in this workspace"
       }

@@ -59,6 +59,7 @@ const ptBR = {
       },
       errors: {
         inviteWithErrors: 'Ocorreu um erro no envio de um ou mais convites',
+        noInvitesSent: 'Não foi posível enviar os convites',
         userNotInTenant: "O usuário não está na área de trabalho deste projeto",
         projectWithSameName: "Um projeto com o mesmo nome já existe nesta área de trabalho"
       }

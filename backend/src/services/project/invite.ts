@@ -56,10 +56,13 @@ export default class ProjectInviteService {
     for (const email of emails) {
       const res = await this.addUserToProjectOrUpdate(
         email,
-      );
-      returnResponse.push(res);
+        );
+        returnResponse.push(res);
     }
 
+    const isInvitesWithSuccess = returnResponse.some(response => response == 'success');
+    if(!isInvitesWithSuccess) throw new Error400(this.options.language, 'tenant.project.errors.noInvitesSent');
+    
 
     const isInvitesWithErrors = returnResponse.some(response => response == 'error');
     if(isInvitesWithErrors){
