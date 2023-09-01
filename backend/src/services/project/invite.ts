@@ -68,14 +68,16 @@ export default class ProjectInviteService {
     if(isInvitesWithErrors){
       const message = i18n(this.options.language, 'tenant.project.errors.inviteWithErrors');
       return {
-        partial: message
+        type: 'warn',
+        message
       }
     }
 
 
     const message = i18n(this.options.language, 'tenant.project.successResponses.invitesSentSuccessfully');
     return {
-      success: message
+      type: 'success',
+       message
     }
   }
 
