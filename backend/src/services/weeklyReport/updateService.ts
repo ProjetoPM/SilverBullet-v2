@@ -52,6 +52,8 @@ export default class WeeklyReportUpdateService {
       const { processes } = data;
 
       const weeklyReport = await WeeklyReportRepository.findById(weeklyReportId, this.options);
+
+      if(!weeklyReport) throw new Error400(this.options.language, 'tenant.weeklyReport.errors.notFound');
       const { weeklyEvaluation: weeklyEvaluationId } = weeklyReport;
 
       const { id: tenantId } =
