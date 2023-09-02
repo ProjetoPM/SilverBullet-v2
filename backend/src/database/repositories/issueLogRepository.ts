@@ -104,7 +104,13 @@ class IssueLogRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await IssueLog(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

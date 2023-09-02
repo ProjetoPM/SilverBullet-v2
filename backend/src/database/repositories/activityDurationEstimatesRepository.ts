@@ -128,6 +128,14 @@ class ActivityDurationEstimatesRepository {
     );
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+
+    await ActivityDurationEstimates(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
+
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

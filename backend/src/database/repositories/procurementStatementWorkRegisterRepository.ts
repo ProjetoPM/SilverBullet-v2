@@ -104,7 +104,13 @@ class ProcurementStatementWorkRegisterRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ProcurementStatementWorkRegister(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

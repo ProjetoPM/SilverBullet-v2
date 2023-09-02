@@ -116,7 +116,13 @@ class WorkbreakdownStructureRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await WorkbreakdownStructure(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

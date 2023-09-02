@@ -104,7 +104,13 @@ class WorkPerformanceReportsRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await WorkPerformanceReports(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

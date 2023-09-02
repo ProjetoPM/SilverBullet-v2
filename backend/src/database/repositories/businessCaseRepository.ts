@@ -119,6 +119,13 @@ class BusinessCaseRepository {
 
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    await BusinessCase(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
+
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

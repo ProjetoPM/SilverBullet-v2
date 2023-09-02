@@ -104,7 +104,13 @@ class ProjectClosureRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ProjectClosure(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

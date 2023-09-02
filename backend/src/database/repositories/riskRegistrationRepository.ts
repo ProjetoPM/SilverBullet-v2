@@ -104,7 +104,13 @@ class RiskRegistrationRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await RiskRegistration(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 
