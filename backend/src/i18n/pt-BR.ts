@@ -53,7 +53,7 @@ const ptBR = {
         someEvaluationsUnsuccessfullyDeleted:
           'Não foi possível excluir algumas avaliações',
         allEvaluationsUnsuccessfullyDeleted:
-          'Não foi possível deletar as avaliações',
+          'Não foi possível exluir as avaliações',
         notFound: 'Esta avaliação não existe',
         nullStartDate: 'Data de início não informada',
         nullEndDate: 'Data de fim não informada',
@@ -80,7 +80,13 @@ const ptBR = {
       },
     },
     weeklyReport: {
+      successResponses: {
+        deleteReportSuccessfully:
+          'Relatórios excluídos com sucesso',
+      },
       errors: {
+        someUnsuccessfullyDeleted: "Não foi possível excluir alguns relatórios",
+        allUnsuccessfullyDeleted: "Não foi possível excluir os relatórios",
         notFound: 'Este relatório não existe',
         rangeDateError:
           'Essa avaliação semanal não está disponível para ser submetida',

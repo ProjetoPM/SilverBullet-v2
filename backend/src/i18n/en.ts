@@ -73,7 +73,13 @@ const en = {
       }
     },
     weeklyReport: {
+      successResponses: {
+        deleteReportSuccessfully:
+          'All reports were successfully deleted',
+      },
       errors: {
+        someUnsuccessfullyDeleted: "An error has occured while deleting one or more reports",
+        allUnsuccessfullyDeleted: "None of the reports could be deleted",
         notFound: 'This weekly report does not exist',
         rangeDateError:
           'This weekly evaluation is not available to be submitted',

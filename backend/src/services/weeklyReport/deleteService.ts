@@ -3,6 +3,8 @@ import WeeklyReportRepository from '../../database/repositories/weeklyReportRepo
 import ProcessReportRepository from '../../database/repositories/processReportRepository';
 import ProcessReportDeleteService from '../processReport/deleteService';
 import { IServiceOptions } from '../IServiceOptions';
+import Error400 from '../../errors/Error400';
+import { i18n } from '../../i18n';
 
 export type IProcessToDelete = {
   id: string;
@@ -21,14 +23,48 @@ export default class WeeklyReportDeleteService {
       this.options.database,
     );
 
-    const { id: userId } =
-      await MongooseRepository.getCurrentUser(this.options);
-
-    for (const id of data) {
-      await this.delete(id, userId);
-    }
-
     try {
+      const deleteResponse: string[] = [];
+
+      const { id: userId } =
+        await MongooseRepository.getCurrentUser(
+          this.options,
+        );
+
+      for (const id of data) {
+        deleteResponse.push(await this.delete(id, userId));
+      }
+      const isDeletionWithSuccess = deleteResponse.some(
+        (response) => response == 'success',
+      );
+      if (!isDeletionWithSuccess)
+        throw new Error400(
+          this.options.language,
+          'tenant.weeklyReport.errors.allUnsuccessfullyDeleted',
+        );
+
+      const isDeletionWithErrors = deleteResponse.some(
+        (response) => response == 'error',
+      );
+      if (isDeletionWithErrors) {
+        const message = i18n(
+          this.options.language,
+          'tenant.weeklyReport.errors.someUnsuccessfullyDeleted',
+        );
+        return {
+          type: 'warn',
+          message
+        };
+      }
+
+      const message = i18n(
+        this.options.language,
+        'tenant.weeklyReport.successResponses.deleteReportSuccessfully',
+      );
+      return {
+        type: "success",
+        message
+      };
     } catch (error: any) {
       throw error;
     } finally {
@@ -45,9 +81,9 @@ export default class WeeklyReportDeleteService {
         this.options,
       );
 
-    if (!weeklyReport) return;
+    if (!weeklyReport) return 'error';
 
-    if (weeklyReport.createdBy != userId) return;
+    if (weeklyReport.createdBy != userId) return 'error';
 
     WeeklyReportRepository.destroy(id, this.options);
 
@@ -67,6 +103,8 @@ export default class WeeklyReportDeleteService {
     await new ProcessReportDeleteService(
       this.options,
     ).handle(processesToDelete);
+
+    return 'sucess';
   }
 
   async handleDeleteFromWeeklyEvaluation(data: string[]) {
