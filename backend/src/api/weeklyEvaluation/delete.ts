@@ -15,7 +15,7 @@ export default async (req, res, next) => {
 
     const payload = await new WeeklyEvaluationDeleteService(
       req,
-    ).handle(req.body.data);
+    ).handle(req.body.data.ids);
 
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {
