@@ -1,10 +1,14 @@
 export const languages = [
   {
     code: 'en-US',
-    name: 'English'
+    name: 'English',
+    flag: 'https://flagcdn.com/us.svg',
+    fallback: 'EN'
   },
   {
     code: 'pt-BR',
-    name: 'Português'
+    name: 'Português',
+    flag: 'https://flagcdn.com/br.svg',
+    fallback: 'PT'
   }
 ]
