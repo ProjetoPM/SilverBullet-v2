@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     const payload = await new WeeklyReportDeleteService(
       req,
     ).handle(
-      req.body.data
+      req.body.data.ids
     );
 
     await ApiResponseHandler.success(req, res, payload);
