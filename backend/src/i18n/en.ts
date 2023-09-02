@@ -94,7 +94,7 @@ const en = {
         projectNotInTenant:
           'The chosen project does not belong to this workspace',
         notSameUser:
-          'You cannot update a weekly report created by other user',
+          'You cannot manage a weekly report created by other user',
         unique: {
           weeklyEvaluation:
             "You can't submit more than one report per evaluation",
