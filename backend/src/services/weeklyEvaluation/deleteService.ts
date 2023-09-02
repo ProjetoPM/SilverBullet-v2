@@ -47,7 +47,8 @@ export default class WeeklyEvaluationDeleteService {
           'tenant.weeklyEvaluation.errors.someEvaluationsUnsuccessfullyDeleted',
         );
         return {
-          partial: message,
+          type: 'warn',
+          message
         };
       }
 
@@ -56,7 +57,8 @@ export default class WeeklyEvaluationDeleteService {
         'tenant.weeklyEvaluation.successResponses.evaluationsSuccessfullyDeleted',
       );
       return {
-        success: message,
+        type: "success",
+        message
       };
       
     } catch (error: any) {
