@@ -31,17 +31,14 @@ export const useProjects = ({
    */
   const _list = async () => {
     const response = await api
-      .get(`/auth/me`)
-      .then((res) => {
-        return {
-          rows: res.data.projects
-            .filter((data: { status: string }) => data.status === 'active')
-            .map((data: { project: { _id: string } }) => ({
-              deletionId: data.project._id,
-              ...data.project
-            }))
-        }
-      })
+      .get(`/tenant/${getWorkspaceId()}/project/list`)
+      .then((res) => ({
+        rows: res.data.map((item) => ({
+          ...item.project,
+          tableDeletionId: item.project.id,
+          roles: item.roles
+        }))
+      }))
       .catch((err) => err.response)
 
     if (!workspaceId) {
@@ -62,7 +59,7 @@ export const useProjects = ({
       .catch((err) => err.response)
 
     if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-      redirect(routes.projects.index, 'unknown_error')
+      redirect({ route: routes.projects.index, message: 'an_unknown_error' })
     }
     return response
   }

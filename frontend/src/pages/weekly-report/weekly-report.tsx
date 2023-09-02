@@ -9,7 +9,7 @@ const WeeklyReportPage = () => {
   const { t } = useTranslation('weekly-report')
   const breadcrumb = [['Home', routes.workspaces.index], [t('title')]]
   const { useEdit } = useWeeklyReport()
-  const { data, isError, isLoading } = useEdit()
+  const { id, data, isError, isLoading } = useEdit()
 
   if (isLoading) {
     return <Loading size={32} />
@@ -20,7 +20,10 @@ const WeeklyReportPage = () => {
   }
 
   return (
-    <PageLayout title={t(`edit.title`)} breadcrumb={breadcrumb}>
+    <PageLayout
+      title={id ? t(`edit.title`) : t(`new.title`)}
+      breadcrumb={breadcrumb}
+    >
       <WeeklyReportForm data={data} />
     </PageLayout>
   )

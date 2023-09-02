@@ -1,5 +1,4 @@
 import { Delete, Props } from '@/@types/generic'
-import { useRedirect } from '@/hooks/useRedirect'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import {
@@ -26,7 +25,6 @@ export const useWorkspace = ({
 }: Props) => {
   const { t } = useTranslation(['workspace', 'default'])
   const navigate = useNavigate()
-  const { redirect } = useRedirect()
   const workspace = useWorkspaceStore((state) => state.workspace)
   const queryClient = useQueryClient()
 
@@ -42,7 +40,7 @@ export const useWorkspace = ({
           tenants: res.data.tenants
             .filter((tenant) => tenant.status === 'active')
             .map((tenant) => ({
-              deletionId: tenant.tenant._id,
+              tableDeletionId: tenant.tenant._id,
               ...tenant
             }))
         }
@@ -69,7 +67,7 @@ export const useWorkspace = ({
       .catch((err) => err.response)
 
     if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-      redirect(undefined, 'unknown_error')
+      toast.error(t('default:unknown_error'))
     }
     return response
   }

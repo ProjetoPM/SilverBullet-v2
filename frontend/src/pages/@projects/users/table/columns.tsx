@@ -65,11 +65,16 @@ export const columns = [
               label: t('workspace:label.active'),
               color: 'bg-green-700 hover:bg-green-800'
             }
-          default:
+          case 'invited':
             return {
               label: t('workspace:label.pending'),
               color:
                 'bg-orange-500 dark:bg-orange-500/60 hover:bg-orange-500/70'
+            }
+          default:
+            return {
+              label: 'Error',
+              color: 'bg-red-500 dark:bg-red-500/60 hover:bg-red-500/70'
             }
         }
       }

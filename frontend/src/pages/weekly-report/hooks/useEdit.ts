@@ -38,9 +38,10 @@ export const useEdit = () => {
     _edit,
     {
       enabled: !!id,
+      cacheTime: 0,
       refetchOnWindowFocus: false
     }
   )
 
-  return edit
+  return { ...edit, id }
 }

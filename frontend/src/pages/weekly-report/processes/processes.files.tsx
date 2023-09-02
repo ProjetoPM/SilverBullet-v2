@@ -179,7 +179,7 @@ export const ViewFileList = ({
                   <XCircle
                     size={17}
                     onClick={() => onRemove(index)}
-                    className="cursor-pointer text-neutral-300 dark:text-neutral-600 hover:text-red-500 dark:hover:text-destructive transition-colors duration-300"
+                    className="cursor-pointer text-neutral-300 dark:text-neutral-600 hover:text-red-500 dark:hover:text-destructive transition-colors duration-300 min-w-max"
                   />
                 </span>
               )

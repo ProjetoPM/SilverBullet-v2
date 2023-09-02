@@ -28,5 +28,10 @@ export const routes = {
     index: '/weekly-evaluation',
     new: '/weekly-evaluation/new',
     edit: '/weekly-evaluation/:id/edit'
+  },
+  integration: {
+    project_charter: {
+      index: '/project-charter'
+    }
   }
 }

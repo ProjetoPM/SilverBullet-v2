@@ -7,7 +7,7 @@ export type Delete = {
   _id: string
 }
 
-export interface Users {
+export interface User {
   id: string
   _id: string
   email: string
