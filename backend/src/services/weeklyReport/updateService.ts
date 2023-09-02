@@ -52,6 +52,8 @@ export default class WeeklyReportUpdateService {
       const { processes } = data;
 
       const weeklyReport = await WeeklyReportRepository.findById(weeklyReportId, this.options);
+
+      if(!weeklyReport) throw new Error400(this.options.language, 'tenant.weeklyReport.errors.notFound');
       const { weeklyEvaluation: weeklyEvaluationId } = weeklyReport;
 
       const { id: tenantId } =
@@ -61,8 +63,7 @@ export default class WeeklyReportUpdateService {
     const { id: userId } =
       await MongooseRepository.getCurrentUser(this.options);
 
-      // Check if user created the report
-      // Not implemented yet
+    if(userId != weeklyReport.createdBy) throw new Error400(this.options.language, 'tenant.weeklyReport.errors.notSameUser');
 
     const language = this.options.language;
     

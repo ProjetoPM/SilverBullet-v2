@@ -102,7 +102,7 @@ const ptBR = {
         projectNotInTenant:
           'O projeto informado não pertence a esta área de trabalho',
         notSameUser:
-          'Não é possível editar um relatório criado por outro usuário',
+          'Não é possível gerenciar um relatório criado por outro usuário',
         unique: {
           weeklyEvaluation:
             'Não é possível submeter mais de um relatório por avaliação semanal',
