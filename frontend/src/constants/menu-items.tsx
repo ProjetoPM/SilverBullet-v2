@@ -1,3 +1,4 @@
+import { routes } from '@/routes/routes'
 import { t } from '@/utils/translate-text'
 import { AlertCircle, Clock2, SearchCheck, Star, Users2 } from 'lucide-react'
 import {
@@ -22,6 +23,7 @@ export type Areas = {
     name: fn
     description?: fn
     badges: [fn, fn?]
+    to?: string
   }[]
 }
 
@@ -38,7 +40,8 @@ export const items: Areas[] = [
         id: 'project-charter',
         name: t('project_charter'),
         description: t('description:project_charter'),
-        badges: [t('initiating')]
+        badges: [t('initiating')],
+        to: routes.integration.project_charter.index
       },
       {
         id: 'business-case',

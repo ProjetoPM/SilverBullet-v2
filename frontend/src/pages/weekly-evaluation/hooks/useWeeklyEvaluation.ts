@@ -10,14 +10,10 @@ import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { WeeklyEvaluation } from '../weekly-evaluation.schema'
-import { WeeklyEvaluationData } from '../weekly-evaluation.types'
 
-const KEY = 'weekly-evaluation'
+export const WE_KEY = 'weekly-evaluation'
 
-export const useWeeklyEvaluation = ({
-  useList = false,
-  useEdit = undefined
-}: Props) => {
+export const useWeeklyEvaluation = ({ useEdit = undefined }: Props) => {
   const navigate = useNavigate()
   const { redirect } = useRedirect()
   const { t } = useTranslation('weekly-evaluation')
@@ -26,28 +22,19 @@ export const useWeeklyEvaluation = ({
    * Lista todos os Weekly-Evaluations disponíveis de um
    * usuário.
    */
-  const _list = async () => {
+  const list = async () => {
     return await api
       .get(`/tenant/${getWorkspaceId()}/weekly-evaluation/list`)
       .then((res) => {
         return {
           rows: res.data.rows.map((we) => ({
-            deletionId: we.id,
+            tableDeletionId: we.id,
             ...we
           }))
         }
       })
       .catch((err) => err.response)
   }
-
-  const list = useQuery<{
-    rows: WeeklyEvaluationData[]
-  }>(KEY, _list, {
-    enabled: useList,
-    onError: () => {
-      toast.error(t('default:unknown_error'))
-    }
-  })
 
   /**
    * Cria um weekly-evaluation e logo em seguida invalida o cache.
@@ -65,7 +52,7 @@ export const useWeeklyEvaluation = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('created_successfully'))
-            await queryClient.invalidateQueries([KEY])
+            await queryClient.invalidateQueries([WE_KEY])
             navigate(routes.weekly_evaluation.index)
             break
           default:
@@ -90,7 +77,7 @@ export const useWeeklyEvaluation = ({
       .catch((err) => err.response)
 
     if (response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-      redirect(undefined, 'unknown_error')
+      redirect({ message: t('default:unknown_error') })
     }
     return response
   }
@@ -127,7 +114,7 @@ export const useWeeklyEvaluation = ({
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('edited_successfully'))
-            await queryClient.invalidateQueries([KEY])
+            await queryClient.invalidateQueries([WE_KEY])
             navigate(routes.weekly_evaluation.index)
             break
           case StatusCodes.FORBIDDEN:
@@ -141,5 +128,40 @@ export const useWeeklyEvaluation = ({
     }
   )
 
-  return { create, list, edit, update }
+  const _delete = useMutation(
+    async (data: { _id: string }) => {
+      const _data = Array.isArray(data) ? data : [data._id]
+      return await api
+        .delete(`/tenant/${getWorkspaceId()}/weekly-evaluation`, {
+          params: { ids: _data }
+        })
+        .catch((err) => err.response)
+    },
+    {
+      onSuccess: async (response) => {
+        const messages = {
+          [StatusCodes.OK]: async () => {
+            toast.success(t('deleted_successfully'))
+            await queryClient.invalidateQueries([WE_KEY])
+          },
+          [StatusCodes.FORBIDDEN]: () => {
+            toast.error(response.data)
+          },
+          default: () => {
+            toast.error(t('default:unknown_error'))
+          }
+        }
+
+        if (response.status in messages) {
+          await messages[response.status]()
+          return
+        }
+      },
+      onError: () => {
+        toast.error(t('default:unknown_error'))
+      }
+    }
+  )
+
+  return { create, list, edit, update, _delete }
 }

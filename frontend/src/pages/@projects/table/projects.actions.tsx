@@ -1,7 +1,7 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { useCommandMenuStore } from '@/layout/CommandMenu/useCommandMenuStore'
 import { routes } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { resetProject, useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
 import {
   Copy,
@@ -26,8 +26,12 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { _delete } = useProjects({})
   const openMenu = useCommandMenuStore((state) => state.toggleMenu)
   const openProject = useWorkspaceStore((state) => state.openProject)
+  const [projectId] = useWorkspaceStore((state) => [state.project?._id])
 
   const handleDelete = async () => {
+    if (projectId === data._id) {
+      resetProject()
+    }
     await _delete.mutateAsync(data)
   }
 

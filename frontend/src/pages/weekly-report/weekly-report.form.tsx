@@ -1,7 +1,11 @@
 import { Editor } from '@/components/Editor/Editor'
 import { Button, Form } from '@/components/ui'
+import { useRedirect } from '@/hooks/useRedirect'
+import { routes } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useWeeklyReport } from './hooks'
@@ -22,6 +26,8 @@ interface WeeklyReportFormProps {
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
+  const projectId = useWorkspaceStore((state) => state.project?._id)
+  const { redirect } = useRedirect()
   const { create } = useWeeklyReport()
 
   const form = useForm<WeeklyReport>({
@@ -29,6 +35,15 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
     resolver: zodResolver(WeeklyReportSchema),
     defaultValues: data ?? defaultValues
   })
+
+  useEffect(() => {
+    if (!projectId) {
+      redirect({
+        route: routes.projects.index,
+        message: t('no_project_detected.label')
+      })
+    }
+  }, [projectId, redirect, t])
 
   const onSubmit = async (form: WeeklyReport) => {
     await create.mutateAsync(form)

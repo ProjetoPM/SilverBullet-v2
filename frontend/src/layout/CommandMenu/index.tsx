@@ -66,7 +66,7 @@ export const CommandMenu = () => {
       <CommandDialog
         open={open}
         onOpenChange={toggleMenu}
-        className="max-w-[1095px] max-h-screen lg:max-h-[700px] lg:min-h-[700px] min-[1367px]:max-h-[772px] min-[1367px]:min-h-[772px] overflow-y-auto"
+        className="max-w-full max-h-screen min-[1367px]:max-h-[772px] min-[1367px]:min-h-[772px] lg:max-w-[1095px] overflow-y-auto"
       >
         <div className="flex items-center border-b px-3">
           <Search className="mr-2 h-5 w-5 shrink-0 opacity-50" />
@@ -91,27 +91,28 @@ export const CommandMenu = () => {
           )}
           {!filtered &&
             items.map((item) => (
-              <Card.Root
-                key={item.id}
-                onClick={() => setSearch(item.name())}
-                className={cn(
-                  'border-l-8 cursor-pointer hover:scale-[103%] group',
-                  item.border
-                )}
-              >
-                <Card.Header>
-                  <Card.Title className="flex items-center gap-3 mb-3">
-                    <span className="text-foreground/90">{item.icon}</span>
-                    <span>{item.name()}</span>
-                  </Card.Title>
-                  <Card.Description
-                    className="text-justify line-clamp-3 group-hover:line-clamp-none"
-                    lang={i18next.language}
-                  >
-                    {item.description()}
-                  </Card.Description>
-                </Card.Header>
-              </Card.Root>
+              <Link to={'#'} key={item.id}>
+                <Card.Root
+                  onClick={() => setSearch(item.name())}
+                  className={cn(
+                    'border-l-8 cursor-pointer hover:scale-[103%] group',
+                    item.border
+                  )}
+                >
+                  <Card.Header>
+                    <Card.Title className="flex items-center gap-3 mb-3">
+                      <span className="text-foreground/90">{item.icon}</span>
+                      <span>{item.name()}</span>
+                    </Card.Title>
+                    <Card.Description
+                      className="text-justify line-clamp-3 group-hover:line-clamp-none"
+                      lang={i18next.language}
+                    >
+                      {item.description()}
+                    </Card.Description>
+                  </Card.Header>
+                </Card.Root>
+              </Link>
             ))}
           {weekly.map((item) => (
             <Card.Root

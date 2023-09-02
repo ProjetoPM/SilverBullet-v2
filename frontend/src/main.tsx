@@ -18,7 +18,10 @@ export const App = () => {
 
   useEffect(() => {
     document.body.removeAttribute('class')
-    document.body.classList.add(theme)
+
+    if (theme === 'dark') {
+      document.body.classList.add(theme)
+    }
   }, [theme])
 
   return (

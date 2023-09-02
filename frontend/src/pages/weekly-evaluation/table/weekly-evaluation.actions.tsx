@@ -4,6 +4,7 @@ import { replaceParams } from '@/utils/replace-params'
 import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { useWeeklyEvaluation } from '../hooks/useWeeklyEvaluation'
 import { WeeklyEvaluationData } from '../weekly-evaluation.types'
 
 type ProjectActionsProps = {
@@ -13,9 +14,10 @@ type ProjectActionsProps = {
 
 export const WeeklyEvaluationActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
+  const { _delete } = useWeeklyEvaluation({})
 
   const handleDelete = async () => {
-    // TODO
+    await _delete.mutateAsync({ _id: data?.id })
   }
 
   return (

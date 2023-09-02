@@ -29,10 +29,10 @@ export const WorkspaceForm = ({ data }: WorkspaceFormPageProps) => {
 
   const onSubmit = async (form: Workspace) => {
     if (data) {
-      await update.mutateAsync({ _id: data._id, ...form })
-    } else {
-      await create.mutateAsync(form)
+      await update.mutateAsync(form)
+      return
     }
+    await create.mutateAsync(form)
   }
 
   return (

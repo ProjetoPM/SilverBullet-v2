@@ -1,9 +1,9 @@
-import { Delete, Props, Users } from '@/@types/generic'
+import { Delete } from '@/@types/generic'
 import { useRedirect } from '@/hooks/useRedirect'
 import { api } from '@/services/api'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Invites } from '../users/add/invite-users'
@@ -11,33 +11,30 @@ import { Invites } from '../users/add/invite-users'
 /**
  * Chave usada para o cache do React Query.
  */
-const KEY = 'workspace-users'
+export const WORKSPACE_USERS_KEY = 'workspace-users'
 
-export const useWorkspaceInvites = ({ useList = false }: Props) => {
+export const useWorkspaceInvites = () => {
   const { t } = useTranslation(['workspace', 'default'])
   const { redirect } = useRedirect()
   const { id } = useParams()
   const queryClient = useQueryClient()
 
-  const _list = async () => {
-    return await api.get(`/tenant/${id}/user`).then((res) => {
-      return {
-        rows: res.data.rows.map((user: { id: string }) => ({
-          deletionId: user.id,
-          ...user
-        }))
-      }
-    })
-  }
-
   /**
-   * Lista todos os usuários de um Workspace
+   * Listagem de todos os usuários de um Workspace
    */
-  const list = useQuery<{ rows: Users[] }>(KEY, _list, {
-    enabled: useList,
-    cacheTime: 0,
-    onError: () => redirect()
-  })
+  const list = async () => {
+    const response = await api.get(`/tenant/${id}/user`).then((res) => ({
+      rows: res.data.rows.map((user) => ({
+        tableDeletionId: user.id,
+        ...user
+      }))
+    }))
+
+    if (!response) {
+      redirect()
+    }
+    return response
+  }
 
   /**
    * Envia os convites para os usuários.
@@ -57,7 +54,7 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
     },
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries([KEY])
+        await queryClient.invalidateQueries([WORKSPACE_USERS_KEY])
       },
       onError: () => redirect()
     }
@@ -75,20 +72,24 @@ export const useWorkspaceInvites = ({ useList = false }: Props) => {
     },
     {
       onSuccess: async (response) => {
-        switch (response.status) {
-          case StatusCodes.OK:
+        const messages = {
+          [StatusCodes.OK]: async () => {
             toast.success(t('users_deleted_successfully'))
-            await queryClient.invalidateQueries([KEY])
-            break
-          case StatusCodes.UNAUTHORIZED:
+            await queryClient.invalidateQueries([WORKSPACE_USERS_KEY])
+          },
+          [StatusCodes.UNAUTHORIZED]: () => {
             toast.error(t('no_permission_to_delete'))
-            break
-          case StatusCodes.FORBIDDEN:
+          },
+          [StatusCodes.FORBIDDEN]: () => {
             toast.error(t('no_permission_to_delete'))
-            break
-          default:
-            toast.error(response.data)
+          }
         }
+
+        if (response.status in messages) {
+          await messages[response.status]()
+          return
+        }
+        toast.error(response.data)
       },
       onError: () => {
         toast.error(t('default:unknown_error'))

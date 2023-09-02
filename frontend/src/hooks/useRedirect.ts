@@ -3,19 +3,24 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-export const useRedirect = (ns?: string | string[]) => {
+type RedirectProps = {
+  route?: string
+  message?: string
+}
+
+export const useRedirect = () => {
   const navigate = useNavigate()
-  const { t } = useTranslation(ns)
+  const { t } = useTranslation(['default'])
 
   /**
    * Redireciona o usuário para uma rota padrão ou específica
    *
    * @param route - Rota a ser usada no redirecionamento
-   * @param keyMessage - Chave (do i18next) de uma mensagem customizada
+   * @param message - Uma mensagem customizada (do i18next)
    */
-  const redirect = (route?: string, keyMessage?: string) => {
-    toast.error(t(keyMessage ?? 'no_workspace'))
-    navigate(route ?? routes.workspaces.index)
+  const redirect = (data?: RedirectProps) => {
+    toast.error(data?.message ?? t('an_error_occurred'))
+    navigate(data?.route ?? routes.workspaces.index)
     return
   }
 

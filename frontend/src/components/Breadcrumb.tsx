@@ -1,8 +1,7 @@
-import { ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { Label } from './ui'
-import { ComponentProps } from 'react'
 import { cn } from '@/lib/utils'
+import { ChevronRight } from 'lucide-react'
+import { ComponentProps } from 'react'
+import { Link } from 'react-router-dom'
 
 type BreadcrumbProps = ComponentProps<'div'> & {
   title: string
@@ -41,7 +40,7 @@ const Breadcrumb = ({
           )
         })}
       </ol>
-      <Label className="text-2xl font-bold tracking-wide">{title}</Label>
+      <span className="text-2xl font-bold tracking-wide">{title}</span>
     </div>
   )
 }

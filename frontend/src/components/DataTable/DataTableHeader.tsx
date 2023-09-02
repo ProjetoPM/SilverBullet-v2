@@ -16,7 +16,7 @@ interface DataTableHeaderProps<TData> {
 }
 
 type CommonDeleteProp = {
-  deletionId: string
+  tableDeletionId: string
   roles?: string[]
 }
 
@@ -44,7 +44,7 @@ export function DataTableHeader<TData>({
     const ids: Array<string> = []
 
     data.forEach((row) => {
-      ids.push(row.deletionId)
+      ids.push(row.tableDeletionId)
     })
     await fn?.(ids)
     setLoading(false)
@@ -55,6 +55,7 @@ export function DataTableHeader<TData>({
       <div className="flex items-center gap-2">
         {type === 'all' && (
           <DebouncedInput
+            id="search-debounced-input"
             value={globalFilter ?? ''}
             onChange={(value) => setGlobalFilter(String(value))}
             placeholder={t('label.search_by')}
@@ -64,6 +65,7 @@ export function DataTableHeader<TData>({
         )}
         {type === 'first' && (
           <Input
+            id="search-input"
             placeholder={t('label.search_by')}
             value={(getFirstColumn?.getFilterValue() as string) ?? ''}
             onChange={(event) =>

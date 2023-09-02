@@ -1,4 +1,5 @@
 import { DataTable } from '@/components/DataTable/DataTable'
+import { Loading } from '@/components/Loading'
 import { Separator } from '@/components/ui'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
@@ -11,6 +12,14 @@ const ProjectListPage = () => {
   const { t } = useTranslation('projects')
   const breadcrumb = [['Home', routes.projects.index], [t('title')]]
   const { list, _delete } = useProjects({ useList: true })
+
+  if (list.isLoading) {
+    return <Loading size={32} />
+  }
+
+  if (list.isError) {
+    return <div>Something went wrong!</div>
+  }
 
   return (
     <PageLayout title={t('title')} breadcrumb={breadcrumb}>

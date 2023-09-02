@@ -22,7 +22,7 @@ const Dropdown = () => {
         <DropdownMenu.Label>{t('default:my_account')}</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <DropdownMenu.Item
-          className="bg-accent grid grid-cols-[auto,1fr] gap-2"
+          className="bg-accent/60 grid grid-cols-[auto,1fr] gap-2"
           onClick={() => navigator.clipboard.writeText(email ?? 'error')}
         >
           <User className="w-4 h-4" />
@@ -32,12 +32,12 @@ const Dropdown = () => {
         <DropdownMenu.Group>
           <DropdownMenu.Item>
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>{t('default:profile.label')}</span>
             <DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
             <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>{t('default:settings.label')}</span>
           </DropdownMenu.Item>
         </DropdownMenu.Group>
         <DropdownMenu.Separator />

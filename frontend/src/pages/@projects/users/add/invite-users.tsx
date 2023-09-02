@@ -30,7 +30,7 @@ export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('manager')
   const [emailInput, setEmailInput] = useState('')
-  const { create } = useProjectsInvites({})
+  const { create } = useProjectsInvites()
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {

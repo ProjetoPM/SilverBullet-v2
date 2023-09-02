@@ -6,6 +6,7 @@ import { WeeklyEvaluationRoutes } from './main/weekly-evaluation'
 import { WeeklyReportRoutes } from './main/weekly-report'
 import { WorkspaceRoutes } from './main/workspaces'
 import { ErrorRoutes } from './other/errors'
+import { ProjectCharterRoutes } from './pages/project-charter.route'
 
 const routes: RouteObject[] = [
   AuthRoutes,
@@ -13,7 +14,8 @@ const routes: RouteObject[] = [
   ProjectsRoutes,
   WeeklyReportRoutes,
   WeeklyEvaluationRoutes,
-  ErrorRoutes
+  ErrorRoutes,
+  ProjectCharterRoutes
 ]
 
 export const router = createBrowserRouter(routes)

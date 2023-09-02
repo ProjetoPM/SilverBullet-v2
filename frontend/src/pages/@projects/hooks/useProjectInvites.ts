@@ -1,11 +1,11 @@
-import { Delete, Props, Users } from '@/@types/generic'
+import { Delete } from '@/@types/generic'
 import { useRedirect } from '@/hooks/useRedirect'
 import { routes } from '@/routes/routes'
 import { api } from '@/services/api'
 import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { StatusCodes } from 'http-status-codes'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Invites } from '../users/add/invite-users'
@@ -15,40 +15,40 @@ import { Invites } from '../users/add/invite-users'
  */
 export const KEY = 'project-users'
 
-export const useProjectsInvites = ({ useList = false }: Props) => {
+export const useProjectsInvites = () => {
   const { t } = useTranslation('projects')
   const { redirect } = useRedirect()
   const { id } = useParams()
-  const workspaceId = getWorkspaceId()
   const queryClient = useQueryClient()
 
-  // TODO listagem dos convites do projeto
-  const _list = async () => {
+  /**
+   * Lista todos os usuário de um projeto.
+   */
+  const list = async () => {
+    if (!getWorkspaceId()) {
+      redirect()
+    }
+
     const response = await api
-      .get(`tenant/${workspaceId}/project/${id}/invite`)
+      .get(`/tenant/${getWorkspaceId()}/project/${id}/users`)
       .then((res) => {
         return {
-          rows: res.data.rows.map((user: { id: string }) => ({
-            deletionId: user.id,
-            ...user
+          rows: res.data.rows.map((data) => ({
+            ...data,
+            tableDeletionId: data.id,
+            roles: data.projects?.[0].roles,
+            status: data.projects?.[0].status
           }))
         }
       })
       .catch((err) => err.response)
 
-    if (!workspaceId || response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-      redirect()
+    if (!response || response.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+      redirect({ route: routes.projects.index, message: 'an_error_occurred' })
     }
+
     return response
   }
-
-  /**
-   * Lista todos os usuários de um Workspace
-   */
-  const list = useQuery<{ rows: Users[] }>('project-users', _list, {
-    enabled: useList,
-    onError: () => redirect()
-  })
 
   /**
    * Envia os convites para os usuários.
@@ -56,28 +56,39 @@ export const useProjectsInvites = ({ useList = false }: Props) => {
   const create = useMutation(
     async (data: Invites[]) => {
       return await api
-        .post(`tenant/${workspaceId}/project/${id}/invite`, {
+        .post(`/tenant/${getWorkspaceId()}/project/${id}/invite`, {
           data: { emails: data }
         })
         .catch((err) => err.response)
     },
     {
       onSuccess: async (response) => {
-        switch (response.status) {
-          case StatusCodes.OK:
-            toast.success(t('users_invited'))
+        const messages = {
+          [StatusCodes.OK]: () => t('users_invited'),
+          [StatusCodes.FORBIDDEN]: () => response.data,
+          [StatusCodes.BAD_REQUEST]: () => toast.error(response.data)
+        }
+
+        if (response.status in messages) {
+          if (response.status === StatusCodes.OK) {
+            messages[response.status]()
             await queryClient.invalidateQueries(['project-users'])
-            break
-          default:
-            toast.error(response.data)
+            return
+          }
+
+          messages[response.status]()
         }
       },
-      onError: () => redirect(routes.projects.index, 'something_went_wrong')
+      onError: () =>
+        redirect({
+          route: routes.projects.index,
+          message: 'something_went_wrong'
+        })
     }
   )
 
   /**
-   * Deleta um usuário de um workspace.
+   * Deleta um usuário de um projeto.
    */
   const _delete = useMutation(
     async (data: Delete) => {
@@ -88,19 +99,18 @@ export const useProjectsInvites = ({ useList = false }: Props) => {
     },
     {
       onSuccess: async (response) => {
-        switch (response.status) {
-          case StatusCodes.OK:
-            toast.success(t('user_deleted_successfully'))
+        const messages = {
+          [StatusCodes.OK]: toast.success(t('user_deleted_successfully')),
+          [StatusCodes.UNAUTHORIZED]: toast.error(t('no_permission_to_delete')),
+          [StatusCodes.FORBIDDEN]: toast.error(t('no_permission_to_delete'))
+        }
+
+        if (response.status in messages) {
+          messages[response.status]
+
+          if (response.status === StatusCodes.OK) {
             await queryClient.invalidateQueries(['project-users'])
-            break
-          case StatusCodes.UNAUTHORIZED:
-            toast.error(t('no_permission_to_delete'))
-            break
-          case StatusCodes.FORBIDDEN:
-            toast.error(t('no_permission_to_delete'))
-            break
-          default:
-            toast.error(response.data)
+          }
         }
       },
       onError: () => {
@@ -109,5 +119,5 @@ export const useProjectsInvites = ({ useList = false }: Props) => {
     }
   )
 
-  return { list, create, _delete }
+  return { list, id, create, _delete }
 }
