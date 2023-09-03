@@ -64,20 +64,20 @@ export const useProjectsInvites = () => {
     {
       onSuccess: async (response) => {
         const messages = {
-          [StatusCodes.OK]: () => t('users_invited'),
-          [StatusCodes.FORBIDDEN]: () => response.data,
-          [StatusCodes.BAD_REQUEST]: () => toast.error(response.data)
+          [StatusCodes.OK]: async () => {
+            toast.success(t('users_invited'))
+            await queryClient.invalidateQueries(['project-users'])
+          },
+          default: () => {
+            toast.error(response.data)
+          }
         }
 
         if (response.status in messages) {
-          if (response.status === StatusCodes.OK) {
-            messages[response.status]()
-            await queryClient.invalidateQueries(['project-users'])
-            return
-          }
-
-          messages[response.status]()
+          await messages[response.status]()
+          return
         }
+        messages.default()
       },
       onError: () =>
         redirect({
@@ -100,18 +100,20 @@ export const useProjectsInvites = () => {
     {
       onSuccess: async (response) => {
         const messages = {
-          [StatusCodes.OK]: toast.success(t('user_deleted_successfully')),
-          [StatusCodes.UNAUTHORIZED]: toast.error(t('no_permission_to_delete')),
-          [StatusCodes.FORBIDDEN]: toast.error(t('no_permission_to_delete'))
+          [StatusCodes.OK]: async () => {
+            toast.success(t('user_deleted_successfully'))
+            await queryClient.invalidateQueries(['project-users'])
+          },
+          default: () => {
+            toast.error(response.data)
+          }
         }
 
         if (response.status in messages) {
-          messages[response.status]
-
-          if (response.status === StatusCodes.OK) {
-            await queryClient.invalidateQueries(['project-users'])
-          }
+          await messages[response.status]()
+          return
         }
+        messages.default()
       },
       onError: () => {
         toast.error(t('default:unknown_error'))

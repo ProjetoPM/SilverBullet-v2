@@ -28,7 +28,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
   const projectId = useWorkspaceStore((state) => state.project?._id)
   const { redirect } = useRedirect()
-  const { create } = useWeeklyReport()
+  const { create, update } = useWeeklyReport()
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -46,6 +46,13 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   }, [projectId, redirect, t])
 
   const onSubmit = async (form: WeeklyReport) => {
+    if (data) {
+      await update.mutateAsync({
+        ...form,
+        id: data.id
+      })
+      return
+    }
     await create.mutateAsync(form)
   }
 
@@ -79,7 +86,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            isLoading={create.isLoading}
+            isLoading={create.isLoading || update.isLoading}
           >
             {data && (
               <>

@@ -1,6 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import i18next from 'i18next'
-import { FileMinus2, View } from 'lucide-react'
+import { FilesActions } from './files.actions'
 
 export type FileObject = {
   name: string
@@ -41,23 +41,7 @@ export const columns = [
   helper.accessor((row) => row.folder, {
     id: 'folder',
     header: 'Actions',
-    cell: ({ row }) => {
-      const folder = row.getValue('folder')
-
-      return (
-        <div className="flex gap-2">
-          <View
-            className="w-4 h-4 cursor-pointer"
-            onClick={() => console.log('view', folder)}
-          />
-          <FileMinus2
-            className="w-4 h-4 cursor-pointer hover:text-destructive"
-            onClick={() => console.log('delete file in', folder)}
-          />
-          {row.getValue('folder')}
-        </div>
-      )
-    },
+    cell: ({ row }) => <FilesActions row={row} />,
     enableSorting: false,
     enableHiding: false
   })

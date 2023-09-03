@@ -1,4 +1,4 @@
-import { Users } from '@/@types/generic'
+import { User } from '@/@types/generic'
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
 import { Copy, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -6,12 +6,12 @@ import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
 
 type WorkspaceUsersActions = {
   id: string
-  data: Users
+  data: User
 }
 
 export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
   const { t } = useTranslation(['default', 'workspace'])
-  const { _delete } = useWorkspaceInvites({})
+  const { _delete } = useWorkspaceInvites()
 
   const handleDelete = async () => {
     await _delete.mutateAsync({ _id: data.id })
@@ -29,15 +29,6 @@ export const WorkspaceUsersActions = ({ id, data }: WorkspaceUsersActions) => {
         <DropdownMenu.Content align="end" className="w-40">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
           {/* // TODO edit invite workspace */}
-          {/* <Link
-            to={replaceParams(routes.workspaces.edit, data._id)}
-            id={`edit-${id}`}
-          >
-            <DropdownMenu.Item className="flex gap-3">
-              <Pencil size={18} />
-              {t('default:btn.edit')}
-            </DropdownMenu.Item>
-          </Link> */}
           <DropdownMenu.Item className="p-0 focus:text-white focus:bg-destructive">
             <Dialog.Trigger
               className="flex w-full gap-3 px-2 py-1.5"

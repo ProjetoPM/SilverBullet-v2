@@ -168,7 +168,10 @@ export const ViewFileList = ({
           <Label className="text-sm font-medium">
             {t('weekly-report:files_to_upload')}
           </Label>
-          <div className="flex flex-wrap gap-1.5 mt-2">
+          <div
+            className="flex flex-wrap gap-1.5 mt-2"
+            id={`folder-${form.getValues(`processes.${index}.filesFolder`)}`}
+          >
             {Array.from(files).map((file, index) => {
               return (
                 <span

@@ -41,6 +41,7 @@ export const useProjects = ({
       }))
       .catch((err) => err.response)
 
+    console.log(response)
     if (!workspaceId) {
       redirect()
     }
