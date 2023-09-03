@@ -104,7 +104,7 @@ export default class WeeklyReportDeleteService {
       this.options,
     ).handle(processesToDelete);
 
-    return 'sucess';
+    return 'success';
   }
 
   async handleDeleteFromWeeklyEvaluation(data: string[]) {

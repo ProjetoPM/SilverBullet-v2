@@ -59,8 +59,10 @@ export default class ProjectInviteService {
         );
         returnResponse.push(res);
     }
-
+    
     const isInvitesWithSuccess = returnResponse.some(response => response == 'success');
+
+    
     if(!isInvitesWithSuccess) throw new Error400(this.options.language, 'tenant.project.errors.noInvitesSent');
     
 
@@ -118,6 +120,6 @@ export default class ProjectInviteService {
       },
     );
 
-    return 'sucess';
+    return 'success';
   }
 }
