@@ -10,10 +10,7 @@ export default (database) => {
 
   const StakeholderRegistrationSchema = new Schema(
     {
-      nome: {
-        type: String,
-      },
-      tipo: {
+      type: {
         type: String,
         enum: [
           "External",
@@ -21,25 +18,10 @@ export default (database) => {
           null
         ],
       },
-      mainRoleintheProject: {
-        type: String,
-        enum: [
-          "Stakeholder",
-          "Team",
-          "Provider",
-          "Project manager",
-          "Sponsor",
-          "Others",
-          null
-        ],
-      },
       organization: {
         type: String,
       },
       positioninOrganization: {
-        type: String,
-      },
-      email: {
         type: String,
       },
       mainProjectResponsibility: {
@@ -66,6 +48,11 @@ export default (database) => {
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
+        required: true
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
         required: true
       },
       project: {
