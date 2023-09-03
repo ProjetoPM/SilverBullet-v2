@@ -81,6 +81,7 @@ const ptBR = {
     },
     weeklyReport: {
       successResponses: {
+        updatedSuccessfully: 'Relatório atualizado com sucesso',
         deleteReportSuccessfully:
           'Relatórios excluídos com sucesso',
       },

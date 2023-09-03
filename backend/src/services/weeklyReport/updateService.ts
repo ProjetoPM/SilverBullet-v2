@@ -10,6 +10,7 @@ import ProcessReportCreateService from '../processReport/createService';
 import { IProcessReport } from '../../interfaces';
 import { supabase } from '../supabase';
 import ProcessReportRepository from '../../database/repositories/processReportRepository';
+import { i18n } from '../../i18n';
 
 
 
@@ -135,7 +136,7 @@ export default class WeeklyReportUpdateService {
            
         await new ProcessReportCreateService(this.options).create({processes: processesWithoutId}, weeklyReportId, language, tenantId);
       await MongooseRepository.commitTransaction(session);
-      return record;
+      return i18n(this.options.language, 'tenant.weeklyReport.successResponses.updatedSuccessfully');
     } catch (error: any) {
       throw error;
     } finally {

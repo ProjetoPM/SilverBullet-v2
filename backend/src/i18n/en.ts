@@ -74,6 +74,7 @@ const en = {
     },
     weeklyReport: {
       successResponses: {
+        updatedSuccessfully: 'Report updated successfully',
         deleteReportSuccessfully:
           'All reports were successfully deleted',
       },
