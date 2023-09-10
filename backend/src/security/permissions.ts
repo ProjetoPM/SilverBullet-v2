@@ -1648,58 +1648,34 @@ class Permissions {
       resourceBreakdownStructureRead: {
         id: 'resourceBreakdownStructureRead',
         allowedRoles: [roles.admin, roles.student],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       resourceBreakdownStructureAutocomplete: {
         id: 'resourceBreakdownStructureAutocomplete',
         allowedRoles: [roles.admin, roles.student],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       communicationsManagementPlanImport: {
         id: 'communicationsManagementPlanImport',
         allowedRoles: [roles.admin],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
       },
       communicationsManagementPlanCreate: {
         id: 'communicationsManagementPlanCreate',
         allowedRoles: [roles.admin],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
         allowedStorage: [],
       },
       communicationsManagementPlanEdit: {
         id: 'communicationsManagementPlanEdit',
         allowedRoles: [roles.admin],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
         allowedStorage: [],
       },
       communicationsManagementPlanDestroy: {
         id: 'communicationsManagementPlanDestroy',
         allowedRoles: [roles.admin],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
         allowedStorage: [],
       },
       communicationsManagementPlanRead: {
@@ -2526,12 +2502,8 @@ class Permissions {
       finalReportAutocomplete: {
         id: 'finalReportAutocomplete',
         allowedRoles: [roles.admin, roles.student],
-        allowedPlans: [
-          plans.free,
-          plans.growth,
-          plans.enterprise,
-        ],
-      },
+        allowedPlans: [plans.free, plans.growth, plans.enterprise],
+      }
     };
   }
 
