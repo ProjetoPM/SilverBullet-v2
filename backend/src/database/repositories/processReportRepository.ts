@@ -130,7 +130,7 @@ class ProcessReportRepository {
     );
   }
 
-  static async getSubmissionsByWeeklyReportId(
+  static async getProcessesByWeeklyReportId(
     id: Object,
     options,
   ) {

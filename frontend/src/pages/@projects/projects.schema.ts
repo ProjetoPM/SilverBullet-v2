@@ -13,10 +13,12 @@ export const ProjectSchema = z.object({
       (value) => html(value, max.name, '<='),
       params('at_most', max.name)
     ),
-  description: string().refine(
-    (value) => html(value, max.description, '<='),
-    params('at_most', max.description)
-  )
+  description: string()
+    .refine(
+      (value) => html(value, max.description, '<='),
+      params('at_most', max.description)
+    )
+    .optional()
 })
 
 export const defaultValues = {

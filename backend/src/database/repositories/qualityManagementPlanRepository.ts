@@ -115,7 +115,13 @@ class QualityManagementPlanRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await QualityManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

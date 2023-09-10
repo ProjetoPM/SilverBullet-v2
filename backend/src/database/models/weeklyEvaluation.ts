@@ -20,11 +20,8 @@ export default (database) => {
       type: {
         type: String,
         required: true,
-        enum: [
-          'Individual Report',
-          'Group Report'
-        ],
-      }, 
+        enum: ['Individual Report', 'Group Report'],
+      },
       startDate: {
         type: Date,
         required: true,
@@ -33,7 +30,7 @@ export default (database) => {
         type: Date,
         required: true,
       },
-      metrics: [MetricGroupSchema],
+      metricGroup: MetricGroupSchema,
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
@@ -75,5 +72,8 @@ export default (database) => {
     getters: true,
   });
 
-  return database.model('weeklyEvaluation', WeeklyEvaluationSchema);
+  return database.model(
+    'weeklyEvaluation',
+    WeeklyEvaluationSchema,
+  );
 };

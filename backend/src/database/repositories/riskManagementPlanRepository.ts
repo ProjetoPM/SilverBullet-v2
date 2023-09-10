@@ -108,6 +108,14 @@ class RiskManagementPlanRepository {
 
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await RiskManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
+
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

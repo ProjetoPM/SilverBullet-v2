@@ -8,10 +8,14 @@ export const RemoveProcess = ({
   index,
   remove
 }: Pick<FieldsProcessProps, 'index' | 'remove'>) => {
-  const length = useLength((state) => state.length)
+  const [length, setLength] = useLength((state) => [
+    state.length,
+    state.setLength
+  ])
 
   const handleRemove = () => {
     remove(index)
+    setLength(length - 1)
   }
 
   return (

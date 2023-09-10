@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import Error401 from '../../errors/Error401';
-import MetricGroupSchema from './schemas/metricGroup';
+import MetricSchema from './schemas/metric';
 
 const Schema = mongoose.Schema;
 
@@ -17,7 +16,7 @@ export default (database) => {
         type: 'string',
         maxlength: 5000,
       },
-      score: MetricGroupSchema,
+      score: MetricSchema,
       weeklyEvaluation: {
         type: Schema.Types.ObjectId,
         ref: 'weeklyEvaluation',

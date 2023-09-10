@@ -10,6 +10,7 @@ import ProcessReportCreateService from '../processReport/createService';
 import { IProcessReport } from '../../interfaces';
 import { supabase } from '../supabase';
 import ProcessReportRepository from '../../database/repositories/processReportRepository';
+import { i18n } from '../../i18n';
 
 
 
@@ -41,9 +42,7 @@ export default class WeeklyReportUpdateService {
 
   async update(
     weeklyReportId: string,
-    data: UpdateRequestWeeklyReport,
-    language: string,
-    tenantId: string,
+    data: UpdateRequestWeeklyReport
   ) {
     const session = await MongooseRepository.createSession(
       this.options.database,
@@ -54,9 +53,21 @@ export default class WeeklyReportUpdateService {
       const { processes } = data;
 
       const weeklyReport = await WeeklyReportRepository.findById(weeklyReportId, this.options);
-      const weeklyEvaluationId = weeklyReport.weeklyEvaluation;
 
-      
+      if(!weeklyReport) throw new Error400(this.options.language, 'tenant.weeklyReport.errors.notFound');
+      const { weeklyEvaluation: weeklyEvaluationId } = weeklyReport;
+
+      const { id: tenantId } =
+      await MongooseRepository.getCurrentTenant(
+        this.options,
+      );
+    const { id: userId } =
+      await MongooseRepository.getCurrentUser(this.options);
+
+    if(userId != weeklyReport.createdBy) throw new Error400(this.options.language, 'tenant.weeklyReport.errors.notSameUser');
+
+    const language = this.options.language;
+    
       const isInRange =
         await WeeklyEvaluationRepository.verifySubmitDateRange(
           date,
@@ -64,8 +75,6 @@ export default class WeeklyReportUpdateService {
           this.options,
         );
 
-
-        
       if (!isInRange)
         throw new Error400(
           language,
@@ -86,7 +95,7 @@ export default class WeeklyReportUpdateService {
 
       if (!processes) return record;
 
-      const {rows: dbProcesses} = await ProcessReportRepository.getSubmissionsByWeeklyReportId(weeklyReportId, this.options);
+      const {rows: dbProcesses} = await ProcessReportRepository.getProcessesByWeeklyReportId(weeklyReportId, this.options);
 
       const processesWithoutId: CreateProcess[] = processes.filter(process => process.id == undefined);
       
@@ -115,7 +124,7 @@ export default class WeeklyReportUpdateService {
           filesWithFolder.push(`${filesFolder}/${file.name}`);
         });
 
-        const { data, error } = await supabase.storage.from ('weekly-report').remove (filesWithFolder);
+        await supabase.storage.from ('weekly-report').remove (filesWithFolder);
       }
       
 
@@ -127,7 +136,7 @@ export default class WeeklyReportUpdateService {
            
         await new ProcessReportCreateService(this.options).create({processes: processesWithoutId}, weeklyReportId, language, tenantId);
       await MongooseRepository.commitTransaction(session);
-      return record;
+      return i18n(this.options.language, 'tenant.weeklyReport.successResponses.updatedSuccessfully');
     } catch (error: any) {
       throw error;
     } finally {

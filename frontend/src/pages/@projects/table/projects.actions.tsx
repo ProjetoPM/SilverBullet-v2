@@ -1,12 +1,19 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { useCommandMenuStore } from '@/layout/CommandMenu'
+import { useCommandMenuStore } from '@/layout/CommandMenu/useCommandMenuStore'
 import { routes } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { resetProject, useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { replaceParams } from '@/utils/replace-params'
-import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import {
+  Copy,
+  FolderOpen,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Users2
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useProjects } from '../hooks/useProjects'
+import { useProjects } from '../hooks/useProject'
 import { ProjectData } from '../projects.types'
 
 type ProjectActionsProps = {
@@ -16,11 +23,15 @@ type ProjectActionsProps = {
 
 const ProjectActions = ({ id, data }: ProjectActionsProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { _delete } = useProjects()
+  const { _delete } = useProjects({})
   const openMenu = useCommandMenuStore((state) => state.toggleMenu)
   const openProject = useWorkspaceStore((state) => state.openProject)
+  const [projectId] = useWorkspaceStore((state) => [state.project?._id])
 
   const handleDelete = async () => {
+    if (projectId === data._id) {
+      resetProject()
+    }
     await _delete.mutateAsync(data)
   }
 
@@ -67,8 +78,20 @@ const ProjectActions = ({ id, data }: ProjectActionsProps) => {
             </Dialog.Trigger>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
+          {/**
+           * // TODO Atribuir roles
+           */}
+          <>
+            <Link to={replaceParams(routes.projects.users.index, data._id!)}>
+              <DropdownMenu.Item className="flex gap-3" id={`users-${id}`}>
+                <Users2 size={18} />
+                Users
+              </DropdownMenu.Item>
+            </Link>
+            <DropdownMenu.Separator />
+          </>
           <DropdownMenu.Item
-            onClick={() => navigator.clipboard.writeText(data?._id ?? 'error')}
+            onClick={() => navigator.clipboard.writeText(data._id!)}
             className="flex gap-3"
             id={`copy-${id}`}
           >

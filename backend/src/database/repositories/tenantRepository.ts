@@ -5,10 +5,11 @@ import User from '../models/user';
 import Tenant from '../models/tenant';
 import Settings from '../models/settings';
 import Error404 from '../../errors/Error404';
-import ProjectRepository from './projectRepository';
 import Error400 from '../../errors/Error400';
 import { v4 as uuid } from 'uuid';
 import { isUserInTenant } from '../utils/userTenantUtils';
+import WeeklyEvaluationRepository from './weeklyEvaluationRepository';
+import ProjectRepository from './projectRepository';
 import SettingsRepository from './settingsRepository';
 import { IRepositoryOptions } from './IRepositoryOptions';
 
@@ -206,10 +207,11 @@ class TenantRepository {
       options,
     );
 
+    const {language} = options;
     const tenant = await this.findById(id, options);
 
     if (!isUserInTenant(currentUser, id)) {
-      throw new Error404();
+      throw new Error400(language, 'tenant.userNotInTenant');
     }
 
     let record = await MongooseRepository.wrapWithSessionIfExists(

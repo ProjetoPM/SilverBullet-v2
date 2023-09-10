@@ -3,6 +3,7 @@ import { WorkspaceSchema } from './workspace.schema'
 
 export type Workspace = {
   roles: string[]
+  status: string
   tenant: {
     _id: string
     name: string

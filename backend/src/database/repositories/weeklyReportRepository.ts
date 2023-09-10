@@ -21,10 +21,17 @@ class WeeklyReportRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    if (!currentTenant) {
+    const { id: tenantId } = currentTenant;
+    if (!tenantId) {
       throw new Error400();
     }
 
+    const { id: projectId } =
+      MongooseRepository.getCurrentProject(options);
+
+    if (!projectId) {
+      throw new Error400();
+    }
     const currentUser =
       MongooseRepository.getCurrentUser(options);
 
@@ -35,8 +42,8 @@ class WeeklyReportRepository {
         {
           ...data,
           weeklyEvaluation: data.weeklyEvaluationId,
-          project: data.projectId,
-          tenant: currentTenant.id,
+          project: projectId,
+          tenant: tenantId,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         },
@@ -65,8 +72,8 @@ class WeeklyReportRepository {
     data: UpdateRequestWeeklyReport,
     options: IRepositoryOptions,
   ) {
-
-    const currentUser = await MongooseRepository.getCurrentUser(options);
+    const currentUser =
+      await MongooseRepository.getCurrentUser(options);
 
     const record = await this.findById(id, options);
     if (!record) {
@@ -74,8 +81,7 @@ class WeeklyReportRepository {
     }
 
     const isSameUser = record.createdBy == currentUser.id;
-    if(!isSameUser) throw new Error400(language, '');
-
+    if (!isSameUser) throw new Error400(language, 'tenant.weeklyReport.errors.notSameUser');
 
     await WeeklyReport(options.database).updateOne(
       { _id: id },
@@ -83,6 +89,35 @@ class WeeklyReportRepository {
         ...data,
         updatedBy:
           MongooseRepository.getCurrentUser(options).id,
+      },
+      options,
+    );
+
+    await this._createAuditLog(
+      AuditLogRepository.UPDATE,
+      id,
+      data,
+      options,
+    );
+
+    return await this.findById(id, options);
+  }
+
+  static async updateScore(
+    id: string,
+    data,
+    options: IRepositoryOptions,
+  ) {
+
+    const record = await this.findById(id, options);
+    if (!record) {
+      throw new Error404();
+    }
+
+    await WeeklyReport(options.database).updateOne(
+      { _id: id },
+      {
+        score: data
       },
       options,
     );
@@ -132,7 +167,7 @@ class WeeklyReportRepository {
   }
 
   static async destroy(
-    id: Object,
+    id: string,
     options: IRepositoryOptions,
   ) {
     let record =
@@ -155,11 +190,11 @@ class WeeklyReportRepository {
   }
 
   static async destroyAll(
-    WeeklyReports: Array<IWeeklyReport>,
+    weeklyReports: string[],
     options: IRepositoryOptions,
   ) {
-    for (const WeeklyReport of WeeklyReports) {
-      this.destroy(WeeklyReport.id!, options);
+    for (const weeklyReport of weeklyReports) {
+      this.destroy(weeklyReport, options);
     }
   }
 
@@ -173,27 +208,23 @@ class WeeklyReportRepository {
   static async findById(id, options: IRepositoryOptions) {
     const record =
       await MongooseRepository.wrapWithSessionIfExists(
-        WeeklyReport(options.database).findById(id),
+        WeeklyReport(options.database).findById(id).populate('project', 'id name'),
         options,
       );
 
-    if (!record) {
-      return record;
-    }
+    if (!record) return;
 
-    const output: IWeeklyReport = record.toObject
+    const output = record.toObject
       ? record.toObject()
       : record;
 
     const { rows: processes }: { rows: IProcessReport[] } =
-      await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+      await ProcessReportRepository.getProcessesByWeeklyReportId(
         id!,
         options,
       );
 
     output.processes = processes;
-
-
 
     return output;
   }
@@ -202,23 +233,28 @@ class WeeklyReportRepository {
     const currentTenant =
       MongooseRepository.getCurrentTenant(options);
 
-    const currentUser = MongooseRepository.getCurrentUser(options);
+    const currentProject =
+      MongooseRepository.getCurrentProject(options);
+
+    const currentUser =
+      MongooseRepository.getCurrentUser(options);
 
     const criteriaAnd: any = [
       {
         tenant: currentTenant.id,
       },
       {
-        createdBy: currentUser.id
-      }
+        project: currentProject.id,
+      },
+      {
+        createdBy: currentUser.id,
+      },
     ];
     const criteria = { $and: criteriaAnd };
 
     let rows = await WeeklyReport(options.database)
       .find(criteria)
       .populate('weeklyEvaluation');
-
- 
 
     const count = await WeeklyReport(
       options.database,
@@ -256,7 +292,7 @@ class WeeklyReportRepository {
       const {
         rows: processes,
       }: { rows: IProcessReport[] } =
-        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        await ProcessReportRepository.getProcessesByWeeklyReportId(
           _id!,
           options,
         );
@@ -298,7 +334,7 @@ class WeeklyReportRepository {
       const {
         rows: processes,
       }: { rows: IProcessReport[] } =
-        await ProcessReportRepository.getSubmissionsByWeeklyReportId(
+        await ProcessReportRepository.getProcessesByWeeklyReportId(
           _id!,
           options,
         );
@@ -307,12 +343,72 @@ class WeeklyReportRepository {
       newData.push(weeklyReport);
     }
 
-
     const count = await WeeklyReport(
       options.database,
     ).countDocuments(criteria);
 
     return { rows: newData, count };
+  }
+
+  static async getReportsByEvaluationId(
+    weeklyEvaluationId: string,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    let criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+      {
+        weeklyEvaluation: weeklyEvaluationId
+      }
+    ];
+
+    const criteria = criteriaAnd.length
+      ? { $and: criteriaAnd }
+      : null;
+
+    let rows = await WeeklyReport(options.database)
+      .find(criteria)
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows, count };
+  }
+
+  static async getReportsByEvaluationIdIncludingUser(
+    weeklyEvaluationId: string,
+    options: IRepositoryOptions,
+  ) {
+    const currentTenant =
+      MongooseRepository.getCurrentTenant(options);
+
+    let criteriaAnd: any = [
+      {
+        tenant: currentTenant.id,
+      },
+      {
+        weeklyEvaluation: weeklyEvaluationId
+      }
+    ];
+
+    const criteria = criteriaAnd.length
+      ? { $and: criteriaAnd }
+      : null;
+
+    let rows = await WeeklyReport(options.database)
+      .find(criteria)
+      .populate('createdBy', 'email')
+
+    const count = await WeeklyReport(
+      options.database,
+    ).countDocuments(criteria);
+
+    return { rows, count };
   }
 
   static async findAndCountAll(

@@ -21,6 +21,7 @@ import { DataTablePagination } from './DataTablePagination'
 interface FetchingProps {
   isLoading?: boolean
   isError?: boolean
+  fn?: Function
 }
 
 interface DataTableProps<TData, TValue>
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   data,
   isError = false,
   isLoading = false,
+  fn,
   ...props
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -77,6 +79,7 @@ export function DataTable<TData, TValue>({
     <div {...props}>
       <DataTableHeader
         table={table}
+        fn={fn}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
@@ -111,18 +114,22 @@ export function DataTable<TData, TValue>({
                 </Table.Cell>
               </Table.Row>
             )}
-            {table.getRowModel().rows?.map((row) => (
-              <Table.Row
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Cell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))}
+            {!isLoading &&
+              table.getRowModel().rows?.map((row) => (
+                <Table.Row
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <Table.Cell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Table.Cell>
+                  ))}
+                </Table.Row>
+              ))}
             {!isLoading && table.getRowModel().rows?.length === 0 && (
               <Table.Row>
                 <Table.Cell

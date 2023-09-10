@@ -104,7 +104,13 @@ class TeamPerformanceEvaluationRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await TeamPerformanceEvaluation(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

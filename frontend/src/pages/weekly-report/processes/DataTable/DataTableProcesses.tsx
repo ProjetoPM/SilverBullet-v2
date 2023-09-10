@@ -14,7 +14,8 @@ import {
 import { Loading } from '@/components/Loading'
 import { Table } from '@/components/ui'
 import i18next from 'i18next'
-import { ComponentProps, useEffect, useState } from 'react'
+import { ComponentProps, useState } from 'react'
+import { useEffectOnce } from 'react-use'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
 
@@ -64,6 +65,10 @@ export function DataTableProcesses<TData, TValue>({
     }
   })
 
+  useEffectOnce(() => {
+    table.setPageSize(5)
+  })
+
   if (isError) {
     return (
       <div className="text-lg font-extrabold">
@@ -72,10 +77,6 @@ export function DataTableProcesses<TData, TValue>({
       </div>
     )
   }
-
-  useEffect(() => {
-    table.setPageSize(5)
-  }, [])
 
   return (
     <div {...props}>
@@ -118,6 +119,7 @@ export function DataTableProcesses<TData, TValue>({
             {table.getRowModel().rows?.map((row) => (
               <Table.Row
                 key={row.id}
+                id={`tr-${row.id}`}
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (

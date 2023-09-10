@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+const { createClient } = require('@supabase/supabase-js');
 import { getConfig } from '../../config';
 
 const SUPABASE_URL = getConfig().SUPABASE_URL ?? ''

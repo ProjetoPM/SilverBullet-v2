@@ -115,7 +115,13 @@ class ScheduleManagementPlanRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ScheduleManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

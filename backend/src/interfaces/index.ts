@@ -1,7 +1,7 @@
 export interface IProject {
   _id: Object;
   id: Object | null;
-  project: Object | null;
+  project: any | null;
   name: string;
   tenant: Object | string;
   description: string;
@@ -14,7 +14,7 @@ export interface IWeeklyEvaluation {
   type: string;
   startDate: Date | string;
   endDate: Date | string;
-  metrics: IMetric[];
+  metricGroup: IMetricGroup;
 }
 
 export interface IWeeklyReport {
@@ -22,10 +22,12 @@ export interface IWeeklyReport {
   id?: Object | string;
   name: string;
   endDate: Date | string;
-  score?: IMetricGroup;
-  weeklyEvaluation: string;
+  score?: IMetric;
+  weeklyEvaluation: string | object;
   processes: IProcessReport[];
   tenant: string | null;
+  project: string | null;
+  createdBy: string | object;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 }
@@ -45,15 +47,6 @@ export interface IProcessReport {
   updatedAt?: Date | string;
 }
 
-
-
-
-
-export interface IMetricGroup {
-  id: string;
-  metrics: Array<IMetric>;
-}
-
 export interface IProcessGroup {
   id: string;
   key: string;
@@ -67,4 +60,9 @@ export interface IProcessName {
 export interface IMetric {
   name: string;
   value: number;
+}
+
+export interface IMetricGroup {
+  metricGroupId: string;
+  metrics: IMetric[];
 }

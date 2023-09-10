@@ -53,6 +53,14 @@ export const getWorkspaceId = () => {
   return useWorkspaceStore.getState().workspace?._id
 }
 
+export const getProjectId = () => {
+  return useWorkspaceStore.getState().project?._id
+}
+
 export const resetWorkspaceStore = () => {
   return useWorkspaceStore.setState({ ...initialState })
+}
+
+export const resetProject = () => {
+  return useWorkspaceStore.setState({ project: null })
 }

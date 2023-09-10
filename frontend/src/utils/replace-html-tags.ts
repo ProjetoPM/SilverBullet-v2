@@ -1,5 +1,5 @@
-export const replaceHtmlTags = (html: string) => {
-  return html?.replace(/<[^>]+>/g, ' ')
+export const replaceHtmlTags = (html: string, replace?: string) => {
+  return html?.replace(/<[^>]+>/g, replace ?? ' ')
 }
 
 export const removeHtmlEscapeCodes = (html: string) => {
@@ -11,6 +11,10 @@ export const params = (key: string, number?: number) => {
     return { params: { i18n: { key: key, values: { value: number } } } }
   }
   return { params: { i18n: { key: key } } }
+}
+
+export const paramsValues = (key: string) => {
+  return { i18n: { key: key } }
 }
 
 export const html = (html: string, number: number, type: '<=' | '>=') => {
