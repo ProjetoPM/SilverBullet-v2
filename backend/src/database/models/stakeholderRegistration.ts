@@ -18,10 +18,14 @@ export default (database) => {
           null
         ],
       },
+      email: {
+        type: String,
+        required: true
+      },
       organization: {
         type: String,
       },
-      positioninOrganization: {
+      positionInOrganization: {
         type: String,
       },
       mainProjectResponsibility: {
@@ -39,7 +43,7 @@ export default (database) => {
       mainExpectations: {
         type: String,
       },
-      phaseofGreaterInterest: {
+      phaseOfGreaterInterest: {
         type: String,
       },
       observations: {
@@ -52,8 +56,7 @@ export default (database) => {
       },
       user: {
         type: Schema.Types.ObjectId,
-        ref: 'user',
-        required: true
+        ref: 'user'
       },
       project: {
         type: Schema.Types.ObjectId,
