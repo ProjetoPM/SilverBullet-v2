@@ -65,6 +65,13 @@ const ptBR = {
       },
     },
     project: {
+      roles: {
+        admin: 'Administrador',
+        manager: 'Gerente de Projeto',
+        developer: 'Desenvolvedor',
+        stakeholder: 'Parte Interessada',
+        professor: 'Professor'
+      },
       successResponses: {
         invitesSentSuccessfully:
           'Todos convites foram enviados',
@@ -179,7 +186,12 @@ const ptBR = {
       },
     },
     stakeholderRegistration: {
+      successResponses: {
+        created: "Stakeholder added successfully",
+        updated: "Stakeholder updated successfully"
+      },
       errors: {
+        stakeholderNotInProject: "You can't associate a stakeholder with a user that is not in the project",
         unique: {},
       },
     },

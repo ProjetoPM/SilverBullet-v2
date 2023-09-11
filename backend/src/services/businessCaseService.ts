@@ -102,9 +102,8 @@ export default class BusinessCaseService {
     );
   }
 
-  async findAndCountAll(args) {
-    return BusinessCaseRepository.findAndCountAll(
-      args,
+  async findByTenantAndProject() {
+    return BusinessCaseRepository.findByTenantAndProject(
       this.options,
     );
   }

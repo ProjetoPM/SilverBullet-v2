@@ -20,11 +20,12 @@ export default (app) => {
     require('./businessCaseAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/project/:projectId/business-case`,
-    require('./businessCaseList').default,
-  );
-  app.get(
-    `/tenant/:tenantId/business-case/:id`,
+    `/tenant/:tenantId/project/:projectId/business-case/:id`,
     require('./businessCaseFind').default,
+  );
+
+  app.get(
+    `/tenant/:tenantId/project/:projectId/business-case`,
+    require('./businessCaseFindByTenantAndProject').default,
   );
 };

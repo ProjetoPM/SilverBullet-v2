@@ -172,7 +172,13 @@ const en = {
       },
     },
     stakeholderRegistration: {
+      successResponses: {
+        created: "Parte Interessada adicionada com sucesso",
+        updated: "Parte Interessada atualizada com sucesso"
+      },
       errors: {
+        stakeholderNotInProject: "Não é possível associar uma parte interessada a um usuário que não está no projeto",
+
         unique: {},
       },
     },

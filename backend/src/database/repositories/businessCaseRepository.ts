@@ -201,8 +201,7 @@ class BusinessCaseRepository {
     return this._mapRelationshipsAndFillDownloadUrl(record);
   }
 
-  static async findAndCountAll(
-    { filter, limit = 0, offset = 0, orderBy = '' },
+  static async findByTenantAndProject(
     options: IRepositoryOptions,
   ) {
     const currentTenant = MongooseRepository.getCurrentTenant(
@@ -222,111 +221,14 @@ class BusinessCaseRepository {
       project: currentProject.id
     });
 
-    if (filter) {
-      if (filter.id) {
-        criteriaAnd.push({
-          ['_id']: MongooseQueryUtils.uuid(filter.id),
-        });
-      }
-
-      if (filter.businessNeeds) {
-        criteriaAnd.push({
-          businessNeeds: {
-            $regex: MongooseQueryUtils.escapeRegExp(
-              filter.businessNeeds,
-            ),
-            $options: 'i',
-          },
-        });
-      }
-
-      if (filter.situationAnalysis) {
-        criteriaAnd.push({
-          situationAnalysis: {
-            $regex: MongooseQueryUtils.escapeRegExp(
-              filter.situationAnalysis,
-            ),
-            $options: 'i',
-          },
-        });
-      }
-
-      if (filter.recommendation) {
-        criteriaAnd.push({
-          recommendation: {
-            $regex: MongooseQueryUtils.escapeRegExp(
-              filter.recommendation,
-            ),
-            $options: 'i',
-          },
-        });
-      }
-
-      if (filter.evaluation) {
-        criteriaAnd.push({
-          evaluation: {
-            $regex: MongooseQueryUtils.escapeRegExp(
-              filter.evaluation,
-            ),
-            $options: 'i',
-          },
-        });
-      }
-
-      if (filter.createdAtRange) {
-        const [start, end] = filter.createdAtRange;
-
-        if (
-          start !== undefined &&
-          start !== null &&
-          start !== ''
-        ) {
-          criteriaAnd.push({
-            ['createdAt']: {
-              $gte: start,
-            },
-          });
-        }
-
-        if (
-          end !== undefined &&
-          end !== null &&
-          end !== ''
-        ) {
-          criteriaAnd.push({
-            ['createdAt']: {
-              $lte: end,
-            },
-          });
-        }
-      }
-    }
-
-    const sort = MongooseQueryUtils.sort(
-      orderBy || 'createdAt_DESC',
-    );
-
-    const skip = Number(offset || 0) || undefined;
-    const limitEscaped = Number(limit || 0) || undefined;
     const criteria = criteriaAnd.length
       ? { $and: criteriaAnd }
       : null;
 
-    let rows = await BusinessCase(options.database)
+    let [data] = await BusinessCase(options.database)
       .find(criteria)
-      .skip(skip)
-      .limit(limitEscaped)
-      .sort(sort);
-
-    const count = await BusinessCase(
-      options.database,
-    ).countDocuments(criteria);
-
-    rows = await Promise.all(
-      rows.map(this._mapRelationshipsAndFillDownloadUrl),
-    );
-
-    return { rows, count };
+    
+    return data;
   }
 
   static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {
