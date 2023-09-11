@@ -20,10 +20,6 @@ export default (app) => {
     require('./projectCharterAutocomplete').default,
   );
   app.get(
-    `/tenant/:tenantId/project/:projectId/project-charter`,
-    require('./projectCharterList').default,
-  );
-  app.get(
     `/tenant/:tenantId/project/:projectId/project-charter/:id`,
     require('./projectCharterFind').default,
   );
