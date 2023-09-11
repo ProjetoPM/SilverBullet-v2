@@ -562,6 +562,10 @@ class Permissions {
       stakeholderRegistrationCreate: {
         id: 'stakeholderRegistrationCreate',
         allowedRoles: [roles.admin],
+        allowedProjectRoles: [
+          projectRoles.admin, 
+          projectRoles.manager
+        ],
         allowedPlans: [
           plans.free,
           plans.growth,

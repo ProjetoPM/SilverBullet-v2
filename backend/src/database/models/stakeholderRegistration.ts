@@ -49,14 +49,15 @@ export default (database) => {
       observations: {
         type: String,
       },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        unique: true
+      },
       tenant: {
         type: Schema.Types.ObjectId,
         ref: 'tenant',
         required: true
-      },
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'user'
       },
       project: {
         type: Schema.Types.ObjectId,

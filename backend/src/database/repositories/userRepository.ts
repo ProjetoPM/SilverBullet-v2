@@ -456,7 +456,7 @@ export default class UserRepository {
     return { rows, count };
   }
 
-  static async listUsersByProject(
+  static async listUsersByTenantAndProject(
     options: IRepositoryOptions,
   ) {
     const currentTenant = MongooseRepository.getCurrentTenant(

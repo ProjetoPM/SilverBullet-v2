@@ -20,7 +20,7 @@ export default class ListUsersByProjectService {
     this.options = options;
   }
   async handle() {
-    return UserRepository.listUsersByProject(
+    return UserRepository.listUsersByTenantAndProject(
       this.options
     );
   }
