@@ -7,7 +7,7 @@ export default async (req, res, next) => {
   try {
 
     new PermissionChecker(req).validateHas(
-      Permissions.values.availableEvaluations,
+      Permissions.values.getEvaluationsByProfessor,
     );
     
     const payload =

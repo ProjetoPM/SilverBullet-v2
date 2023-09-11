@@ -115,7 +115,13 @@ class ResourceManagementPlanRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ResourceManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

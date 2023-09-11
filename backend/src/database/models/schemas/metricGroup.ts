@@ -1,18 +1,14 @@
 import mongoose from 'mongoose';
+import MetricSchema from './metric';
 const Schema = mongoose.Schema;
 
 const MetricGroupSchema = new Schema(
   {
-    name: {
+    metricGroupId: {
       type: String,
-      required: true,
-      enum: ['NOK', 'PNOK', 'POK', 'PTOK', 'TOK']
+      required: true
     },
-    value: {
-      type: Number,
-      required: true,
-      enum: [0, 2.5, 5, 7.5, 10]
-    },
+    metrics: [MetricSchema],
   },
   { timestamps: false },
 );

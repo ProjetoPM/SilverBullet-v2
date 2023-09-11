@@ -1,3 +1,4 @@
+import { Users } from '@/@types/generic'
 import { DataTableColumnHeader } from '@/components/DataTable/DataTableColumnHeader'
 import { Badge, Checkbox } from '@/components/ui'
 import { cn } from '@/lib/utils'
@@ -7,15 +8,7 @@ import { t } from 'i18next'
 import React from 'react'
 import { WorkspaceUsersActions } from './workspace.users.actions'
 
-export interface WorkspaceUsers {
-  id: string
-  _id: string
-  email: string
-  roles: string[]
-  status: string
-}
-
-const helper = createColumnHelper<WorkspaceUsers>()
+const helper = createColumnHelper<Users>()
 
 export const columns = [
   /**

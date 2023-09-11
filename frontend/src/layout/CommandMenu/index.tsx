@@ -1,25 +1,21 @@
 import { DebouncedInput } from '@/components/DataTable/DebouncedInput'
 import { Badge, Button, Card, CommandDialog } from '@/components/ui'
+import { weekly } from '@/constants/menu-weekly-items'
 import { cn } from '@/lib/utils'
 import i18next from 'i18next'
 import { MenuSquare, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { create } from 'zustand'
-import { combine } from 'zustand/middleware'
+import { Link } from 'react-router-dom'
 import { items } from '../../constants/menu-items'
-
-export const useCommandMenuStore = create(
-  combine({ open: false }, (set) => ({
-    toggleMenu: () => set((state) => ({ open: !state.open }))
-  }))
-)
+import { useCommandMenuStore } from './useCommandMenuStore'
 
 export const CommandMenu = () => {
   const { t } = useTranslation(['areas', 'phases', 'menu', 'description'])
   const [search, setSearch] = useState('')
   const open = useCommandMenuStore((state) => state.open)
   const toggleMenu = useCommandMenuStore((state) => state.toggleMenu)
+  const closeMenu = useCommandMenuStore((state) => state.closeMenu)
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -31,7 +27,7 @@ export const CommandMenu = () => {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [toggleMenu])
 
   const filtered =
     search.length > 0
@@ -45,8 +41,10 @@ export const CommandMenu = () => {
               border: area.border
             }))
           )
-          .filter((phase) =>
-            phase.name().toLowerCase().includes(search.toLowerCase())
+          .filter(
+            (phase) =>
+              phase.name().toLowerCase().includes(search.toLowerCase()) ||
+              phase.area().toLowerCase().includes(search.toLowerCase())
           )
       : undefined
 
@@ -68,11 +66,11 @@ export const CommandMenu = () => {
       <CommandDialog
         open={open}
         onOpenChange={toggleMenu}
-        className="max-w-[1095px] max-h-screen lg:max-h-[772px] lg:min-h-[772px] overflow-y-auto"
+        className="max-w-full max-h-screen min-[1367px]:max-h-[772px] min-[1367px]:min-h-[772px] lg:max-w-[1095px] overflow-y-auto"
       >
         <div className="flex items-center border-b px-3">
           <Search className="mr-2 h-5 w-5 shrink-0 opacity-50" />
-          <div className="flex-1 mr-8">
+          <div className="flex flex-grow items-center mr-8">
             <DebouncedInput
               className={
                 'h-11 border-none ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0'
@@ -93,13 +91,39 @@ export const CommandMenu = () => {
           )}
           {!filtered &&
             items.map((item) => (
-              <Card.Root
-                key={item.id}
-                className={cn(
-                  'border-l-8 cursor-pointer hover:scale-[103%]',
-                  item.border
-                )}
-              >
+              <Link to={'#'} key={item.id}>
+                <Card.Root
+                  onClick={() => setSearch(item.name())}
+                  className={cn(
+                    'border-l-8 cursor-pointer hover:scale-[103%] group',
+                    item.border
+                  )}
+                >
+                  <Card.Header>
+                    <Card.Title className="flex items-center gap-3 mb-3">
+                      <span className="text-foreground/90">{item.icon}</span>
+                      <span>{item.name()}</span>
+                    </Card.Title>
+                    <Card.Description
+                      className="text-justify line-clamp-3 group-hover:line-clamp-none"
+                      lang={i18next.language}
+                    >
+                      {item.description()}
+                    </Card.Description>
+                  </Card.Header>
+                </Card.Root>
+              </Link>
+            ))}
+          {weekly.map((item) => (
+            <Card.Root
+              key={item.id}
+              className={cn(
+                'border-l-8 cursor-pointer hover:scale-[103%]',
+                item.border,
+                { hidden: filtered }
+              )}
+            >
+              <Link to={item.to} onClick={closeMenu}>
                 <Card.Header>
                   <Card.Title className="flex items-center gap-3 mb-3">
                     <span className="text-foreground/90">{item.icon}</span>
@@ -112,8 +136,9 @@ export const CommandMenu = () => {
                     {item.description()}
                   </Card.Description>
                 </Card.Header>
-              </Card.Root>
-            ))}
+              </Link>
+            </Card.Root>
+          ))}
           {filtered &&
             filtered.map((item) => (
               <Card.Root

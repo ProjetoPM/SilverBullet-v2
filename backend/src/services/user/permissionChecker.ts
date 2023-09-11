@@ -8,7 +8,7 @@ const plans = Plans.values;
 
 export type IPermission = {
   id: string;
-  allowedRoles: string[];
+  allowedRoles?: string[];
   allowedProjectRoles?: string[];
   allowedPlans: string[];
 };
@@ -100,7 +100,7 @@ export default class PermissionChecker {
    * Checks if the current user roles allows the permission.
    */
   hasProjectRolePermission(permission) {
-    return this.currentProject.some((role) =>
+    return this.currentUserProjectRolesIds.some((role) =>
       permission.allowedProjectRoles.some(
         (allowedRole) => allowedRole === role,
       ),
@@ -136,6 +136,8 @@ export default class PermissionChecker {
       return [];
     }
 
+    if(!this.currentTenant) return [];
+
     const tenant = this.currentUser.tenants
       .filter(
         (tenantUser) => tenantUser.status === 'active',
@@ -160,6 +162,8 @@ export default class PermissionChecker {
     if (!this.currentUser || !this.currentUser.projects) {
       return [];
     }
+
+    if(!this.currentProject) return [];
 
     const project = this.currentUser.projects
       .filter(

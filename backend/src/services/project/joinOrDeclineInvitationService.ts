@@ -22,12 +22,12 @@ export default class JoinOrDeclineInvitationService {
       this.options.database,
     );
 
-
     try {
       const allowedOptions = ['accept', 'decline'];
 
-      if(!option || !token) throw new Error400();
-      if(!allowedOptions.includes(option)) throw new Error400();
+      if (!option || !token) throw new Error400();
+      if (!allowedOptions.includes(option))
+        throw new Error400();
 
       const projectUser =
         await ProjectUserRepository.findByInvitationToken(
@@ -38,7 +38,31 @@ export default class JoinOrDeclineInvitationService {
           },
         );
 
-      console.log(projectUser);
+      console.log('projectUser');
+      
+      const tenantId = projectUser.project.tenant;
+      console.log(tenantId);
+      console.log(typeof tenantId);
+
+      const { tenants } = projectUser.user;
+
+      const isUserAlreadyInTenant = tenants.some(
+        (userTenant) => {
+          console.log("userTenant.tenant.id");
+          console.log(userTenant.tenant.id);
+          console.log(typeof userTenant.tenant.id);
+
+          if (userTenant.tenant.id == tenantId) {
+            return userTenant;
+          }
+        },
+      );
+
+      if (!isUserAlreadyInTenant)
+        throw new Error400(
+          this.options.language,
+          'tenant.project.errors.userNotInTenant',
+        );
 
       if (
         !projectUser ||
@@ -66,10 +90,9 @@ export default class JoinOrDeclineInvitationService {
         currentProject: { id: projectUser.project.id },
         session,
       });
+      await MongooseRepository.commitTransaction(session);
 
       return 'accepted';
-
-      await MongooseRepository.commitTransaction(session);
     } catch (error) {
       await MongooseRepository.abortTransaction(session);
       throw error;

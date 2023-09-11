@@ -2,20 +2,18 @@ import { Loading } from '@/components/Loading'
 import { PageLayout } from '@/layout'
 import { routes } from '@/routes/routes'
 import { useTranslation } from 'react-i18next'
-import { useEdit } from './hooks/useEdit'
+import { useParams } from 'react-router-dom'
+import { useProjects } from './hooks/useProject'
 import { ProjectForm } from './projects.form'
 
 const ProjectPage = () => {
   const { t } = useTranslation('projects')
   const breadcrumb = [['Home', routes.projects.index], [t('title')]]
-  const { id, data, isLoading, isError } = useEdit()
+  const { id } = useParams()
+  const { edit } = useProjects({ useEdit: id })
 
-  if (isLoading) {
+  if (edit.isLoading) {
     return <Loading size={32} />
-  }
-
-  if (isError) {
-    return <div>Something went wrong!</div>
   }
 
   return (
@@ -23,7 +21,7 @@ const ProjectPage = () => {
       title={t(`${id ? 'edit.title' : 'new.title'}`)}
       breadcrumb={breadcrumb}
     >
-      <ProjectForm data={data} />
+      <ProjectForm data={edit.data} />
     </PageLayout>
   )
 }

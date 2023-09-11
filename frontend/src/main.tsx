@@ -18,7 +18,10 @@ export const App = () => {
 
   useEffect(() => {
     document.body.removeAttribute('class')
-    document.body.classList.add(theme)
+
+    if (theme === 'dark') {
+      document.body.classList.add(theme)
+    }
   }, [theme])
 
   return (
@@ -32,7 +35,11 @@ export const App = () => {
           </QueryClientProvider>
         </HelmetProvider>
         {theme && (
-          <ToastContainer position="top-right" autoClose={2250} theme={theme} />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2250}
+            theme={theme}
+          />
         )}
       </>
     </React.StrictMode>

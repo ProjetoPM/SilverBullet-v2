@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useProjects } from './hooks/useProjects'
+import { useProjects } from './hooks/useProject'
 import { Project, ProjectSchema, defaultValues, max } from './projects.schema'
 import { ProjectData } from './projects.types'
 
@@ -14,7 +14,7 @@ interface ProjectFormPageProps {
 
 export const ProjectForm = ({ data }: ProjectFormPageProps) => {
   const { t } = useTranslation(['default', 'projects'])
-  const { create, edit } = useProjects()
+  const { create, update } = useProjects({})
 
   const form = useForm<Project>({
     mode: 'all',
@@ -24,7 +24,7 @@ export const ProjectForm = ({ data }: ProjectFormPageProps) => {
 
   const onSubmit = async (form: Project) => {
     if (data) {
-      await edit.mutateAsync({ _id: data._id, ...form })
+      await update.mutateAsync({ _id: data._id, ...form })
     } else {
       await create.mutateAsync(form)
     }
@@ -75,7 +75,7 @@ export const ProjectForm = ({ data }: ProjectFormPageProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            isLoading={create.isLoading || edit.isLoading}
+            isLoading={create.isLoading || update.isLoading}
           >
             {data && (
               <>

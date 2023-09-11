@@ -115,7 +115,13 @@ class ResourceRequirementsRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ResourceRequirements(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

@@ -10,7 +10,7 @@ const Logo = ({ className, ...props }: LogoProps) => {
       <div className="hidden lg:flex">
         <Codesandbox size={28} />
       </div>
-      <label
+      <span
         className={cn(
           'text-2xl font-bold dark:text-neutral-50 text-neutral-800',
           className
@@ -18,7 +18,7 @@ const Logo = ({ className, ...props }: LogoProps) => {
         {...props}
       >
         Silver Bullet
-      </label>
+      </span>
     </div>
   )
 }

@@ -1,10 +1,12 @@
+import { Loading } from '@/components/Loading'
 import { Label } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import { XCircle } from 'lucide-react'
-import { ChangeEvent, useMemo, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { useFileList } from '../hooks/useWeeklyReport'
+import { useEffectOnce } from 'react-use'
+import { useWeeklyReport } from '../hooks'
 import { DataTableProcesses } from './DataTable/DataTableProcesses'
 import { FieldsProcessProps } from './processes.items'
 import { FileObject, columns } from './table/columns'
@@ -15,25 +17,40 @@ export const ViewFileList = ({
 }: Pick<FieldsProcessProps, 'index' | 'form'>) => {
   const { t } = useTranslation(['default', 'weekly-report'])
   const [files, setFiles] = useState<FileList>()
-  const content = useFileList((state) => state.content)
+  const { useFileList } = useWeeklyReport()
+  const { content } = useFileList()
+  const [isLoading, setLoading] = useState(false)
+  const [isEditMode, setEditMode] = useState(false)
+  const [folder, setFolder] = useState<string>('')
 
-  const folder = useMemo(() => {
-    const uuid = form.getValues(`processes.${index}.filesFolder`)
-    return uuid ?? crypto.randomUUID()
-  }, [])
+  useEffectOnce(() => {
+    const folder = form.getValues(`processes.${index}.filesFolder`)
+
+    if (folder) {
+      setFolder(folder)
+      setEditMode(true)
+    } else {
+      /**
+       * Gera uma folder para esse processo.
+       */
+      setFolder(crypto.randomUUID())
+    }
+  })
 
   const { data: cloudFiles } = useQuery<FileObject[]>(
     [`files-${folder}`, folder],
     async () => {
-      const isEditMode = form.getValues(`processes.${index}.filesFolder`)
-
       if (!isEditMode) {
         return []
       }
 
+      setLoading(true)
+
       const { data, error } = await supabase.storage
         .from('weekly-report')
         .list(`processes/${folder}`)
+
+      setLoading(false)
 
       if (error) {
         return []
@@ -48,6 +65,10 @@ export const ViewFileList = ({
         folder: folder
       }))
       return filesWithFolder
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: isEditMode
     }
   )
 
@@ -147,7 +168,10 @@ export const ViewFileList = ({
           <Label className="text-sm font-medium">
             {t('weekly-report:files_to_upload')}
           </Label>
-          <div className="flex flex-wrap gap-1.5 mt-2">
+          <div
+            className="flex flex-wrap gap-1.5 mt-2"
+            id={`folder-${form.getValues(`processes.${index}.filesFolder`)}`}
+          >
             {Array.from(files).map((file, index) => {
               return (
                 <span
@@ -158,7 +182,7 @@ export const ViewFileList = ({
                   <XCircle
                     size={17}
                     onClick={() => onRemove(index)}
-                    className="cursor-pointer text-neutral-300 dark:text-neutral-600 hover:text-red-500 dark:hover:text-destructive transition-colors duration-300"
+                    className="cursor-pointer text-neutral-300 dark:text-neutral-600 hover:text-red-500 dark:hover:text-destructive transition-colors duration-300 min-w-max"
                   />
                 </span>
               )
@@ -168,14 +192,20 @@ export const ViewFileList = ({
       )}
       {cloudFiles && cloudFiles.length > 0 && (
         <div>
-          <Label className="text-sm font-medium">
-            {t('files_already_uploaded')}
-          </Label>
-          <DataTableProcesses
-            data={cloudFiles}
-            columns={columns}
-            className="mt-2"
-          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Label className="text-sm font-medium">
+                {t('files_already_uploaded')}
+              </Label>
+              <DataTableProcesses
+                data={cloudFiles}
+                columns={columns}
+                className="mt-2"
+              />
+            </>
+          )}
         </div>
       )}
     </div>

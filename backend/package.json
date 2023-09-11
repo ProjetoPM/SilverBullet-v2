@@ -8,7 +8,8 @@
     "build": "tsc && npm run build:documentation",
     "db:create": "npm run build && node ./dist/database/migrations/create",
     "stripe:login": "stripe login",
-    "stripe:start": "stripe listen --forward-to localhost:8080/api/plan/stripe/webhook"
+    "stripe:start": "stripe listen --forward-to localhost:8080/api/plan/stripe/webhook",
+    "deploy": "npm rub db:create && npm start"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.388.0",

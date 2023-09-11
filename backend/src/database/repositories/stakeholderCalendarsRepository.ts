@@ -115,7 +115,13 @@ class StakeholderCalendarsRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await StakeholderCalendars(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

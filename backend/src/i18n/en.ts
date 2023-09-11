@@ -40,36 +40,62 @@ const en = {
       destroyingPlanUser: `You can't delete the plan manager.`,
     },
   },
-
+  
   tenant: {
+    userNotInTenant: "You cannot delete a workspace that you don't have access to",
+    
     weeklyEvaluation: {
+      successResponses: {
+        evaluationsSuccessfullyDeleted: 'All evaluations were successfully deleted',
+      },
       errors: {
+        someEvaluationsUnsuccessfullyDeleted: 'Some of the evaluations could not be deleted',
+        allEvaluationsUnsuccessfullyDeleted: 'None of the evaluations could be deleted',
+        notFound: 'This weekly evaluation does not exist',
         nullStartDate: 'Invalid start date',
         nullEndDate: 'Invalid end date',
         invalidMetricGroup: 'Invalid metric group',
+        notSameUser: 'You cannot manage a weekly evaluation that does not belong to you',
         startDateGreaterThanEndDate:
           'Start date greater than end date',
       },
     },
 
     project: {
+      successResponses: {
+        invitesSentSuccessfully: 'All invitations were successfully sent',
+      },
       errors: {
+        inviteWithErrors: 'A problem has occurred while sending one or more invitations',
+        noInvitesSent: 'None of the invitations could be sent',
+        userNotInTenant: "The user is not in the project workspace",
         projectWithSameName: "A project with the same name already exists in this workspace"
       }
     },
     weeklyReport: {
+      successResponses: {
+        updatedSuccessfully: 'Report updated successfully',
+        deleteReportSuccessfully:
+          'All reports were successfully deleted',
+      },
       errors: {
+        someUnsuccessfullyDeleted: "An error has occured while deleting one or more reports",
+        allUnsuccessfullyDeleted: "None of the reports could be deleted",
+        notFound: 'This weekly report does not exist',
         rangeDateError:
           'This weekly evaluation is not available to be submitted',
         missingWeeklyEvaluationId:
           'You need to choose a weekly evaluation',
         missingProjectId: 'You need to choose a project',
         notInProject:
-          "You can't submit it because you are not in this project",
+          "You do not belong to this project",
+        notProfessorEvaluate: 'Only professors are able to evaluate reports',
+        reportNotBelongToTenant: 'This report does not belong to this workspace',
+          
         projectNotInTenant:
           'The chosen project does not belong to this workspace',
         notSameUser:
-          'You cannot update a weekly report created by other user',
+          'You cannot manage a weekly report created by other user',
         unique: {
           weeklyEvaluation:
             "You can't submit more than one report per evaluation",

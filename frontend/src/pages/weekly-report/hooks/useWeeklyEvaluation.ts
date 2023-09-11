@@ -1,22 +1,30 @@
+import { useRedirect } from '@/hooks/useRedirect'
 import { api } from '@/services/api'
 import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { useQuery } from 'react-query'
 
-type SelectWeeklyEvaluation = {
-  id: string
-  name: string
-}
-
 export const useWeeklyEvaluation = () => {
-  const getData = async () => {
+  const { redirect } = useRedirect()
+
+  const _listWeeklyEvaluation = async () => {
     const url = `/tenant/${getWorkspaceId()}/weekly-evaluation/list-availables`
-    return api.get(url).then((res) => res.data)
+    return await api
+      .get(url)
+      .then((res) => res.data)
+      .catch((err) => err.response)
   }
 
-  const { data, ...props } = useQuery<{
-    rows: SelectWeeklyEvaluation[]
+  /**
+   * Lista todas as avaliações semanais.
+   */
+  const weeklyEvaluation = useQuery<{
+    rows: { id: string; name: string }[]
     count: number
-  }>('weekly-evaluation-list', async () => getData())
+  }>('weekly-report-evaluation-list', _listWeeklyEvaluation, {
+    staleTime: 1 * 1024 * 1024, // 1 minute
+    cacheTime: 5 * 1024 * 1024, // 5 minutes
+    onError: () => redirect()
+  })
 
-  return { data, ...props }
+  return weeklyEvaluation
 }

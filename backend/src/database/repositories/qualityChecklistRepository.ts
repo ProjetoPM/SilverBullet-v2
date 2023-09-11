@@ -104,7 +104,13 @@ class QualityChecklistRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await QualityChecklist(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

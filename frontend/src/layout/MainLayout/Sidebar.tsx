@@ -2,7 +2,6 @@ import { LinkMenu } from '@/components/Utils/LinkMenu'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { sidebar } from '@/constants/sidebar-items'
 import { useSidebarStore } from '@/stores/useSidebarStore'
-import { Label } from '@radix-ui/react-label'
 
 const Sidebar = () => {
   const setOpen = useSidebarStore((state) => state.setOpen)
@@ -13,9 +12,9 @@ const Sidebar = () => {
         return (
           <div className="flex flex-col" key={item.id}>
             {item.label && (
-              <Label className="pl-10 pt-2 mb-1.5 text-xs font-bold uppercase tracking-wider">
+              <span className="pl-10 pt-2 mb-1.5 text-xs font-bold uppercase tracking-wider">
                 {item.label}
-              </Label>
+              </span>
             )}
             {item.children?.map((item) => {
               return (

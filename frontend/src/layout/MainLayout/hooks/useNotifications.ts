@@ -5,22 +5,49 @@ import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 
+type InviteProps = {
+  token: string
+  isProject?: boolean
+}
+
 export const useNotifications = () => {
   const { t } = useTranslation('notifications')
 
+  /**
+   * Aceita um convite especifiando (ou não) se o convite é para
+   * um workspace ou projeto.
+   */
   const acceptInvite = useMutation(
-    async (token: string) => {
-      return await api.post(`/tenant/invitation/${token}/accept`)
+    async ({ token, isProject }: InviteProps) => {
+      if (isProject) {
+        return await api
+          .post(`/project/accept-decline`, {
+            data: {
+              option: 'accept',
+              token: token
+            }
+          })
+          .catch((err) => err.response)
+      }
+      return await api
+        .post(`/tenant/invitation/${token}/accept`)
+        .catch((err) => err.response)
     },
     {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('accepted_successfully'), {
               position: 'bottom-right'
             })
-            queryClient.invalidateQueries('invites')
-            queryClient.invalidateQueries('workspaces')
+            await Promise.all([
+              queryClient.invalidateQueries('invites'),
+              queryClient.invalidateQueries('workspaces'),
+              queryClient.invalidateQueries('projects')
+            ])
+            break
+          default:
+            toast.error(t(response.data))
             break
         }
       },
@@ -30,18 +57,34 @@ export const useNotifications = () => {
     }
   )
 
+  /**
+   * Rejeita um convite especifiando (ou não) se o convite é para
+   * um workspace ou projeto.
+   */
   const declineInvite = useMutation(
-    async (token: string) => {
-      return await api.delete(`/tenant/invitation/${token}/decline`)
+    async ({ token, isProject }: InviteProps) => {
+      if (isProject) {
+        return await api
+          .post(`/project/accept-decline`, {
+            data: {
+              option: 'decline',
+              token: token
+            }
+          })
+          .catch((err) => err.response)
+      }
+      return await api
+        .delete(`/tenant/invitation/${token}/decline`)
+        .catch((err) => err.response)
     },
     {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         switch (response.status) {
           case StatusCodes.OK:
             toast.success(t('declined_successfully'), {
               position: 'bottom-right'
             })
-            queryClient.invalidateQueries('invites')
+            await queryClient.invalidateQueries(['invites'])
             break
         }
       },
