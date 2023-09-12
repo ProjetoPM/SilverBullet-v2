@@ -68,23 +68,10 @@ export default class StakeholderRegistrationService {
       );
     }
 
-    const {email, projects} = userInProject;
-
-    const { id: currentProjectId } = MongooseRepository.getCurrentProject(this.options);
-
-    const userProject = projects.find((project:any) => project.id == currentProjectId); 
-    const [ role ] = userProject.roles;
-
+    const { email } = userInProject;
     data.email = email;
-    data.positionInOrganization = role;
 
-
-    const record =
-      await StakeholderRegistrationRepository.create(data, {
-        ...this.options,
-      });
-
-    return record;
+    return data;
   }
 
   async createWithoutUser(data) {
