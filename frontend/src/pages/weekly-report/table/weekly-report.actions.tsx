@@ -1,5 +1,7 @@
 import { Button, Dialog, DropdownMenu } from '@/components/ui'
-import { Copy, FolderOpen, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { routes } from '@/routes/routes'
+import { replaceParams } from '@/utils/replace-params'
+import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { WeeklyReport } from '../weekly-report.types'
@@ -16,10 +18,6 @@ export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
     // TODO
   }
 
-  const handleOpen = () => {
-    // TODO
-  }
-
   return (
     <Dialog.Root>
       <DropdownMenu.Root>
@@ -31,15 +29,10 @@ export const WeeklyReportActions = ({ id, data }: ProjectActionsProps) => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
           <DropdownMenu.Label>{t('btn.actions')}</DropdownMenu.Label>
-          <DropdownMenu.Item
-            className="flex gap-3"
-            id={`open-${id}`}
-            onClick={handleOpen}
+          <Link
+            to={replaceParams(routes.weekly_report.edit, data._id)}
+            id={`edit-${id}`}
           >
-            <FolderOpen size={18} />
-            {t('default:btn.open')}
-          </DropdownMenu.Item>
-          <Link to={'#'} id={`edit-${id}`}>
             <DropdownMenu.Item className="flex gap-3">
               <Pencil size={18} />
               {t('default:btn.edit')}

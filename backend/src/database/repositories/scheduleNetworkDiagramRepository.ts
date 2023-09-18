@@ -119,6 +119,13 @@ class ScheduleNetworkDiagramRepository {
 
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ScheduleNetworkDiagram(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

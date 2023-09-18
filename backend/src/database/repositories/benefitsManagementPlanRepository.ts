@@ -120,6 +120,14 @@ class BenefitsManagementPlanRepository {
 
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await BenefitsManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
+
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

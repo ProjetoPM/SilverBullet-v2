@@ -244,7 +244,7 @@ export default class MongooseRepository {
   static handleUniqueFieldError(
     error,
     language,
-    entityName,
+    errorPath,
   ) {
     if (!error || error.code !== 11000) {
       return;
@@ -256,7 +256,7 @@ export default class MongooseRepository {
 
     throw new Error400(
       language,
-      `entities.${entityName}.errors.unique.${uniqueFieldWithError}`,
+      `${errorPath}.errors.unique.${uniqueFieldWithError}`,
     );
   }
 }

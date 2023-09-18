@@ -104,7 +104,13 @@ class ClosedProcurementDocumentationRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ClosedProcurementDocumentation(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

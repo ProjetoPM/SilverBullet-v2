@@ -3,30 +3,29 @@ import { Button, Form } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, RotateCcw, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { BusinessCaseSchema, defaultValues, max } from './business-case.schema'
-import { BusinessCase } from './business-case.types'
+import { BusinessCase, FormBusinesscase } from './business-case.types'
 import { useBusinessCase } from './hooks/useBusiness-case'
 interface BusinessCaseFormPageProps {
   data?: BusinessCase
 }
 
 export const BusinessCaseForm = ({ data }: BusinessCaseFormPageProps) => {
-  const { t } = useTranslation('BusinessCase')
-  const {} = useBusinessCase()
+  const { edit, create } = useBusinessCase()
 
-  const form = useForm<BusinessCase>({
+  const form = useForm<FormBusinesscase>({
     mode: 'all',
     resolver: zodResolver(BusinessCaseSchema),
     defaultValues: data ?? defaultValues
   })
 
-  const onSubmit = async (form: BusinessCase) => {
-    /*if (data) {
-      await edit.mutateAsync({ _id: data._id, ...form })
+  const onSubmit = async (form: FormBusinesscase) => {
+    console.log(form)
+    if (data && data !== null) {
+      await edit.mutateAsync({ id: data.id, ...form })
     } else {
-      await create.mutateAsync(form)
-    }*/
+      await create.mutateAsync({ ...form })
+    }
   }
 
   return (
@@ -107,18 +106,18 @@ export const BusinessCaseForm = ({ data }: BusinessCaseFormPageProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            /*isLoading={create.isLoading || useEdit.isLoading}*/
+            isLoading={create.isLoading || edit.isLoading}
           >
             {data && (
               <>
                 <Edit size={20} />
-                {t('btn.edit')}
+                {'btn.edit'}
               </>
             )}
             {!data && (
               <>
                 <Save size={20} />
-                {t('btn.save')}
+                {'btn.save'}
               </>
             )}
           </Button>
@@ -128,7 +127,7 @@ export const BusinessCaseForm = ({ data }: BusinessCaseFormPageProps) => {
             variant={'secondary'}
             onClick={() => form.reset()}
           >
-            <RotateCcw size={20} /> {t('default:btn.reset')}
+            <RotateCcw size={20} /> {'default:btn.reset'}
           </Button>
         </div>
       </form>

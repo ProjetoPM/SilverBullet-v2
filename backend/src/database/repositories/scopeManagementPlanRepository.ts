@@ -115,7 +115,14 @@ class ScopeManagementPlanRepository {
       record,
       options,
     );
+  }
 
+
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ScopeManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

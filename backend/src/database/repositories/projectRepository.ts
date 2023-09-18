@@ -1,36 +1,53 @@
 import MongooseRepository from './mongooseRepository';
 import MongooseQueryUtils from '../utils/mongooseQueryUtils';
 import AuditLogRepository from './auditLogRepository';
+
+import ActivityDurationEstimatesRepository from './activityDurationEstimatesRepository';
+import ActivityListRepository from './activityListRepository';
+import AssumptionLogRepository from './assumptionLogRepository';
+import BenefitsManagementPlanRepository from './benefitsManagementPlanRepository';
+import BusinessCaseRepository from './businessCaseRepository';
+import ChangeRequestRepository from './changeRequestRepository';
+import ClosedProcurementDocumentationRepository from './closedProcurementDocumentationRepository';
+import CommunicationsManagementPlanRepository from './communicationsManagementPlanRepository';
+import CostEstimatesRepository from './costEstimatesRepository';
+import CostManagementPlanRepository from './costManagementPlanRepository';
+import FinalReportRepository from './finalReportRepository';
+import LessonLearnedRegisterRepository from './lessonLearnedRegisterRepository';
+import ProcurementManagementPlanRepository from './procurementManagementPlanRepository';
+import ProcurementStatementWorkRegisterRepository from './procurementStatementWorkRegisterRepository';
+import ProjectCharterRepository from './projectCharterRepository';
+import ProjectClosureRepository from './projectClosureRepository';
+import ProjectManagementPlanRepository from './projectManagementPlanRepository';
+import ProjectScopeStatementRepository from './projectScopeStatementRepository';
+import QualityChecklistRepository from './qualityChecklistRepository';
+import QualityManagementPlanRepository from './qualityManagementPlanRepository';
+import RequirementDocumentationRepository from './requirementDocumentationRepository';
+import RequirementsManagementPlanRepository from './requirementsManagementPlanRepository';
+import ResourceBreakdownStructureRepository from './resourceBreakdownStructureRepository';
+import ResourceManagementPlanRepository from './resourceManagementPlanRepository';
+import ResourceRepository from './resourceRepository';
+import ResourceRequirementsRepository from './resourceRequirementsRepository';
+import RiskManagementPlanRepository from './riskManagementPlanRepository';
+import RiskRegistrationRepository from './riskRegistrationRepository';
+import ScheduleManagementPlanRepository from './scheduleManagementPlanRepository';
+import ScheduleNetworkDiagramRepository from './scheduleNetworkDiagramRepository';
+import ScopeManagementPlanRepository from './scopeManagementPlanRepository';
+import StakeholderCalendarsRepository from './stakeholderCalendarsRepository';
+import StakeholderRegistrationRepository from './stakeholderRegistrationRepository';
+import TeamPerformanceEvaluationRepository from './teamPerformanceEvaluationRepository';
+import WorkbreakdownStructureRepository from './workbreakdownStructureRepository';
+import WorkPerformanceReportsRepository from './workPerformanceReportsRepository';
+
 import User from '../models/user';
 import Project from '../models/project';
 import Settings from '../models/settings';
 import Error404 from '../../errors/Error404';
-import ProjectCharter from '../models/projectCharter';
-import BusinessCase from '../models/businessCase';
-import BenefitsManagementPlan from '../models/benefitsManagementPlan';
-import AssumptionLog from '../models/assumptionLog';
-import StakeholderRegistration from '../models/stakeholderRegistration';
-import ProjectManagementPlan from '../models/projectManagementPlan';
-import RequirementsManagementPlan from '../models/requirementsManagementPlan';
-import RequirementDocumentation from '../models/requirementDocumentation';
-import ScopeManagementPlan from '../models/scopeManagementPlan';
-import ScheduleManagementPlan from '../models/scheduleManagementPlan';
-import ProjectScopeStatement from '../models/projectScopeStatement';
-import WorkbreakdownStructure from '../models/workbreakdownStructure';
-import ScheduleNetworkDiagram from '../models/scheduleNetworkDiagram';
-import ActivityList from '../models/activityList';
-import Resource from '../models/resource';
-import ResourceRequirements from '../models/resourceRequirements';
-import ActivityDurationEstimates from '../models/activityDurationEstimates';
-import StakeholderCalendars from '../models/stakeholderCalendars';
-import CostManagementPlan from '../models/costManagementPlan';
-import CostEstimates from '../models/costEstimates';
-import QualityManagementPlan from '../models/qualityManagementPlan';
-import ResourceManagementPlan from '../models/resourceManagementPlan';
-import ResourceBreakdownStructure from '../models/resourceBreakdownStructure';
 import Error400 from '../../errors/Error400';
 import { IRepositoryOptions } from './IRepositoryOptions';
 import { IProject } from '../../interfaces';
+import ProjectPerformanceMonitoringReportRepository from './projectPerformanceMonitoringReportRepository';
+import IssueLogRepository from './issueLogRepository';
 
 
 class ProjectRepository {
@@ -157,107 +174,53 @@ class ProjectRepository {
       options,
     );
 
-    await ProjectCharter(options.database).deleteMany(
-      { project: id },
-      options,
-    );
+    await ProjectCharterRepository.destroyManyFromProjectId(id, options);
+    await BusinessCaseRepository.destroyManyFromProjectId(id, options);
+    await BenefitsManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await AssumptionLogRepository.destroyManyFromProjectId(id, options);
+    await StakeholderRegistrationRepository.destroyManyFromProjectId(id, options);
 
-    await BusinessCase(options.database).deleteMany(
-      { project: id },
-      options,
-    );
+    await ProjectManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await RequirementsManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ScopeManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ScheduleManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ActivityListRepository.destroyManyFromProjectId(id, options);
+    await CostManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await CostEstimatesRepository.destroyManyFromProjectId(id, options);
+    await QualityManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ResourceManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await CommunicationsManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await RiskManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ProcurementManagementPlanRepository.destroyManyFromProjectId(id, options);
+    await ProcurementStatementWorkRegisterRepository.destroyManyFromProjectId(id, options);
+    // Missing Stakeholder Engagement Plan
+    await RequirementDocumentationRepository.destroyManyFromProjectId(id, options);
+    await ScheduleNetworkDiagramRepository.destroyManyFromProjectId(id, options);
+    await ResourceRepository.destroyManyFromProjectId(id, options);
+    await ResourceRequirementsRepository.destroyManyFromProjectId(id, options);
+    await ActivityDurationEstimatesRepository.destroyManyFromProjectId(id, options);
+    await ResourceBreakdownStructureRepository.destroyManyFromProjectId(id, options);
+    await RiskRegistrationRepository.destroyManyFromProjectId(id, options);
+    await ProjectScopeStatementRepository.destroyManyFromProjectId(id, options);
+    await WorkbreakdownStructureRepository.destroyManyFromProjectId(id, options);
+    await StakeholderCalendarsRepository.destroyManyFromProjectId(id, options);
+    // Missing Risk Checklist
 
-    await BenefitsManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
+    await ProjectPerformanceMonitoringReportRepository.destroyManyFromProjectId(id, options);
+    // Missing Deliverable Status
+    await WorkPerformanceReportsRepository.destroyManyFromProjectId(id, options);
+    await IssueLogRepository.destroyManyFromProjectId(id, options);
+    await LessonLearnedRegisterRepository.destroyManyFromProjectId(id, options);
+    await QualityChecklistRepository.destroyManyFromProjectId(id, options);
+    await TeamPerformanceEvaluationRepository.destroyManyFromProjectId(id, options);
 
-    await AssumptionLog(options.database).deleteMany(
-      { project: id },
-      options,
-    );
+    await ChangeRequestRepository.destroyManyFromProjectId(id, options);
+    // Missing Change Log
+    await ClosedProcurementDocumentationRepository.destroyManyFromProjectId(id, options);
 
-    await StakeholderRegistration(
-      options.database,
-    ).deleteMany({ project: id }, options);
+    await ProjectClosureRepository.destroyManyFromProjectId(id, options);
+    await FinalReportRepository.destroyManyFromProjectId(id, options);
 
-    await ProjectManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await RequirementsManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await RequirementDocumentation(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ScopeManagementPlan(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await ScheduleManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ProjectScopeStatement(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await WorkbreakdownStructure(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ScheduleNetworkDiagram(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ActivityList(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await Resource(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await ResourceRequirements(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await ActivityDurationEstimates(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await StakeholderCalendars(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await CostManagementPlan(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await CostEstimates(options.database).deleteMany(
-      { project: id },
-      options,
-    );
-
-    await QualityManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ResourceManagementPlan(
-      options.database,
-    ).deleteMany({ project: id }, options);
-
-    await ResourceBreakdownStructure(
-      options.database,
-    ).deleteMany({ project: id }, options);
 
     await Settings(options.database).deleteMany(
       { tenant: id },

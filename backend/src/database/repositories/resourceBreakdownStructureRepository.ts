@@ -116,7 +116,13 @@ class ResourceBreakdownStructureRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ResourceBreakdownStructure(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

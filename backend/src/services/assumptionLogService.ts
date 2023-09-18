@@ -79,8 +79,7 @@ export default class AssumptionLogService {
 
     try {
       for (const id of ids) {
-        console.log('id');
-        console.log(id);
+
         
         await AssumptionLogRepository.destroy(id, {
           ...this.options,

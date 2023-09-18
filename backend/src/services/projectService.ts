@@ -5,8 +5,18 @@ import MongooseRepository from '../database/repositories/mongooseRepository';
 import Error400 from '../errors/Error400';
 import { IServiceOptions } from './IServiceOptions';
 
+import Roles from '../security/roles';
+
 import { IProject } from '../interfaces';
 
+export type IInviteRequest = {
+  emails: IEmail[];
+};
+
+export type IEmail = {
+  email: string;
+  role: string;
+};
 
 export default class ProjectService {
   options: IServiceOptions;
@@ -15,25 +25,35 @@ export default class ProjectService {
     this.options = options;
   }
 
-
-  
-  async create(data: IProject){
+  async create(data: IProject) {
     const session = await MongooseRepository.createSession(
       this.options.database,
     );
-    
-    try{
-      if(data.name){
-        const projects = await ProjectRepository.findAndCountAll({filter: {}}, this.options);
-        
-        const projectWithSameNameExists = projects.rows.filter(project => {
-          if(project.name == data.name){
-            return project;
-          }
-        });
-        
-        if(projectWithSameNameExists.length > 0){
-          throw new Error400();
+
+    const roles: string[] = [
+      Roles.projectValues.admin,
+      Roles.projectValues.manager,
+    ];
+    try {
+      if (data.name) {
+        const projects =
+          await ProjectRepository.findAndCountAll(
+            { filter: {} },
+            this.options,
+          );
+
+        const projectWithSameNameExists =
+          projects.rows.filter((project) => {
+            if (project.name == data.name) {
+              return project;
+            }
+          });
+
+        if (projectWithSameNameExists.length > 0) {
+          throw new Error400(
+            this.options.language,
+            'tenant.project.errors.projectWithSameName',
+          );
         }
       }
 
@@ -42,14 +62,10 @@ export default class ProjectService {
         session,
       });
 
-
-      await ProjectTenantRepository.create(
-        record,
-        {
-          ...this.options,
-          session,
-        },
-      );
+      await ProjectTenantRepository.create(record, {
+        ...this.options,
+        session,
+      });
 
       await ProjectUserRepository.create(
         record,
@@ -57,6 +73,7 @@ export default class ProjectService {
           ...this.options,
           session,
         },
+        roles,
       );
 
       await MongooseRepository.commitTransaction(session);
@@ -74,8 +91,6 @@ export default class ProjectService {
     );
 
     try {
-
-
       const record = await ProjectRepository.update(
         id,
         data,
@@ -121,8 +136,7 @@ export default class ProjectService {
     }
   }
 
-
-  async findById(id:string, options?):Promise<IProject> {
+  async findById(id: string, options?): Promise<IProject> {
     options = options || {};
 
     return ProjectRepository.findById(id, {
@@ -138,6 +152,24 @@ export default class ProjectService {
     );
   }
 
+  async invite(data: IInviteRequest, tenantId: string, projectId: string) {
+    const { emails } = data;
+    try {
+      if (!emails) throw new Error400();
+
+      const uniqueEmails = emails.filter(
+        (item, index, array) => {
+          return (
+            array.findIndex(
+              (prevItem) => prevItem.email === item.email,
+            ) === index
+          );
+        },
+      );
+
+
+    } catch (error) {}
+  }
 
   async import(data, importHash) {
     if (!importHash) {

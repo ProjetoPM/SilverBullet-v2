@@ -1,16 +1,16 @@
 import { Editor } from '@/components/Editor/Editor'
-import { Button, Command, Form, Popover, ScrollArea } from '@/components/ui'
+import { Button, Form } from '@/components/ui'
 import { useRedirect } from '@/hooks/useRedirect'
-import { cn } from '@/lib/utils'
-import { getWorkspaceId } from '@/stores/useWorkspaceStore'
+import { routes } from '@/routes/routes'
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, ChevronsUpDown, Edit, RotateCcw, Save } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Edit, RotateCcw, Save } from 'lucide-react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useWeeklyEvaluation } from './hooks/useWeeklyEvaluation'
-import { useWeeklyReport } from './hooks/useWeeklyReport'
+import { useWeeklyReport } from './hooks'
 import { Processes } from './processes/processes'
+import { MainSelect } from './weekly-report.form.select'
 import {
   WeeklyReport,
   WeeklyReportSchema,
@@ -19,15 +19,16 @@ import {
 } from './weekly-report.schema'
 
 interface WeeklyReportFormProps {
-  data?: WeeklyReport
+  data?: WeeklyReport & {
+    id: string
+  }
 }
 
 const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
   const { t } = useTranslation('weekly-report')
-  const [open, setOpen] = useState(false)
-  const { data: weList } = useWeeklyEvaluation()
-  const { create } = useWeeklyReport()
+  const projectId = useWorkspaceStore((state) => state.project?._id)
   const { redirect } = useRedirect()
+  const { create, update } = useWeeklyReport()
 
   const form = useForm<WeeklyReport>({
     mode: 'all',
@@ -35,15 +36,25 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
     defaultValues: data ?? defaultValues
   })
 
+  useEffect(() => {
+    if (!projectId) {
+      redirect({
+        route: routes.projects.index,
+        message: t('no_project_detected.label')
+      })
+    }
+  }, [projectId, redirect, t])
+
   const onSubmit = async (form: WeeklyReport) => {
+    if (data) {
+      await update.mutateAsync({
+        ...form,
+        id: data.id
+      })
+      return
+    }
     await create.mutateAsync(form)
   }
-
-  useEffect(() => {
-    if (!getWorkspaceId()) {
-      redirect()
-    }
-  }, [])
 
   return (
     <Form.Root {...form}>
@@ -51,89 +62,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-3 min-h-screen"
       >
-        <Form.Field
-          control={form.control}
-          name="weeklyEvaluationId"
-          render={({ field }) => (
-            <Form.Item>
-              <Form.Label hint={t('description:project_charter')} required>
-                {t('evaluation_name.label')}
-              </Form.Label>
-              <div className="flex flex-col gap-1">
-                <Popover.Root open={open} onOpenChange={setOpen}>
-                  <Popover.Trigger
-                    asChild
-                    disabled={!!data}
-                    aria-disabled={!!data}
-                  >
-                    <Form.Control>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          'justify-between',
-                          !field.value && 'text-muted-foreground'
-                        )}
-                      >
-                        {t(
-                          weList?.rows?.find((name) => name.id === field.value)
-                            ?.name ?? 'select_weekly_evaluation'
-                        )}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </Form.Control>
-                  </Popover.Trigger>
-                  <Popover.Content className="p-0">
-                    <Command.Root>
-                      {weList && weList.count > 0 && (
-                        <>
-                          <Command.Input
-                            placeholder={t('search_weekly_evaluation')}
-                          />
-                          <Command.Empty>
-                            {t('weekly-report:no_results_found')}
-                          </Command.Empty>
-                          <ScrollArea className="max-h-[300px]">
-                            <Command.Group>
-                              {weList.rows.map((data) => (
-                                <Command.Item
-                                  value={data.id}
-                                  key={data.id}
-                                  onSelect={() => {
-                                    form.setValue('weeklyEvaluationId', data.id)
-                                    form.clearErrors('weeklyEvaluationId')
-                                    setOpen(false)
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      'mr-2 h-4 w-4',
-                                      data.id === field.value
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                    )}
-                                  />
-                                  {data.name}
-                                </Command.Item>
-                              ))}
-                            </Command.Group>
-                          </ScrollArea>
-                        </>
-                      )}
-                      {!weList ||
-                        (weList?.count === 0 && (
-                          <Command.Item>
-                            {t('weekly-report:no_weekly_evaluation_exists')}
-                          </Command.Item>
-                        ))}
-                    </Command.Root>
-                  </Popover.Content>
-                </Popover.Root>
-                <Form.Message />
-              </div>
-            </Form.Item>
-          )}
-        />
+        <MainSelect form={form} data={data} />
         <Form.Field
           control={form.control}
           name="toolEvaluation"
@@ -157,7 +86,7 @@ const WeeklyReportForm = ({ data }: WeeklyReportFormProps) => {
           <Button
             type="submit"
             className="w-30 gap-1 font-medium"
-            isLoading={create.isLoading}
+            isLoading={create.isLoading || update.isLoading}
           >
             {data && (
               <>

@@ -108,6 +108,14 @@ class ChangeRequestRepository {
 
   }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await ChangeRequest(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
+
+  }
+
   static async filterIdInTenant(
     id,
     options: IRepositoryOptions,

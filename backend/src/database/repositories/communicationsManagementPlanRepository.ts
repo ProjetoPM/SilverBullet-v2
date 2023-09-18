@@ -104,7 +104,13 @@ class CommunicationsManagementPlanRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await CommunicationsManagementPlan(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 

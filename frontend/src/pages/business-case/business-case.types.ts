@@ -2,16 +2,17 @@ import { z } from 'zod'
 import { BusinessCaseSchema } from './business-case.schema'
 
 export type BusinessCase = {
+  id: string
   businessNeeds: string
   situationAnalysis: string
   recommendation: string
   evaluation: string
-  project: {
+  project?: {
     _id: string
   }
-  createdBy: string
-  updatedBy: string
-  tenant: {
+  createdBy?: string
+  updatedBy?: string
+  tenant?: {
     _id: string
   }
 }
@@ -29,9 +30,5 @@ export type BusinessCaseData = z.infer<typeof BusinessCaseSchema> & {
 
 export type FormBusinesscase = Pick<
   BusinessCase,
-  | 'project'
-  | 'businessNeeds'
-  | 'situationAnalysis'
-  | 'recommendation'
-  | 'evaluation'
+  'businessNeeds' | 'situationAnalysis' | 'recommendation' | 'evaluation'
 >

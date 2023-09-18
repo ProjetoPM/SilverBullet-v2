@@ -1,30 +1,47 @@
-import { getWorkspaceId } from '@/stores/useWorkspaceStore'
+import { useRedirect } from '@/hooks/useRedirect'
+import { api } from '@/services/api'
+import { getProjectId, getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+import { WeeklyReport } from '../weekly-report.schema'
 import { useLength } from './useLength'
 
 export const useEdit = () => {
   const { id } = useParams()
+  const { redirect } = useRedirect()
   const setLength = useLength((state) => state.setLength)
 
-  const getData = async (id?: string) => {
-    const url = `/tenant/${getWorkspaceId()}/weekly-report/:id`
+  /**
+   * Recupera um weekly-report de um usuário.
+   */
+  const _edit = async () => {
+    if (!getWorkspaceId() || !getProjectId()) {
+      redirect()
+    }
 
-    // const data = api.get(url).then((res) => res.data)
+    const response = await api
+      .get(
+        `/tenant/${getWorkspaceId()}/project/${getProjectId()}/weekly-report/${id}`
+      )
+      .then((res) => ({
+        weeklyEvaluationId: res.data.weeklyEvaluation,
+        ...res.data
+      }))
+      .catch((err) => err.response)
 
-    // console.log(data)
-
-    // // if (id) {
-    // //   return api.get(url).then((res) => res.data)
-    // // }
-    return null
+    setLength(response.processes.length)
+    return response
   }
 
-  const { data, ...props } = useQuery<any>([`wr-${id}`, id], async () =>
-    getData(id)
+  const edit = useQuery<WeeklyReport & { id: string }>(
+    'weekly-report-edit',
+    _edit,
+    {
+      enabled: !!id,
+      cacheTime: 0,
+      refetchOnWindowFocus: false
+    }
   )
 
-  setLength(0)
-
-  return { id, data, ...props }
+  return { ...edit, id }
 }

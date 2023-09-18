@@ -8,11 +8,13 @@ import {
 } from '@/components/ui'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/utils'
+import { transformViewName } from '@/utils/transform-view-name'
 import { Download, ListRestart, Upload, UserPlus2, XCircle } from 'lucide-react'
 import Papa from 'papaparse'
-import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { useWorkspaceInvites } from '../../hooks/useWorkspaceInvites'
 import { template } from './template'
 
 export interface Invites {
@@ -20,15 +22,23 @@ export interface Invites {
   role: string
 }
 
-export const InviteUsers = () => {
-  const { t } = useTranslation('workspace')
+type InviteUsersProps = {
+  onOpenChange: (open: boolean) => void
+}
+
+export const InviteUsers = ({ onOpenChange }: InviteUsersProps) => {
+  const { t } = useTranslation('invites')
   const [invites, setInvites] = useState<Invites[]>([])
   const [role, setRoles] = useState('student')
   const [emailInput, setEmailInput] = useState('')
+  const { create } = useWorkspaceInvites()
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && emailInput.trim() !== '') {
-      const split = emailInput.split(',').map((email) => email.trim())
+      const split = emailInput
+        .toLowerCase()
+        .split(',')
+        .map((email) => email.trim())
 
       /**
        * Filtrando os e-mails que ainda não existem na lista,
@@ -87,13 +97,15 @@ export const InviteUsers = () => {
     setInvites([])
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     if (invites.length === 0) {
       toast.info(t('insert_at_least_one_email'))
       return
     }
+    await create.mutateAsync(invites)
+    onOpenChange(false)
   }
 
   return (
@@ -113,14 +125,14 @@ export const InviteUsers = () => {
         accept=".csv"
         onChange={handleFileUpload}
       />
-      <div className="flex gap-2">
+      <div className="flex flex-col xs:flex-row gap-2">
         <Button
           className="flex flex-grow gap-2"
           variant={'secondary'}
           onClick={() => document.getElementById('upload-file')?.click()}
         >
           <Upload className="w-5 h-5" />
-          {t('import_users')}
+          {t('import_from_template')}
         </Button>
         <Button
           variant={'outline'}
@@ -133,12 +145,12 @@ export const InviteUsers = () => {
       </div>
       <div className="flex flex-col gap-2">
         <div className="space-y-1">
-          <Label htmlFor="emails">{t('emails_label')}</Label>
+          <Label htmlFor="emails">{t('label_emails')}</Label>
           <div className="flex gap-2">
             <Input
               id="emails"
               className="flex-grow"
-              placeholder={t('emails_placeholder')}
+              placeholder={t('placeholder_emails')}
               value={emailInput}
               onChange={(e) => setEmailInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -147,7 +159,7 @@ export const InviteUsers = () => {
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger asChild>
                   <Button size={'icon'} variant={'outline'} onClick={resetAll}>
-                    <ListRestart />
+                    <ListRestart className="w-5 h-5" />
                   </Button>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
@@ -168,9 +180,13 @@ export const InviteUsers = () => {
             </Select.Trigger>
             <Select.Content>
               <Select.Group>
-                <Select.Item value="student">{t('student')}</Select.Item>
-                <Select.Item value="professor">{t('professor')}</Select.Item>
-                <Select.Item value="admin">{t('admin')}</Select.Item>
+                {['student', 'admin'].map((role) => (
+                  <React.Fragment key={role}>
+                    <Select.Item value={role}>
+                      {t(`role_${transformViewName(role)}`)}
+                    </Select.Item>
+                  </React.Fragment>
+                ))}
               </Select.Group>
             </Select.Content>
           </Select.Root>
@@ -183,7 +199,7 @@ export const InviteUsers = () => {
             >
               {invites.length === 0 ? (
                 <span className="text-sm text-neutral-300 dark:text-neutral-600 select-none h-full">
-                  {t('no_email_added')}
+                  {t('no_email_provided')}
                 </span>
               ) : (
                 <div className="flex items-center flex-wrap gap-2">
@@ -195,9 +211,6 @@ export const InviteUsers = () => {
                         {
                           'border-foreground/10 dark:border-accent':
                             invite.role === 'student'
-                        },
-                        {
-                          'border-sky-800/80': invite.role === 'professor'
                         },
                         {
                           'border-red-900/80': invite.role === 'admin'
@@ -219,7 +232,9 @@ export const InviteUsers = () => {
         </div>
       </div>
       <form className="flex" onSubmit={handleSubmit}>
-        <Button className="flex-grow">{t('btn_invite')}</Button>
+        <Button className="flex-grow" onClick={() => onOpenChange(false)}>
+          {t('btn_send_invite')}
+        </Button>
       </form>
     </>
   )

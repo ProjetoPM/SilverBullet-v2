@@ -8,11 +8,14 @@
     "build": "tsc && npm run build:documentation",
     "db:create": "npm run build && node ./dist/database/migrations/create",
     "stripe:login": "stripe login",
-    "stripe:start": "stripe listen --forward-to localhost:8080/api/plan/stripe/webhook"
+    "stripe:start": "stripe listen --forward-to localhost:8080/api/plan/stripe/webhook",
+    "deploy": "npm rub db:create && npm start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.388.0",
     "@google-cloud/storage": "5.3.0",
     "@sendgrid/mail": "7.2.6",
+    "@supabase/supabase-js": "^2.32.0",
     "aws-sdk": "2.756.0",
     "bcrypt": "5.0.0",
     "cli-highlight": "2.1.4",
@@ -31,7 +34,8 @@
     "passport-facebook": "3.0.0",
     "passport-google-oauth": "2.0.0",
     "stripe": "8.96.0",
-    "swagger-ui-dist": "3.44.1"
+    "swagger-ui-dist": "3.44.1",
+    "uuid": "^9.0.0"
   },
   "private": true,
   "devDependencies": {

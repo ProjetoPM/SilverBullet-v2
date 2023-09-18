@@ -32,7 +32,7 @@ export default class TenantService {
     });
 
     if (tenant) {
-      // Reload the current user in case it has chenged
+      // Reload the current user in case it has changed
       // in the middle of this session
       const currentUserReloaded = await UserRepository.findById(
         this.options.currentUser.id,

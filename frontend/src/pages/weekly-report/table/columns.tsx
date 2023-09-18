@@ -44,7 +44,7 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <div id={`evaluation-name-${row.index}`}>
-        {row.getValue('evaluationName')}
+        {replaceHtmlTags(row.getValue('evaluationName'))}
       </div>
     ),
     enableSorting: true,

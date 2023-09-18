@@ -1,6 +1,6 @@
 import { Translate } from '@/components/Utils/Translate'
 import { routes } from '@/routes/routes'
-import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
+import { getWorkspaceId } from '@/stores/useWorkspaceStore'
 import { FolderOpen, Folders } from 'lucide-react'
 
 type SidebarItem = {
@@ -16,7 +16,7 @@ type SidebarItem = {
 }
 
 const setHidden = () => {
-  return useWorkspaceStore.getState().workspace === null
+  return getWorkspaceId() === undefined
 }
 
 export const sidebar: SidebarItem[] = [

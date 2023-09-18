@@ -16,18 +16,19 @@ export const columns = [
     id: 'select',
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
+        checked={table.getIsAllRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label={t('select_all')}
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label={t('select_row')}
-      />
-    ),
+    cell: ({ row }) =>
+      row.original.roles.some((role) => role === 'admin') && (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label={t('select_row')}
+        />
+      ),
     enableSorting: false,
     enableHiding: false
   }),

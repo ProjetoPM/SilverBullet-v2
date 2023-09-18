@@ -104,7 +104,13 @@ class LessonLearnedRegisterRepository {
       record,
       options,
     );
+  }
 
+  static async destroyManyFromProjectId(projectId: string, options: IRepositoryOptions) {
+    
+    await LessonLearnedRegister(
+      options.database,
+    ).deleteMany({ project: projectId }, options);
 
   }
 
