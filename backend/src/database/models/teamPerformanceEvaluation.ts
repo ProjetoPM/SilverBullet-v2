@@ -10,17 +10,11 @@ export default (database) => {
 
   const TeamPerformanceEvaluationSchema = new Schema(
     {
-      teamMemberName: {
-        type: String,
-      },
-      jobRole: {
-        type: String,
-      },
       functionProject: {
         type: String,
       },
       evaluationDate: {
-        type: String,
+        type: Date,
       },
       reviewEvaluation: {
         type: String,
@@ -45,6 +39,11 @@ export default (database) => {
       },
       evaluatorComments: {
         type: String,
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
       },
       tenant: {
         type: Schema.Types.ObjectId,
